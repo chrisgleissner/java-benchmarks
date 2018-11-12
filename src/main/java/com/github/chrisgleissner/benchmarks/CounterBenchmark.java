@@ -6,26 +6,20 @@ import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-
-@BenchmarkMode(Mode.All)
-@Warmup(iterations = 5, time = 1, timeUnit = SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = SECONDS)
-@Fork(3)
+@BenchmarkMode(Mode.Throughput)
+@Warmup(iterations = 5, time = 2)
+@Measurement(iterations = 5, time = 3)
+@Fork(2)
 public class CounterBenchmark {
 
     @State(Scope.Thread)
     public static class MyState {
 
         @Setup(Level.Trial)
-        public void doSetup() {
+        public void setUp() {
             i = 0;
             atomicInteger = new AtomicInteger();
             mutableInt = new MutableInt();
-        }
-
-        @TearDown(Level.Trial)
-        public void doTearDown() {
         }
 
         public int i;
@@ -34,17 +28,17 @@ public class CounterBenchmark {
     }
 
     @Benchmark
-    public void incrementInt(Blackhole blackhole, MyState state) {
+    public void countInt(Blackhole blackhole, MyState state) {
         blackhole.consume(state.i++);
     }
 
     @Benchmark
-    public void incrementAtomicInteger(Blackhole blackhole, MyState state) {
+    public void countAtomicInteger(Blackhole blackhole, MyState state) {
         blackhole.consume(state.atomicInteger.getAndIncrement());
     }
 
     @Benchmark
-    public void incrementMutableInt(Blackhole blackhole, MyState state) {
+    public void countMutableInt(Blackhole blackhole, MyState state) {
         blackhole.consume(state.mutableInt.getAndIncrement());
     }
 }
