@@ -8,7 +8,7 @@ import org.openjdk.jmh.infra.Blackhole;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-@BenchmarkMode({Mode.AverageTime, Mode.SampleTime})
+@BenchmarkMode(Mode.Throughput)
 @Warmup(iterations = 5, time = 2)
 @Measurement(iterations = 5, time = 3)
 @Fork(2)
