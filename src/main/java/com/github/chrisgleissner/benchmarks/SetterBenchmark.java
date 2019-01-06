@@ -1,35 +1,38 @@
 package com.github.chrisgleissner.benchmarks;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
+import java.util.function.BiConsumer;
+
+import static java.lang.invoke.MethodType.methodType;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 10, time = 1)
 @Fork(1)
-public class GetterBenchmark {
+public class SetterBenchmark {
 
     @State(Scope.Thread)
     private static class AbstractState {
 
         @Setup
         public void setupIteration() {
-            foo = new Foo(System.nanoTime());
+            foo = new Foo();
+            l = System.nanoTime();
         }
 
         Foo foo;
+        Long l;
     }
 
     @State(Scope.Thread)
@@ -38,7 +41,8 @@ public class GetterBenchmark {
 
     @Benchmark
     public void direct(Blackhole blackhole, DirectState s) {
-        blackhole.consume(s.foo.getL());
+        s.foo.setL(s.l);
+        blackhole.consume(s.foo.l);
     }
 
     @State(Scope.Thread)
@@ -46,18 +50,19 @@ public class GetterBenchmark {
 
         @Setup
         public void doSetup() throws NoSuchMethodException {
-            getter = Foo.class.getDeclaredMethod("getL");
-            getter.setAccessible(true);
+            setter = Foo.class.getDeclaredMethod("setL", Long.class);
+            setter.setAccessible(true);
         }
 
-        Method getter;
+        Method setter;
     }
 
     @Benchmark
     public void reflection(Blackhole blackhole, ReflectionState s) throws InvocationTargetException, IllegalAccessException {
-        blackhole.consume(s.getter.invoke(s.foo));
-    }
+        s.setter.invoke(s.foo, new Object[] { s.l });
+        blackhole.consume(s.l);
 
+    }
 
     @State(Scope.Thread)
     public static class LambdaMetaFactoryState extends AbstractState {
@@ -65,26 +70,26 @@ public class GetterBenchmark {
         @Setup
         public void doSetup() throws Throwable {
             MethodHandles.Lookup lookup = MethodHandles.lookup();
+            MethodHandle longSetterHandle = lookup.findVirtual(Foo.class, "setL", methodType(void.class, Long.class));
             CallSite site = LambdaMetafactory.metafactory(lookup,
-                    "apply",
-                    MethodType.methodType(Function.class),
-                    MethodType.methodType(Object.class, Object.class),
-                    lookup.findVirtual(Foo.class, "getL", MethodType.methodType(Long.class)),
-                    MethodType.methodType(Long.class, Foo.class));
-            getterFunction = (Function) site.getTarget().invokeExact();
+                    "accept",
+                    methodType(BiConsumer.class),
+                    methodType(void.class, Object.class, Object.class),
+                    longSetterHandle,
+                    longSetterHandle.type());
+            biConsumerFunction = (BiConsumer) site.getTarget().invokeExact();
         }
 
-        Function<Foo, Long> getterFunction;
+        BiConsumer<Foo, Long> biConsumerFunction;
     }
 
     @Benchmark
     public void lambdaMetaFactory(Blackhole blackhole, LambdaMetaFactoryState s) {
-        blackhole.consume(s.getterFunction.apply(s.foo));
+        s.biConsumerFunction.accept(s.foo, s.l);
+        blackhole.consume(s.l);
     }
 
-
     @Data
-    @AllArgsConstructor
     static class Foo {
         Long l;
     }
