@@ -6,7 +6,7 @@ mvn clean install
 java -jar target/benchmarks.jar
 ```
 
-All measurements below were performed on OpenJDK 11 and Ubuntu 18.04 run inside VirtualBox 5.2 on an Intel I7-6700K.
+All measurements below were obtained on OpenJDK 11 and Ubuntu 18.04 run inside VirtualBox 5.2 on an Intel I7-6700K clocked at 4.6GHz.
 All 4 cores were allocated to the VM.
 
 ### Counters
