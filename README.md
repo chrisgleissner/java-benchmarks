@@ -47,8 +47,8 @@ Ordered by score:
 
 ```
 Benchmark                                   Mode  Cnt   Score   Error  Units
-GetterBenchmark.direct                      avgt   10   4.215 ± 0.046  ns/op
 GetterBenchmark.lambdaMetaFactoryForGetter  avgt   10   4.184 ± 0.058  ns/op
+GetterBenchmark.direct                      avgt   10   4.215 ± 0.046  ns/op
 GetterBenchmark.reflection                  avgt   10   6.747 ± 0.057  ns/op
 GetterBenchmark.methodHandleForGetter       avgt   10  20.631 ± 0.314  ns/op
 GetterBenchmark.varHandle                   avgt   10  21.791 ± 0.382  ns/op
