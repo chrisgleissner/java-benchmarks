@@ -2,18 +2,12 @@
 
 Benchmarks for LambdaMetaFactory, counters, etc.
 
-All benchmarks were performed using JMH via:
-```
-mvn clean install
-java -jar target/benchmarks.jar
-```
+All benchmarks were performed using JMH via `mvn clean install; java -jar target/benchmarks.jar`. 
 
-To reproduce a single benchmark, e.g. SetterBenchmark: `java -jar target/benchmarks.jar SetterBenchmark`
-
+You can run a single benchmark via `java -jar target/benchmarks.jar SetterBenchmark`.
 
 The following measurements were obtained on OpenJDK 11.0.1 64Bit and Ubuntu 18.04 run inside VirtualBox 5.2 on an Intel I7-6700K clocked at 4.6GHz.
 All 4 cores were allocated to the VM.
-
 
 ## Counters
 
