@@ -5,6 +5,7 @@ import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
 import java.lang.invoke.*;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +40,8 @@ public class SetterBenchmark {
         Long l;
     }
 
+    // ======================
+
     @State(Scope.Thread)
     public static class DirectState extends AbstractState {
     }
@@ -48,6 +51,8 @@ public class SetterBenchmark {
         s.foo.setL(s.l);
         blackhole.consume(s.foo.l);
     }
+
+    // ======================
 
     @State(Scope.Thread)
     public static class ReflectionState extends AbstractState {
@@ -63,13 +68,15 @@ public class SetterBenchmark {
 
     @Benchmark
     public void reflection(Blackhole blackhole, ReflectionState s) throws InvocationTargetException, IllegalAccessException {
-        s.setter.invoke(s.foo, new Object[] { s.l });
-        blackhole.consume(s.l);
+        s.setter.invoke(s.foo, s.l);
+        blackhole.consume(s.foo.l);
 
     }
 
+    // ======================
+
     @State(Scope.Thread)
-    public static class LambdaMetaFactoryState extends AbstractState {
+    public static class LambdaMetaFactoryForSetterState extends AbstractState {
 
         @Setup
         public void doSetup() throws Throwable {
@@ -88,10 +95,52 @@ public class SetterBenchmark {
     }
 
     @Benchmark
-    public void lambdaMetaFactory(Blackhole blackhole, LambdaMetaFactoryState s) {
+    public void lambdaMetaFactoryForSetter(Blackhole blackhole, LambdaMetaFactoryForSetterState s) {
         s.biConsumerFunction.accept(s.foo, s.l);
-        blackhole.consume(s.l);
+        blackhole.consume(s.foo.l);
     }
+
+    // ======================
+
+    @State(Scope.Thread)
+    public static class MethodHandleForSetterState extends AbstractState {
+
+        @Setup
+        public void doSetup() throws Throwable {
+            Method method = Foo.class.getMethod("setL", Long.class);
+            methodHandle = lookup().unreflect(method);
+        }
+
+        MethodHandle methodHandle;
+    }
+
+    @Benchmark
+    public void methodHandleForSetter(Blackhole blackhole, MethodHandleForSetterState s) throws Throwable {
+        s.methodHandle.invoke(s.foo, s.l);
+        blackhole.consume(s.foo.l);
+    }
+
+    // ======================
+
+    @State(Scope.Thread)
+    public static class MethodHandleForFieldState extends AbstractState {
+        @Setup
+        public void doSetup() throws Throwable {
+            Field field = Foo.class.getDeclaredField("l");
+            field.setAccessible(true);
+            methodHandle = lookup().unreflectSetter(field);
+        }
+
+        MethodHandle methodHandle;
+    }
+
+    @Benchmark
+    public void methodHandleForField(Blackhole blackhole, MethodHandleForFieldState s) throws Throwable {
+        s.methodHandle.invoke(s.foo, s.l);
+        blackhole.consume(s.foo.l);
+    }
+
+    // ======================
 
     @State(Scope.Thread)
     public static class VarHandleState extends AbstractState {
@@ -108,6 +157,6 @@ public class SetterBenchmark {
     @Benchmark
     public void varHandle(Blackhole blackhole, VarHandleState s) {
         s.varHandle.set(s.foo, s.l);
-        blackhole.consume(s.l);
+        blackhole.consume(s.foo.l);
     }
 }

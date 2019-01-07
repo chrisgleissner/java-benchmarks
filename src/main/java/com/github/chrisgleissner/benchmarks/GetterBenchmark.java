@@ -6,6 +6,7 @@ import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
 import java.lang.invoke.*;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +14,7 @@ import java.util.function.Function;
 
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.lang.invoke.MethodHandles.privateLookupIn;
+import static java.lang.invoke.MethodType.methodType;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
@@ -38,6 +40,8 @@ public class GetterBenchmark {
         Foo foo;
     }
 
+    // ======================
+
     @State(Scope.Thread)
     public static class DirectState extends AbstractState {
     }
@@ -46,6 +50,8 @@ public class GetterBenchmark {
     public void direct(Blackhole blackhole, DirectState s) {
         blackhole.consume(s.foo.getL());
     }
+
+    // ======================
 
     @State(Scope.Thread)
     public static class ReflectionState extends AbstractState {
@@ -64,19 +70,20 @@ public class GetterBenchmark {
         blackhole.consume(s.getter.invoke(s.foo));
     }
 
+    // ======================
 
     @State(Scope.Thread)
-    public static class LambdaMetaFactoryState extends AbstractState {
+    public static class LambdaMetaFactoryForGetterState extends AbstractState {
 
         @Setup
         public void doSetup() throws Throwable {
-            MethodHandles.Lookup lookup = MethodHandles.lookup();
+            MethodHandles.Lookup lookup = lookup();
             CallSite site = LambdaMetafactory.metafactory(lookup,
                     "apply",
-                    MethodType.methodType(Function.class),
-                    MethodType.methodType(Object.class, Object.class),
-                    lookup.findVirtual(Foo.class, "getL", MethodType.methodType(Long.class)),
-                    MethodType.methodType(Long.class, Foo.class));
+                    methodType(Function.class),
+                    methodType(Object.class, Object.class),
+                    lookup.findVirtual(Foo.class, "getL", methodType(Long.class)),
+                    methodType(Long.class, Foo.class));
             getterFunction = (Function) site.getTarget().invokeExact();
         }
 
@@ -84,9 +91,50 @@ public class GetterBenchmark {
     }
 
     @Benchmark
-    public void lambdaMetaFactory(Blackhole blackhole, LambdaMetaFactoryState s) {
+    public void lambdaMetaFactoryForGetter(Blackhole blackhole, LambdaMetaFactoryForGetterState s) {
         blackhole.consume(s.getterFunction.apply(s.foo));
     }
+
+    // ======================
+
+    @State(Scope.Thread)
+    public static class MethodHandleForGetterState extends AbstractState {
+
+        @Setup
+        public void doSetup() throws Throwable {
+            Method method = Foo.class.getMethod("getL");
+            methodHandle = lookup().unreflect(method);
+        }
+
+        MethodHandle methodHandle;
+    }
+
+    @Benchmark
+    public void methodHandleForGetter(Blackhole blackhole, MethodHandleForGetterState s) throws Throwable {
+        blackhole.consume(s.methodHandle.invoke(s.foo));
+    }
+
+    // ======================
+
+    @State(Scope.Thread)
+    public static class MethodHandleForFieldState extends AbstractState {
+
+        @Setup
+        public void doSetup() throws Throwable {
+            Field field = Foo.class.getDeclaredField("l");
+            field.setAccessible(true);
+            methodHandle = lookup().unreflectGetter(field);
+        }
+
+        MethodHandle methodHandle;
+    }
+
+    @Benchmark
+    public void methodHandleForField(Blackhole blackhole, MethodHandleForFieldState s) throws Throwable {
+        blackhole.consume(s.methodHandle.invoke(s.foo));
+    }
+
+    // ======================
 
     @State(Scope.Thread)
     public static class VarHandleState extends AbstractState {
