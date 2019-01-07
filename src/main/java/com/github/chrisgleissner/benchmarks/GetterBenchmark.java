@@ -5,14 +5,14 @@ import lombok.Data;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
-import java.lang.invoke.CallSite;
-import java.lang.invoke.LambdaMetafactory;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
+import java.lang.invoke.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+
+import static java.lang.invoke.MethodHandles.lookup;
+import static java.lang.invoke.MethodHandles.privateLookupIn;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
@@ -20,6 +20,12 @@ import java.util.function.Function;
 @Measurement(iterations = 10, time = 1)
 @Fork(1)
 public class GetterBenchmark {
+
+    @Data
+    @AllArgsConstructor
+    static class Foo {
+        Long l;
+    }
 
     @State(Scope.Thread)
     private static class AbstractState {
@@ -82,10 +88,20 @@ public class GetterBenchmark {
         blackhole.consume(s.getterFunction.apply(s.foo));
     }
 
+    @State(Scope.Thread)
+    public static class VarHandleState extends AbstractState {
 
-    @Data
-    @AllArgsConstructor
-    static class Foo {
-        Long l;
+        @Setup
+        public void doSetup() throws Throwable {
+            varHandle = privateLookupIn(SetterBenchmark.Foo.class, lookup()).findVarHandle(SetterBenchmark.Foo.class, "l", Long.class);
+        }
+
+        VarHandle varHandle;
     }
+
+    @Benchmark
+    public void varHandle(Blackhole blackhole, SetterBenchmark.VarHandleState s) {
+        blackhole.consume(s.varHandle.get(s.foo));
+    }
+
 }

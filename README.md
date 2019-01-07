@@ -40,17 +40,18 @@ Direct vs [LambdaMetaFactory](https://docs.oracle.com/javase/8/docs/api/java/lan
 ### GetterBenchmark
 
 ```
-Benchmark                          Mode  Cnt  Score   Error  Units
-GetterBenchmark.direct             avgt   10  4.218 ± 0.064  ns/op
-GetterBenchmark.lambdaMetaFactory  avgt   10  4.161 ± 0.031  ns/op
-GetterBenchmark.reflection         avgt   10  6.785 ± 0.125  ns/op
+GetterBenchmark.direct             avgt   10   4.267 ± 0.071  ns/op
+GetterBenchmark.lambdaMetaFactory  avgt   10   4.218 ± 0.107  ns/op
+GetterBenchmark.reflection         avgt   10   6.925 ± 0.326  ns/op
+GetterBenchmark.varHandle          avgt   10  21.738 ± 0.332  ns/op
 ```
 
 ### SetterBenchmark
 
 ```
-Benchmark                          Mode  Cnt  Score   Error  Units
-SetterBenchmark.direct             avgt   10  4.863 ± 0.072  ns/op
-SetterBenchmark.lambdaMetaFactory  avgt   10  4.831 ± 0.027  ns/op
-SetterBenchmark.reflection         avgt   10  7.782 ± 0.085  ns/op
+Benchmark                          Mode  Cnt   Score   Error  Units
+SetterBenchmark.direct             avgt   10   4.882 ± 0.068  ns/op
+SetterBenchmark.lambdaMetaFactory  avgt   10   4.818 ± 0.004  ns/op
+SetterBenchmark.reflection         avgt   10   7.757 ± 0.106  ns/op
+SetterBenchmark.varHandle          avgt   10  22.468 ± 0.251  ns/op
 ```

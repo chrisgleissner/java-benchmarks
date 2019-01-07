@@ -4,15 +4,14 @@ import lombok.Data;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
-import java.lang.invoke.CallSite;
-import java.lang.invoke.LambdaMetafactory;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
+import java.lang.invoke.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
+import static java.lang.invoke.MethodHandles.lookup;
+import static java.lang.invoke.MethodHandles.privateLookupIn;
 import static java.lang.invoke.MethodType.methodType;
 
 @BenchmarkMode(Mode.AverageTime)
@@ -21,6 +20,11 @@ import static java.lang.invoke.MethodType.methodType;
 @Measurement(iterations = 10, time = 1)
 @Fork(1)
 public class SetterBenchmark {
+
+    @Data
+    public static class Foo {
+        private Long l;
+    }
 
     @State(Scope.Thread)
     private static class AbstractState {
@@ -69,7 +73,7 @@ public class SetterBenchmark {
 
         @Setup
         public void doSetup() throws Throwable {
-            MethodHandles.Lookup lookup = MethodHandles.lookup();
+            MethodHandles.Lookup lookup = lookup();
             MethodHandle longSetterHandle = lookup.findVirtual(Foo.class, "setL", methodType(void.class, Long.class));
             CallSite site = LambdaMetafactory.metafactory(lookup,
                     "accept",
@@ -89,8 +93,21 @@ public class SetterBenchmark {
         blackhole.consume(s.l);
     }
 
-    @Data
-    static class Foo {
-        Long l;
+    @State(Scope.Thread)
+    public static class VarHandleState extends AbstractState {
+
+        @Setup
+        public void doSetup() throws Throwable {
+            varHandle = privateLookupIn(Foo.class, lookup()).findVarHandle(Foo.class, "l", Long.class);
+
+        }
+
+        VarHandle varHandle;
+    }
+
+    @Benchmark
+    public void varHandle(Blackhole blackhole, VarHandleState s) {
+        s.varHandle.set(s.foo, s.l);
+        blackhole.consume(s.l);
     }
 }
