@@ -62,3 +62,17 @@ SetterBenchmark.methodHandleForSetter       avgt   10  20.711 ± 0.361  ns/op
 SetterBenchmark.methodHandleForField        avgt   10  20.961 ± 0.150  ns/op
 SetterBenchmark.varHandle                   avgt   10  22.938 ± 0.395  ns/op
 ```
+
+## ObjectPool
+
+Compares the use if ints, int wrapper classes, and pooled int wrapper classes.
+
+Ordered by score:
+
+```
+Benchmark                        Mode  Cnt  Score   Error  Units
+ObjectPoolBenchmark.primitive    avgt   10  4.941 ± 0.139  ns/op
+ObjectPoolBenchmark.pool         avgt   10  5.995 ± 0.128  ns/op
+ObjectPoolBenchmark.constructor  avgt   10  6.389 ± 0.097  ns/op
+
+```
