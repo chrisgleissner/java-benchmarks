@@ -1,6 +1,6 @@
 # JMH Benchmarks
 
-Benchmarks for LambdaMetaFactory, counters, etc.
+Benchmarks for LambdaMetaFactory, counters, List/array access, etc.
 
 All benchmarks were performed using JMH via `mvn clean install; java -Xms1g -Xmx1g -jar target/benchmarks.jar`. 
 
@@ -106,13 +106,3 @@ ListAndArrayBenchmark.longWrapperArrayClone                     avgt   10       
 ListAndArrayBenchmark.longWrapperArrayCopyOf                    avgt   10       71964.753 ±    17535.314  ns/op
 ListAndArrayBenchmark.longWrapperArraySystemArrayCopy           avgt   10       81811.972 ±     2025.381  ns/op
 ```
-
-# Run complete. Total time: 00:14:57
-
-REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
-why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
-experiments, perform baseline and negative tests that provide experimental control, make sure
-the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
-Do not assume the numbers tell you what you want them to tell.
-
-Benchmark                                                       Mode  Cnt           Score          Error  Units
