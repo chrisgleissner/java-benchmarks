@@ -103,41 +103,45 @@ ArrayAddBenchmark.longWrapperArraySystemArrayCopy  avgt   10   3556.568 ±  78.9
 
 ### Collection Add
 
-Adding elements to collections. 
+Adding Integer elements to collections and maps. 
 
-10,000 adds per op.
+10,000 adds (or map puts) per op.
 
 
 ```
-Benchmark                                           Mode  Cnt         Score         Error  Units
-CollectionAddBenchmark.ArrayBlockingQueue           avgt   10    128801.987 ±    1570.413  ns/op
-CollectionAddBenchmark.ArrayDeque                   avgt   10     38475.253 ±     805.859  ns/op
-CollectionAddBenchmark.ArrayList                    avgt   10     68778.432 ±    7807.870  ns/op
-CollectionAddBenchmark.ArrayListMaxInitialCapacity  avgt   10     56270.505 ±     712.803  ns/op
-CollectionAddBenchmark.ConcurrentHashMap            avgt   10    474268.946 ±    7590.076  ns/op
-CollectionAddBenchmark.ConcurrentLinkedDeque        avgt   10    130836.257 ±    4858.130  ns/op
-CollectionAddBenchmark.ConcurrentSkipListSet        avgt   10    821430.718 ±   22529.265  ns/op
-CollectionAddBenchmark.CopyOnWriteArrayList         avgt   10  25851831.566 ± 3076717.120  ns/op
-CollectionAddBenchmark.CopyOnWriteArraySet          avgt   10  56486277.628 ± 3817445.556  ns/op
-CollectionAddBenchmark.HashMap                      avgt   10    278880.529 ±    6600.343  ns/op
-CollectionAddBenchmark.HashSet                      avgt   10    275134.318 ±    3873.290  ns/op
-CollectionAddBenchmark.LinkedBlockingDeque          avgt   10    160542.393 ±    2256.626  ns/op
-CollectionAddBenchmark.LinkedBlockingQueue          avgt   10    205966.161 ±    3068.404  ns/op
-CollectionAddBenchmark.LinkedHashSet                avgt   10    529266.343 ±   12136.384  ns/op
-CollectionAddBenchmark.LinkedList                   avgt   10     38428.862 ±    1382.738  ns/op
-CollectionAddBenchmark.LinkedTransferQueue          avgt   10    155267.267 ±   11045.283  ns/op
-CollectionAddBenchmark.PriorityBlockingQueue        avgt   10    164797.141 ±    1515.961  ns/op
-CollectionAddBenchmark.PriorityQueue                avgt   10    165097.919 ±    2178.816  ns/op
-CollectionAddBenchmark.Stack                        avgt   10     32481.071 ±     297.768  ns/op
-CollectionAddBenchmark.TreeSet                      avgt   10    470955.698 ±   10526.683  ns/op
-CollectionAddBenchmark.Vector                       avgt   10     33809.608 ±    1422.664  ns/op
+CollectionAddBenchmark.ArrayBlockingQueue           avgt   30    128980.709 ±     824.172  ns/op
+CollectionAddBenchmark.ArrayDeque                   avgt   30     38090.086 ±     189.611  ns/op
+CollectionAddBenchmark.ArrayList                    avgt   30     68548.313 ±    2658.032  ns/op
+CollectionAddBenchmark.ArrayListMaxInitialCapacity  avgt   30     55869.729 ±     353.292  ns/op
+CollectionAddBenchmark.ConcurrentHashMap            avgt   30    471491.121 ±    2491.825  ns/op
+CollectionAddBenchmark.ConcurrentLinkedDeque        avgt   30    131918.110 ±    2627.505  ns/op
+CollectionAddBenchmark.ConcurrentSkipListSet        avgt   30    867192.930 ±   25997.034  ns/op
+CollectionAddBenchmark.CopyOnWriteArrayList         avgt   30  24500152.607 ± 1805639.971  ns/op
+CollectionAddBenchmark.CopyOnWriteArraySet          avgt   30  57891796.457 ± 3720937.515  ns/op
+CollectionAddBenchmark.HashMap                      avgt   30    279095.276 ±    5443.099  ns/op
+CollectionAddBenchmark.HashSet                      avgt   30    204969.146 ±   45711.665  ns/op
+CollectionAddBenchmark.LinkedBlockingDeque          avgt   30    162958.593 ±    1999.146  ns/op
+CollectionAddBenchmark.LinkedBlockingQueue          avgt   30    208178.419 ±    2281.415  ns/op
+CollectionAddBenchmark.LinkedHashMap                avgt   30    117933.177 ±    7289.984  ns/op
+CollectionAddBenchmark.LinkedHashSet                avgt   30    540632.672 ±   10148.733  ns/op
+CollectionAddBenchmark.LinkedList                   avgt   30     40847.156 ±    2503.620  ns/op
+CollectionAddBenchmark.LinkedTransferQueue          avgt   30    153723.661 ±    5541.205  ns/op
+CollectionAddBenchmark.PriorityBlockingQueue        avgt   30    168025.837 ±     721.178  ns/op
+CollectionAddBenchmark.PriorityQueue                avgt   30    168680.932 ±    1063.233  ns/op
+CollectionAddBenchmark.Stack                        avgt   30     34150.358 ±     348.824  ns/op
+CollectionAddBenchmark.TreeSet                      avgt   30    558911.094 ±   43806.722  ns/op
+CollectionAddBenchmark.Vector                       avgt   30     33914.859 ±     423.102  ns/op
 ```
 
 ### Concurrent Collection
 
-Concurrent get (100 threads), add (1 thread) and remove (1 thread) for a number of thread-safe collection classes.
-ArrayList is protected by wrapping it via `Collections.synchronizedList()`.
+Concurrent get (100 threads), add (1 thread) and remove (1 thread) of Integer elements for a number of thread-safe collection classes.
+
+The non thread-safe ArrayList class is included in this benchmark and gets protected by wrapping it via `Collections.synchronizedList()`.
+
 Each data structure is pre-populated with 100,000 elements prior to benchmarking. Access occurs for the head of the data structure (where the concept of head is supported), otherwise (such as in the instance of maps) by key.
+
+
 
 1 get, add, or remove per op.
 

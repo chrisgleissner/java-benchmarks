@@ -9,8 +9,8 @@ import java.util.stream.IntStream;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 10, time = 1)
-@Fork(1)
+@Measurement(iterations = 10, time = 2)
+@Fork(3)
 public class CollectionAddBenchmark {
 
     private static int MAX_SIZE = 10_000;
@@ -86,6 +86,11 @@ public class CollectionAddBenchmark {
     }
 
     @Benchmark
+    public Map<Integer, Integer> LinkedHashMap(MyState s) {
+        return benchmarkAdd(s, new LinkedHashMap<>());
+    }
+
+    @Benchmark
     public Collection<Integer> LinkedList(MyState s) {
         return benchmarkAdd(s, new LinkedList<>());
     }
@@ -104,11 +109,6 @@ public class CollectionAddBenchmark {
     public Collection<Integer> PriorityQueue(MyState s) {
         return benchmarkAdd(s, new PriorityBlockingQueue<>());
     }
-
-//    @Benchmark
-//    public Collection<Integer> SynchronousQueue(MyState s) {
-//        return benchmarkAdd(s, new SynchronousQueue<>());
-//    }
 
     @Benchmark
     public Collection<Integer> Stack(MyState s) {
