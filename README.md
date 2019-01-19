@@ -80,6 +80,8 @@ Compares adding elements to int/Integer/long/Long arrays, copying arrays, as wel
 100,000 adds (or a single copy operation) per benchmark iteration.
 
 
+### int / Integer array
+
 ```
 ListAndArrayBenchmark.intArrayAdd                               avgt   10       46582.177 ±      305.824  ns/op
 ListAndArrayBenchmark.intArrayClone                             avgt   10       33837.833 ±      354.567  ns/op
@@ -89,13 +91,11 @@ ListAndArrayBenchmark.intArraySystemArrayCopy                   avgt   10       
 ListAndArrayBenchmark.intWrapperArrayAdd                        avgt   10      199193.707 ±     3934.894  ns/op
 ListAndArrayBenchmark.intWrapperArrayClone                      avgt   10       50362.692 ±      266.787  ns/op
 ListAndArrayBenchmark.intWrapperArrayCopyOf                     avgt   10       50655.731 ±      878.335  ns/op
+```
 
-ListAndArrayBenchmark.intWrapperArrayListAdd                    avgt   10      587171.486 ±    18024.785  ns/op
-ListAndArrayBenchmark.intWrapperArrayListMaxInitialCapacityAdd  avgt   10      275162.756 ±   137232.241  ns/op
-ListAndArrayBenchmark.intWrapperArraySystemArrayCopy            avgt   10       51665.321 ±      924.988  ns/op
-ListAndArrayBenchmark.intWrapperCopyOnWriteArrayListAdd         avgt   10  2565683865.000 ± 80386661.015  ns/op
-ListAndArrayBenchmark.intWrapperLinkedListAdd                   avgt   10      517665.444 ±     6696.515  ns/op
+### long / Long array
 
+```
 ListAndArrayBenchmark.longArrayAdd                              avgt   10      123265.985 ±     7725.410  ns/op
 ListAndArrayBenchmark.longArrayClone                            avgt   10       87251.127 ±    38007.220  ns/op
 ListAndArrayBenchmark.longArrayCopyOf                           avgt   10       80124.664 ±     7157.881  ns/op
@@ -105,4 +105,13 @@ ListAndArrayBenchmark.longWrapperArrayAdd                       avgt   10      2
 ListAndArrayBenchmark.longWrapperArrayClone                     avgt   10       53393.300 ±      929.811  ns/op
 ListAndArrayBenchmark.longWrapperArrayCopyOf                    avgt   10       71964.753 ±    17535.314  ns/op
 ListAndArrayBenchmark.longWrapperArraySystemArrayCopy           avgt   10       81811.972 ±     2025.381  ns/op
+```
+
+### Integer List
+```
+ListAndArrayBenchmark.intWrapperArrayListAdd                    avgt   10      587171.486 ±    18024.785  ns/op
+ListAndArrayBenchmark.intWrapperArrayListMaxInitialCapacityAdd  avgt   10      275162.756 ±   137232.241  ns/op
+ListAndArrayBenchmark.intWrapperArraySystemArrayCopy            avgt   10       51665.321 ±      924.988  ns/op
+ListAndArrayBenchmark.intWrapperCopyOnWriteArrayListAdd         avgt   10  2565683865.000 ± 80386661.015  ns/op
+ListAndArrayBenchmark.intWrapperLinkedListAdd                   avgt   10      517665.444 ±     6696.515  ns/op
 ```
