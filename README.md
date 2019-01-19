@@ -136,12 +136,8 @@ CollectionAddBenchmark.Vector                       avgt   10     33809.608 ±  
 ### Concurrent Collection
 
 Concurrent get (100 threads), add (1 thread) and remove (1 thread) for a number of thread-safe collection classes.
-
-Each data structure is pre-populated with 100,000 elements prior to benchmarking. 
-
-Access occurs for the head of the data structure (where the concept of head is supported), otherwise (such as in the instance of maps) by key.
-
 ArrayList is protected by wrapping it via `Collections.synchronizedList()`.
+Each data structure is pre-populated with 100,000 elements prior to benchmarking. Access occurs for the head of the data structure (where the concept of head is supported), otherwise (such as in the instance of maps) by key.
 
 1 get, add, or remove per op.
 
