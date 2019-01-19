@@ -11,15 +11,18 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 10, time = 1)
+@Warmup(iterations = 3, time = 1)
+@Measurement(iterations = 5, time = 1)
+@Threads(4)
 @Fork(1)
 public class CounterBenchmark {
+
+    private static final int ITERATIONS = 10_000;
 
     @State(Scope.Thread)
     public static class MyState {
 
-        @Setup(Level.Trial)
+        @Setup
         public void setUp() {
             i = 0;
             l = 0;
@@ -44,31 +47,37 @@ public class CounterBenchmark {
 
     @Benchmark
     public void primitiveInt(Blackhole blackhole, MyState state) {
-        blackhole.consume(state.i++);
+        for (int i = 0; i < ITERATIONS; i++)
+            blackhole.consume(state.i++);
     }
 
     @Benchmark
     public void primitiveLong(Blackhole blackhole, MyState state) {
-        blackhole.consume(state.l++);
+        for (int i = 0; i < ITERATIONS; i++)
+            blackhole.consume(state.l++);
     }
 
     @Benchmark
     public void atomicInteger(Blackhole blackhole, MyState state) {
-        blackhole.consume(state.atomicInt.getAndIncrement());
+        for (int i = 0; i < ITERATIONS; i++)
+            blackhole.consume(state.atomicInt.getAndIncrement());
     }
 
     @Benchmark
     public void atomicLong(Blackhole blackhole, MyState state) {
-        blackhole.consume(state.atomicLong.getAndIncrement());
+        for (int i = 0; i < ITERATIONS; i++)
+            blackhole.consume(state.atomicLong.getAndIncrement());
     }
 
     @Benchmark
     public void mutableInt(Blackhole blackhole, MyState state) {
-        blackhole.consume(state.mutableInt.getAndIncrement());
+        for (int i = 0; i < ITERATIONS; i++)
+            blackhole.consume(state.mutableInt.getAndIncrement());
     }
 
     @Benchmark
     public void mutableLong(Blackhole blackhole, MyState state) {
-        blackhole.consume(state.mutableLong.getAndIncrement());
+        for (int i = 0; i < ITERATIONS; i++)
+            blackhole.consume(state.mutableLong.getAndIncrement());
     }
 }

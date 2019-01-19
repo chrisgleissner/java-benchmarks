@@ -11,18 +11,19 @@ All 4 cores were allocated to the VM.
 
 ## Counters
 
-AtomicInteger vs [MutableInt](https://commons.apache.org/proper/commons-lang/javadocs/api-release/index.html) vs int
+AtomicInteger vs [MutableInt](https://commons.apache.org/proper/commons-lang/javadocs/api-release/index.html) vs int,
+same for the corresponding long types.
+
+10,000 ops per benchmark iteration, 4 threads.
 
 ```
-Benchmark                                   Mode  Cnt   Score   Error  Units
-CounterBenchmark.atomicInteger              avgt   10   5.522 ± 0.025  ns/op
-CounterBenchmark.atomicLong                 avgt   10   5.567 ± 0.110  ns/op
-
-CounterBenchmark.mutableInt                 avgt   10   4.442 ± 0.035  ns/op
-CounterBenchmark.mutableLong                avgt   10   4.185 ± 0.011  ns/op
-
-CounterBenchmark.primitiveInt               avgt   10   4.186 ± 0.010  ns/op
-CounterBenchmark.primitiveLong              avgt   10   4.215 ± 0.054  ns/op
+Benchmark                       Mode  Cnt      Score      Error  Units
+CounterBenchmark.atomicInteger  avgt    5  58331.685 ±  495.083  ns/op
+CounterBenchmark.atomicLong     avgt    5  59190.863 ± 2449.507  ns/op
+CounterBenchmark.mutableInt     avgt    5  44834.095 ±  413.847  ns/op
+CounterBenchmark.mutableLong    avgt    5  45150.437 ±  987.252  ns/op
+CounterBenchmark.primitiveInt   avgt    5  38397.222 ±  739.448  ns/op
+CounterBenchmark.primitiveLong  avgt    5  42252.327 ±  334.210  ns/op
 ```
 
 ## Getters and Setters
@@ -37,8 +38,6 @@ Ordered by performance from top to bottom, the ranking is:
 
 ### GetterBenchmark
 
-Ordered by score:
-
 ```
 Benchmark                                   Mode  Cnt   Score   Error  Units
 GetterBenchmark.lambdaMetaFactoryForGetter  avgt   10   4.184 ± 0.058  ns/op
@@ -50,8 +49,6 @@ GetterBenchmark.methodHandleForField        avgt   10  20.979 ± 0.136  ns/op
 ```
 
 ### SetterBenchmark
-
-Ordered by score:
 
 ```
 Benchmark                                   Mode  Cnt   Score   Error  Units
@@ -65,14 +62,13 @@ SetterBenchmark.varHandle                   avgt   10  22.938 ± 0.395  ns/op
 
 ## ObjectPool
 
-Compares the use if ints, int wrapper classes, and pooled int wrapper classes.
+Compares the use of ints, custom int wrappers instantiation, and a custom int wrapper cache.
 
-Ordered by score:
+10,000 ops per benchmark iteration, 4 threads.
 
 ```
-Benchmark                        Mode  Cnt  Score   Error  Units
-ObjectPoolBenchmark.primitive    avgt   10  4.941 ± 0.139  ns/op
-ObjectPoolBenchmark.pool         avgt   10  5.995 ± 0.128  ns/op
-ObjectPoolBenchmark.constructor  avgt   10  6.389 ± 0.097  ns/op
-
+Benchmark                         Mode  Cnt      Score      Error  Units
+ObjectCacheBenchmark.primitive    avgt   10   8055.249 ±  338.087  ns/op
+ObjectCacheBenchmark.cache        avgt   10  19614.683 ±  389.400  ns/op
+ObjectCacheBenchmark.constructor  avgt   10  63886.403 ± 8032.899  ns/op
 ```
