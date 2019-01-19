@@ -14,7 +14,7 @@ All 4 cores were allocated to the VM.
 AtomicInteger vs [MutableInt](https://commons.apache.org/proper/commons-lang/javadocs/api-release/index.html) vs int,
 same for the corresponding long types.
 
-10,000 ops per benchmark iteration, 4 threads.
+10,000 calls per op, 4 threads.
 
 ```
 Benchmark                       Mode  Cnt      Score      Error  Units
@@ -64,7 +64,7 @@ SetterBenchmark.varHandle                                       avgt   10       
 
 Compares the use of ints, custom int wrappers instantiation, and a custom int wrapper cache.
 
-10,000 ops per benchmark iteration, 4 threads.
+10,000 calls per op, 4 threads.
 
 ```
 Benchmark                         Mode  Cnt      Score      Error  Units
@@ -77,7 +77,7 @@ ObjectCacheBenchmark.primitive                                  avgt   10       
 
 Compares adding elements to int/Integer/long/Long arrays, copying arrays, as well as adding elements to various Integer List implementations.
 
-100,000 adds (or a single copy operation) per benchmark iteration.
+100,000 adds (or a single copy operation) per op.
 
 
 ### int / Integer array
