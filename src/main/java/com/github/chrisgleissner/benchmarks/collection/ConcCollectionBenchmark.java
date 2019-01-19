@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.toMap;
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 10, time = 1)
 @Fork(1)
-public class ConcurrentCollectionBenchmark {
+public class ConcCollectionBenchmark {
 
     private static int MAX_BOUNDED_SIZE = 10_000_000;
 
