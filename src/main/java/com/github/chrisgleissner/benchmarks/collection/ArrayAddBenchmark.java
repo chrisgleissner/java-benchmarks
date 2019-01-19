@@ -1,24 +1,20 @@
-package com.github.chrisgleissner.benchmarks;
+package com.github.chrisgleissner.benchmarks.collection;
 
 import org.openjdk.jmh.annotations.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 5, time = 2)
-@Measurement(iterations = 10, time = 2)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 10, time = 1)
 @Fork(1)
-public class ListAndArrayBenchmark {
+public class ArrayAddBenchmark {
 
-    private static int MAX_SIZE = 100_000;
+    private static int MAX_SIZE = 10_000;
 
     @State(Scope.Thread)
     public static class MyState {
@@ -141,35 +137,5 @@ public class ListAndArrayBenchmark {
         for (int i = 0; i < MAX_SIZE; i++)
             longs[i] = s.longWrappers[i];
         return longs;
-    }
-
-    
-    // Integer List
-
-    @Benchmark
-    public List<Integer> intWrapperArrayListAdd(MyState s) {
-        return benchmarkAdd(s.intWrappers, new ArrayList<>());
-    }
-
-
-    @Benchmark
-    public List<Integer> intWrapperArrayListMaxInitialCapacityAdd(MyState s) {
-        return benchmarkAdd(s.intWrappers, new ArrayList<>(MAX_SIZE));
-    }
-
-    @Benchmark
-    public List<Integer> intWrapperCopyOnWriteArrayListAdd(MyState s) {
-        return benchmarkAdd(s.intWrappers, new CopyOnWriteArrayList<>());
-    }
-
-    @Benchmark
-    public List<Integer> intWrapperLinkedListAdd(MyState s) {
-        return benchmarkAdd(s.intWrappers, new LinkedList<>());
-    }
-
-    private List<Integer> benchmarkAdd(Integer[] source, List<Integer> target) {
-        for (Integer i : source)
-            target.add(i);
-        return target;
     }
 }
