@@ -11,8 +11,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class CounterBenchmark extends AbstractBenchmark {
 
-    private static final int ITERATIONS = 10_000;
-
     @State(Scope.Thread)
     public static class MyState {
 
@@ -41,37 +39,37 @@ public class CounterBenchmark extends AbstractBenchmark {
 
     @Benchmark
     public void primitiveInt(Blackhole blackhole, MyState state) {
-        for (int i = 0; i < ITERATIONS; i++)
+        for (int i = 0; i < LOOPS_PER_INVOCATION; i++)
             blackhole.consume(state.i++);
     }
 
     @Benchmark
     public void primitiveLong(Blackhole blackhole, MyState state) {
-        for (int i = 0; i < ITERATIONS; i++)
+        for (int i = 0; i < LOOPS_PER_INVOCATION; i++)
             blackhole.consume(state.l++);
     }
 
     @Benchmark
     public void atomicInteger(Blackhole blackhole, MyState state) {
-        for (int i = 0; i < ITERATIONS; i++)
+        for (int i = 0; i < LOOPS_PER_INVOCATION; i++)
             blackhole.consume(state.atomicInt.getAndIncrement());
     }
 
     @Benchmark
     public void atomicLong(Blackhole blackhole, MyState state) {
-        for (int i = 0; i < ITERATIONS; i++)
+        for (int i = 0; i < LOOPS_PER_INVOCATION; i++)
             blackhole.consume(state.atomicLong.getAndIncrement());
     }
 
     @Benchmark
     public void mutableInt(Blackhole blackhole, MyState state) {
-        for (int i = 0; i < ITERATIONS; i++)
+        for (int i = 0; i < LOOPS_PER_INVOCATION; i++)
             blackhole.consume(state.mutableInt.getAndIncrement());
     }
 
     @Benchmark
     public void mutableLong(Blackhole blackhole, MyState state) {
-        for (int i = 0; i < ITERATIONS; i++)
+        for (int i = 0; i < LOOPS_PER_INVOCATION; i++)
             blackhole.consume(state.mutableLong.getAndIncrement());
     }
 }

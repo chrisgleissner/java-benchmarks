@@ -137,14 +137,14 @@ public class GetterBenchmark extends AbstractBenchmark {
 
         @Setup
         public void doSetup() throws Throwable {
-            varHandle = privateLookupIn(SetterBenchmark.Foo.class, lookup()).findVarHandle(SetterBenchmark.Foo.class, "l", Long.class);
+            varHandle = privateLookupIn(SetterBenchmark.Foo.class, lookup()).findVarHandle(GetterBenchmark.Foo.class, "l", Long.class);
         }
 
         VarHandle varHandle;
     }
 
     @Benchmark
-    public void varHandle(Blackhole blackhole, SetterBenchmark.VarHandleState s) {
+    public void varHandle(Blackhole blackhole, GetterBenchmark.VarHandleState s) {
         blackhole.consume(s.varHandle.get(s.foo));
     }
 

@@ -9,18 +9,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.github.chrisgleissner.benchmarks.AbstractBenchmark.LOOPS_PER_INVOCATION;
 import static java.util.function.Function.identity;
 
 public class CollectionIterateBenchmark extends AbstractBenchmark {
 
     public static class MyState extends AbstractCollectionBenchmarkState {
 
-        private static Collection<Integer> integers = IntStream.range(0, ADDS_PER_INVOCATION).boxed().collect(Collectors.toList());
-        private static Map<Integer, Integer> intMap = IntStream.range(0, ADDS_PER_INVOCATION).boxed().collect(Collectors.toMap(identity(), identity()));
+        private Collection<Integer> integers;
+        private Map<Integer, Integer> intMap;
 
         @Setup
         public void doSetup() {
             super.doSetup();
+            integers = IntStream.range(0, LOOPS_PER_INVOCATION).boxed().collect(Collectors.toList());
+            intMap = IntStream.range(0, LOOPS_PER_INVOCATION).boxed().collect(Collectors.toMap(identity(), identity()));
             initialize(abq);
             initialize(ad);
             initialize(al);
@@ -44,6 +47,13 @@ public class CollectionIterateBenchmark extends AbstractBenchmark {
             initialize(ts);
             initialize(v);
             initialize(vnr);
+        }
+
+        @TearDown
+        public void doTearDown() {
+            super.doTearDown();
+            integers = null;
+            intMap = null;
         }
 
         private void initialize(Collection<Integer> c) {
