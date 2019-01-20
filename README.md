@@ -16,7 +16,7 @@ and Ubuntu 18.04 running inside VirtualBox 5.2 on an Intel I7-6700K clocked at 4
 To run the benchmarks on your own system, clone this repository, install Open JDK 11 (or above) and Maven 3.5 (or above), then run the following command:
 
 ```
-mvn clean install; java -Xms4g -Xmx4g -jar target/benchmarks.jar -rf json
+mvn clean install; java -Xms4g -Xmx4g -jar target/benchmarks.jar -gc true -rf json
 ```
  
 To view all available JMH command line options, run `java -jar target/benchmarks.jar -h`
