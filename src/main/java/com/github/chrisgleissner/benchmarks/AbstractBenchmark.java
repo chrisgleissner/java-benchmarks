@@ -9,10 +9,12 @@ import org.openjdk.jmh.annotations.Warmup;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 10, time = 1)
+@Warmup(iterations = 15, time = 300, timeUnit = MILLISECONDS)
+@Measurement(iterations = 15, time = 300, timeUnit = MILLISECONDS)
 @Fork(1)
 public abstract class AbstractBenchmark {
 
@@ -26,7 +28,7 @@ public abstract class AbstractBenchmark {
      * Some benchmarks require pre-initialization of data structures, e.g. ArrayList instances that must not be resized.
      * This constant specifies an upper limit of the number of invocations expected for each iteration.
      */
-    private static final int MAX_INVOCATIONS_PER_ITERATION = 100_000;
+    private static final int MAX_INVOCATIONS_PER_ITERATION = 50_000;
 
     static final int MAX_LOOPS_PER_ITERATION = LOOPS_PER_INVOCATION * MAX_INVOCATIONS_PER_ITERATION;
 }

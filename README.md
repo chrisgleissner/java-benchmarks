@@ -13,11 +13,13 @@ or download them as [JSON](https://raw.githubusercontent.com/chrisgleissner/benc
 The benchmarks were obtained using JMH on OpenJDK 11.0.1 64Bit 
 and Ubuntu 18.04 running inside VirtualBox 5.2 on an Intel I7-6700K clocked at 4.6GHz. All 4 physical cores were allocated to the VirtualBox VM.
 
-To run the benchmarks on your own system, clone this repository, install Open JDK 11 (or above) and Maven 3.5 (or above), then run the following command:
+To run the benchmarks on your own system, clone this repository, install Open JDK 11 (or above) and Maven 3.5 (or above), then either run
 
 ```
-mvn clean install; java -Xms4g -Xmx4g -jar target/benchmarks.jar -gc true -rf json
+mvn clean install; java -jar target/benchmarks.jar -gc true -rf json -jvmArgs "-Xms4g -Xms4g -Xcomp"
 ```
+
+or execute the `benchmark` Bash script which performs the same command.
  
 To view all available JMH command line options, run `java -jar target/benchmarks.jar -h`
 
