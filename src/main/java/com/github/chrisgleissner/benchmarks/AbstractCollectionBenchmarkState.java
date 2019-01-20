@@ -89,6 +89,7 @@ public abstract class AbstractCollectionBenchmarkState {
 
     @TearDown(Level.Iteration)
     public void doTearDown() {
+        ints = null;
         abq = null;
         ad = null;
         al = null;
