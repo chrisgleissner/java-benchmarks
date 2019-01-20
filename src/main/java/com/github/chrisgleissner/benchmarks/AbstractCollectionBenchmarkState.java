@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 public abstract class AbstractCollectionBenchmarkState {
 
     public static int ADDS_PER_INVOCATION = 10_000;
-    public static int MAX_NUMBER_OF_INVOCATIONS_EXPECTED_PER_ITERATION = 50_000_000;
+    public static int MAX_NUMBER_OF_INVOCATIONS_EXPECTED_PER_ITERATION = 200_000_000;
 
     Integer[] ints = IntStream.range(0, ADDS_PER_INVOCATION).boxed().toArray(Integer[]::new);
 

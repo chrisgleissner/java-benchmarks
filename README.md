@@ -109,29 +109,29 @@ Adding Integer elements to empty collections and maps.
 
 
 ```
-Benchmark                                      Mode  Cnt        Score         Error  Units
-CollectionAddBenchmark.ArrayDeque              avgt   10      769.793 ±    2599.278  us/op
-CollectionAddBenchmark.ArrayList               avgt   10     2050.347 ±    5824.920  us/op
-CollectionAddBenchmark.ArrayListNoResize       avgt   10      161.247 ±      37.676  us/op
-CollectionAddBenchmark.ConcurrentHashMap       avgt   10      281.691 ±       3.172  us/op
-CollectionAddBenchmark.ConcurrentLinkedDeque   avgt   10      771.666 ±     359.640  us/op
-CollectionAddBenchmark.ConcurrentSkipListSet   avgt   10      896.744 ±      34.141  us/op
-CollectionAddBenchmark.CopyOnWriteArrayList    avgt   10   248981.455 ±   16312.773  us/op
-CollectionAddBenchmark.CopyOnWriteArraySet     avgt   10    26672.254 ±     727.745  us/op
-CollectionAddBenchmark.HashMap                 avgt   10      205.925 ±       2.224  us/op
-CollectionAddBenchmark.HashSet                 avgt   10       84.423 ±       1.516  us/op
-CollectionAddBenchmark.LinkedBlockingDeque     avgt   10      926.111 ±     516.668  us/op
-CollectionAddBenchmark.LinkedBlockingQueue     avgt   10      908.521 ±     438.578  us/op
-CollectionAddBenchmark.LinkedHashMap           avgt   10      208.884 ±       1.933  us/op
-CollectionAddBenchmark.LinkedHashSet           avgt   10       90.671 ±      12.009  us/op
-CollectionAddBenchmark.LinkedList              avgt   10      767.094 ±     469.789  us/op
-CollectionAddBenchmark.LinkedTransferQueue     avgt   10     1143.180 ±    2129.491  us/op
-CollectionAddBenchmark.PriorityBlockingQueue   avgt   10      340.561 ±      15.788  us/op
-CollectionAddBenchmark.PriorityQueue           avgt   10      883.679 ±    1061.436  us/op
-CollectionAddBenchmark.Stack                   avgt   10      138.687 ±      23.657  us/op
-CollectionAddBenchmark.TreeSet                 avgt   10      431.548 ±       6.499  us/op
-CollectionAddBenchmark.Vector                  avgt   10      149.162 ±      17.517  us/op
-CollectionAddBenchmark.VectorNoResize          avgt   10      148.302 ±      17.500  us/op
+Benchmark                                     Mode  Cnt       Score      Error  Units
+CollectionAddBenchmark.ArrayDeque             avgt   10     154.876 ±    6.278  us/op
+CollectionAddBenchmark.ArrayList              avgt   10     148.269 ±    7.644  us/op
+CollectionAddBenchmark.ArrayListNoResize      avgt   10      72.363 ±    3.528  us/op
+CollectionAddBenchmark.ConcurrentHashMap      avgt   10     272.294 ±    2.511  us/op
+CollectionAddBenchmark.ConcurrentLinkedDeque  avgt   10     659.722 ±    4.871  us/op
+CollectionAddBenchmark.ConcurrentSkipListSet  avgt   10     854.643 ±   31.776  us/op
+CollectionAddBenchmark.CopyOnWriteArrayList   avgt   10  173436.145 ± 2555.475  us/op
+CollectionAddBenchmark.CopyOnWriteArraySet    avgt   10   27903.081 ±  286.386  us/op
+CollectionAddBenchmark.HashMap                avgt   10      78.644 ±    7.914  us/op
+CollectionAddBenchmark.HashSet                avgt   10      81.986 ±    3.718  us/op
+CollectionAddBenchmark.LinkedBlockingDeque    avgt   10     738.731 ±   10.379  us/op
+CollectionAddBenchmark.LinkedBlockingQueue    avgt   10     564.505 ±  415.666  us/op
+CollectionAddBenchmark.LinkedHashMap          avgt   10      87.631 ±   10.606  us/op
+CollectionAddBenchmark.LinkedHashSet          avgt   10      85.709 ±   14.606  us/op
+CollectionAddBenchmark.LinkedList             avgt   10     493.971 ±   21.827  us/op
+CollectionAddBenchmark.LinkedTransferQueue    avgt   10     671.724 ±  165.420  us/op
+CollectionAddBenchmark.PriorityBlockingQueue  avgt   10     355.267 ±   12.489  us/op
+CollectionAddBenchmark.PriorityQueue          avgt   10     235.520 ±    6.315  us/op
+CollectionAddBenchmark.Stack                  avgt   10     132.575 ±    7.389  us/op
+CollectionAddBenchmark.TreeSet                avgt   10     479.322 ±    5.275  us/op
+CollectionAddBenchmark.Vector                 avgt   10     134.026 ±    6.441  us/op
+CollectionAddBenchmark.VectorNoResize         avgt   10      73.735 ±   10.983  us/op
 ```
 
 ## Collection Iterate
