@@ -35,7 +35,7 @@ import static com.github.chrisgleissner.benchmarks.AbstractBenchmark.MAX_LOOPS_P
 @State(Scope.Benchmark)
 public abstract class AbstractCollectionBenchmarkState {
 
-    Integer[] ints = IntStream.range(0, LOOPS_PER_INVOCATION).boxed().toArray(Integer[]::new);
+    Integer[] ints;
 
     ArrayBlockingQueue<Integer> abq;
     ArrayDeque<Integer> ad;
