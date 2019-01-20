@@ -34,9 +34,7 @@ import static com.github.chrisgleissner.benchmarks.AbstractBenchmark.MAX_LOOPS_P
 
 @State(Scope.Benchmark)
 public abstract class AbstractCollectionBenchmarkState {
-
     Integer[] ints;
-
     ArrayBlockingQueue<Integer> abq;
     ArrayDeque<Integer> ad;
     ArrayList<Integer> al;
