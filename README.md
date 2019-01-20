@@ -4,8 +4,8 @@
 
 Java 11 [JMH](https://openjdk.java.net/projects/code-tools/jmh/) benchmarks for field access, counters, collections, etc. 
 
-View the [Latest Results](https://jmh.morethan.io/?source=https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/src/main/resources/jmh-result.json)
-or download them as [JSON](https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/src/main/resources/jmh-result.json).
+View the [Latest Results](https://jmh.morethan.io/?source=https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/jmh-result.json)
+or download them as [JSON](https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/jmh-result.json).
 
 
 ### Setup
