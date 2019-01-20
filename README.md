@@ -1,16 +1,22 @@
-# JMH Benchmarks
+# JMH Java Benchmarks
 
-[JMH](https://openjdk.java.net/projects/code-tools/jmh/) Benchmarks for reflection vs LamdaMetaFactory, counters, collections, etc.
+[JMH](https://openjdk.java.net/projects/code-tools/jmh/) Java Benchmarks for field access, counters, collections, etc. 
 
-The results on this page were obtained using JMH via `mvn clean install; java -Xms4g -Xmx4g -jar target/benchmarks.jar -rf json`
+View the [Latest Results](https://jmh.morethan.io/?source=https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/src/main/resources/jmh-result.json)
+or download them as [JSON](https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/src/main/resources/jmh-result.json).
 
-The benchmarks were run on OpenJDK 11.0.1 64Bit and Ubuntu 18.04 running inside VirtualBox 5.2 on an Intel I7-6700K clocked at 4.6GHz.
-All 4 physical cores were allocated to the VirtualBox VM.
+### Setup
 
+The benchmarks were obtained using JMH on OpenJDK 11.0.1 64Bit 
+and Ubuntu 18.04 running inside VirtualBox 5.2 on an Intel I7-6700K clocked at 4.6GHz. All 4 physical cores were allocated to the VirtualBox VM.
+
+To run the benchmarks on your own system, clone this repository, install Open JDK 11 (or above) and Maven 3.5 (or above), then run the following command:
+
+```
+mvn clean install; java -Xms4g -Xmx4g -jar target/benchmarks.jar -rf json
+```
+ 
 To view all available JMH command line options, run `java -jar target/benchmarks.jar -h`
-
-The latest full results can be found in [jmh-result.json](https://github.com/chrisgleissner/benchmarks/tree/master/src/main/resources/jmh-result.json)
-and may be rendered via https://jmh.morethan.io/.
 
 ## Counter
 
