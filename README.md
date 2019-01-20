@@ -34,7 +34,7 @@ same for the corresponding long types.
 
 ### Getter / Setter
 
-Comparing various ways of getting and setting object fields. 
+Comparing various ways of getting and setting object fields, 1 call per op.
 
 Ordered by performance from top to bottom, the ranking is:
 1. Direct call
@@ -42,7 +42,6 @@ Ordered by performance from top to bottom, the ranking is:
 1. Reflection - 60% of the direct performance
 1. MethodHandle and VarHandle - 20% of the direct performance
 
-1 call per op.
 
 ### Object Cache
 
