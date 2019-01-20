@@ -125,6 +125,11 @@ public class CollectionAddBenchmark {
         return benchmarkAdd(s, new Vector<>());
     }
 
+    @Benchmark
+    public Collection<Integer> VectorMaxInitialCapacity(MyState s) {
+        return benchmarkAdd(s, new Vector<>(MAX_SIZE));
+    }
+
     private Collection<Integer> benchmarkAdd(MyState s, Collection<Integer> target) {
         for (Integer i : s.ints)
             target.add(i);
