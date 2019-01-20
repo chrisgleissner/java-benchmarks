@@ -2,7 +2,7 @@
 
 Benchmarks for LambdaMetaFactory, counters, List/array access, etc.
 
-All benchmarks were performed using JMH via `mvn clean install; java -Xms1g -Xmx1g -jar target/benchmarks.jar`. 
+All benchmarks were performed using JMH via `mvn clean install; java -Xms4g -Xmx4g -jar target/benchmarks.jar`. 
 
 You can run a single benchmark via `java -jar target/benchmarks.jar SetterBenchmark`.
 
@@ -17,13 +17,13 @@ same for the corresponding long types.
 10,000 calls per op.
 
 ```
-Benchmark                                                                             Mode  Cnt        Score         Error  Units
-CounterBenchmark.atomicInteger                                                        avgt   10       57.202 ±       0.276  us/op
-CounterBenchmark.atomicLong                                                           avgt   10       57.097 ±       0.218  us/op
-CounterBenchmark.mutableInt                                                           avgt   10       43.779 ±       0.458  us/op
-CounterBenchmark.mutableLong                                                          avgt   10       43.994 ±       0.207  us/op
-CounterBenchmark.primitiveInt                                                         avgt   10       37.485 ±       0.226  us/op
-CounterBenchmark.primitiveLong                                                        avgt   10       40.520 ±       0.464  us/op
+Benchmark                         Mode  Cnt        Score         Error  Units
+CounterBenchmark.atomicInteger    avgt   10       57.202 ±       0.276  us/op
+CounterBenchmark.atomicLong       avgt   10       57.097 ±       0.218  us/op
+CounterBenchmark.mutableInt       avgt   10       43.779 ±       0.458  us/op
+CounterBenchmark.mutableLong      avgt   10       43.994 ±       0.207  us/op
+CounterBenchmark.primitiveInt     avgt   10       37.485 ±       0.226  us/op
+CounterBenchmark.primitiveLong    avgt   10       40.520 ±       0.464  us/op
 ```
 
 ## Getters and Setters
@@ -39,25 +39,25 @@ Ordered by performance from top to bottom, the ranking is:
 ### GetterBenchmark
 
 ```
-Benchmark                                                       Mode  Cnt           Score          Error  Units
-GetterBenchmark.direct                                          avgt   10           3.951 ±        0.005  ns/op
-GetterBenchmark.lambdaMetaFactoryForGetter                      avgt   10           4.182 ±        0.035  ns/op
-GetterBenchmark.methodHandleForField                            avgt   10          19.478 ±        0.243  ns/op
-GetterBenchmark.methodHandleForGetter                           avgt   10          19.242 ±        0.401  ns/op
-GetterBenchmark.reflection                                      avgt   10           6.086 ±        0.050  ns/op
-GetterBenchmark.varHandle                                       avgt   10          20.060 ±        0.145  ns/op
+Benchmark                                     Mode  Cnt           Score          Error  Units
+GetterBenchmark.direct                        avgt   10           3.951 ±        0.005  ns/op
+GetterBenchmark.lambdaMetaFactoryForGetter    avgt   10           4.182 ±        0.035  ns/op
+GetterBenchmark.methodHandleForField          avgt   10          19.478 ±        0.243  ns/op
+GetterBenchmark.methodHandleForGetter         avgt   10          19.242 ±        0.401  ns/op
+GetterBenchmark.reflection                    avgt   10           6.086 ±        0.050  ns/op
+GetterBenchmark.varHandle                     avgt   10          20.060 ±        0.145  ns/op
 ```
 
 ### SetterBenchmark
 
 ```
-Benchmark                                                       Mode  Cnt           Score          Error  Units
-SetterBenchmark.direct                                          avgt   10           4.980 ±        0.096  ns/op
-SetterBenchmark.lambdaMetaFactoryForSetter                      avgt   10           4.717 ±        0.111  ns/op
-SetterBenchmark.methodHandleForField                            avgt   10          20.414 ±        1.327  ns/op
-SetterBenchmark.methodHandleForSetter                           avgt   10          19.141 ±        0.404  ns/op
-SetterBenchmark.reflection                                      avgt   10           6.123 ±        0.105  ns/op
-SetterBenchmark.varHandle                                       avgt   10          20.782 ±        0.204  ns/op
+Benchmark                                      Mode  Cnt           Score          Error  Units
+SetterBenchmark.direct                         avgt   10           4.980 ±        0.096  ns/op
+SetterBenchmark.lambdaMetaFactoryForSetter     avgt   10           4.717 ±        0.111  ns/op
+SetterBenchmark.methodHandleForField           avgt   10          20.414 ±        1.327  ns/op
+SetterBenchmark.methodHandleForSetter          avgt   10          19.141 ±        0.404  ns/op
+SetterBenchmark.reflection                     avgt   10           6.123 ±        0.105  ns/op
+SetterBenchmark.varHandle                      avgt   10          20.782 ±        0.204  ns/op
 ```
 
 ## ObjectPool
@@ -67,10 +67,10 @@ Compares the use of ints, custom int wrappers instantiation, and a custom int wr
 10,000 calls per op.
 
 ```
-Benchmark                                                                             Mode  Cnt        Score         Error  Units
-ObjectCacheBenchmark.cache                                                            avgt   10       17.312 ±       0.057  us/op
-ObjectCacheBenchmark.constructor                                                      avgt   10       20.775 ±       0.296  us/op
-ObjectCacheBenchmark.primitive                                                        avgt   10        4.284 ±       0.053  us/op
+Benchmark                                      Mode  Cnt        Score         Error  Units
+ObjectCacheBenchmark.cache                     avgt   10       17.312 ±       0.057  us/op
+ObjectCacheBenchmark.constructor               avgt   10       20.775 ±       0.296  us/op
+ObjectCacheBenchmark.primitive                 avgt   10        4.284 ±       0.053  us/op
 ```
 
 ## Collection and Arrays
@@ -82,23 +82,23 @@ Compares adding elements to int/Integer/long/Long arrays.
 10,000 adds (or a single copy operation) per op.
 
 ```
-Benchmark                                                                  Mode  Cnt        Score         Error  Units
-ArrayAddBenchmark.intArrayAdd                                              avgt   10        2.931 ±       0.017  us/op
-ArrayAddBenchmark.intArrayClone                                            avgt   10        3.568 ±       0.048  us/op
-ArrayAddBenchmark.intArrayCopyOf                                           avgt   10        3.565 ±       0.056  us/op
-ArrayAddBenchmark.intArraySystemArrayCopy                                  avgt   10        3.547 ±       0.018  us/op
-ArrayAddBenchmark.intWrapperArrayAdd                                       avgt   10       18.837 ±       0.128  us/op
-ArrayAddBenchmark.intWrapperArrayClone                                     avgt   10        3.618 ±       0.038  us/op
-ArrayAddBenchmark.intWrapperArrayCopyOf                                    avgt   10        3.618 ±       0.038  us/op
-ArrayAddBenchmark.intWrapperArraySystemArrayCopy                           avgt   10        3.622 ±       0.052  us/op
-ArrayAddBenchmark.longArrayAdd                                             avgt   10        5.973 ±       0.046  us/op
-ArrayAddBenchmark.longArrayClone                                           avgt   10        7.187 ±       0.121  us/op
-ArrayAddBenchmark.longArrayCopyOf                                          avgt   10        7.142 ±       0.096  us/op
-ArrayAddBenchmark.longArraySystemArrayCopy                                 avgt   10        7.194 ±       0.070  us/op
-ArrayAddBenchmark.longWrapperArrayAdd                                      avgt   10       18.778 ±       0.123  us/op
-ArrayAddBenchmark.longWrapperArrayClone                                    avgt   10        3.626 ±       0.037  us/op
-ArrayAddBenchmark.longWrapperArrayCopyOf                                   avgt   10        3.611 ±       0.027  us/op
-ArrayAddBenchmark.longWrapperArraySystemArrayCopy                          avgt   10        3.633 ±       0.042  us/op
+Benchmark                                           Mode  Cnt        Score         Error  Units
+ArrayAddBenchmark.intArrayAdd                       avgt   10        2.931 ±       0.017  us/op
+ArrayAddBenchmark.intArrayClone                     avgt   10        3.568 ±       0.048  us/op
+ArrayAddBenchmark.intArrayCopyOf                    avgt   10        3.565 ±       0.056  us/op
+ArrayAddBenchmark.intArraySystemArrayCopy           avgt   10        3.547 ±       0.018  us/op
+ArrayAddBenchmark.intWrapperArrayAdd                avgt   10       18.837 ±       0.128  us/op
+ArrayAddBenchmark.intWrapperArrayClone              avgt   10        3.618 ±       0.038  us/op
+ArrayAddBenchmark.intWrapperArrayCopyOf             avgt   10        3.618 ±       0.038  us/op
+ArrayAddBenchmark.intWrapperArraySystemArrayCopy    avgt   10        3.622 ±       0.052  us/op
+ArrayAddBenchmark.longArrayAdd                      avgt   10        5.973 ±       0.046  us/op
+ArrayAddBenchmark.longArrayClone                    avgt   10        7.187 ±       0.121  us/op
+ArrayAddBenchmark.longArrayCopyOf                   avgt   10        7.142 ±       0.096  us/op
+ArrayAddBenchmark.longArraySystemArrayCopy          avgt   10        7.194 ±       0.070  us/op
+ArrayAddBenchmark.longWrapperArrayAdd               avgt   10       18.778 ±       0.123  us/op
+ArrayAddBenchmark.longWrapperArrayClone             avgt   10        3.626 ±       0.037  us/op
+ArrayAddBenchmark.longWrapperArrayCopyOf            avgt   10        3.611 ±       0.027  us/op
+ArrayAddBenchmark.longWrapperArraySystemArrayCopy   avgt   10        3.633 ±       0.042  us/op
 ```
 
 ### Collection Add
@@ -109,29 +109,29 @@ Adding Integer elements to empty collections and maps.
 
 
 ```
-Benchmark                                                                  Mode  Cnt        Score         Error  Units
-CollectionAddBenchmark.ArrayDeque                                          avgt   10      769.793 ±    2599.278  us/op
-CollectionAddBenchmark.ArrayList                                           avgt   10     2050.347 ±    5824.920  us/op
-CollectionAddBenchmark.ArrayListNoResize                                   avgt   10      161.247 ±      37.676  us/op
-CollectionAddBenchmark.ConcurrentHashMap                                   avgt   10      281.691 ±       3.172  us/op
-CollectionAddBenchmark.ConcurrentLinkedDeque                               avgt   10      771.666 ±     359.640  us/op
-CollectionAddBenchmark.ConcurrentSkipListSet                               avgt   10      896.744 ±      34.141  us/op
-CollectionAddBenchmark.CopyOnWriteArrayList                                avgt   10   248981.455 ±   16312.773  us/op
-CollectionAddBenchmark.CopyOnWriteArraySet                                 avgt   10    26672.254 ±     727.745  us/op
-CollectionAddBenchmark.HashMap                                             avgt   10      205.925 ±       2.224  us/op
-CollectionAddBenchmark.HashSet                                             avgt   10       84.423 ±       1.516  us/op
-CollectionAddBenchmark.LinkedBlockingDeque                                 avgt   10      926.111 ±     516.668  us/op
-CollectionAddBenchmark.LinkedBlockingQueue                                 avgt   10      908.521 ±     438.578  us/op
-CollectionAddBenchmark.LinkedHashMap                                       avgt   10      208.884 ±       1.933  us/op
-CollectionAddBenchmark.LinkedHashSet                                       avgt   10       90.671 ±      12.009  us/op
-CollectionAddBenchmark.LinkedList                                          avgt   10      767.094 ±     469.789  us/op
-CollectionAddBenchmark.LinkedTransferQueue                                 avgt   10     1143.180 ±    2129.491  us/op
-CollectionAddBenchmark.PriorityBlockingQueue                               avgt   10      340.561 ±      15.788  us/op
-CollectionAddBenchmark.PriorityQueue                                       avgt   10      883.679 ±    1061.436  us/op
-CollectionAddBenchmark.Stack                                               avgt   10      138.687 ±      23.657  us/op
-CollectionAddBenchmark.TreeSet                                             avgt   10      431.548 ±       6.499  us/op
-CollectionAddBenchmark.Vector                                              avgt   10      149.162 ±      17.517  us/op
-CollectionAddBenchmark.VectorNoResize                                      avgt   10      148.302 ±      17.500  us/op
+Benchmark                                      Mode  Cnt        Score         Error  Units
+CollectionAddBenchmark.ArrayDeque              avgt   10      769.793 ±    2599.278  us/op
+CollectionAddBenchmark.ArrayList               avgt   10     2050.347 ±    5824.920  us/op
+CollectionAddBenchmark.ArrayListNoResize       avgt   10      161.247 ±      37.676  us/op
+CollectionAddBenchmark.ConcurrentHashMap       avgt   10      281.691 ±       3.172  us/op
+CollectionAddBenchmark.ConcurrentLinkedDeque   avgt   10      771.666 ±     359.640  us/op
+CollectionAddBenchmark.ConcurrentSkipListSet   avgt   10      896.744 ±      34.141  us/op
+CollectionAddBenchmark.CopyOnWriteArrayList    avgt   10   248981.455 ±   16312.773  us/op
+CollectionAddBenchmark.CopyOnWriteArraySet     avgt   10    26672.254 ±     727.745  us/op
+CollectionAddBenchmark.HashMap                 avgt   10      205.925 ±       2.224  us/op
+CollectionAddBenchmark.HashSet                 avgt   10       84.423 ±       1.516  us/op
+CollectionAddBenchmark.LinkedBlockingDeque     avgt   10      926.111 ±     516.668  us/op
+CollectionAddBenchmark.LinkedBlockingQueue     avgt   10      908.521 ±     438.578  us/op
+CollectionAddBenchmark.LinkedHashMap           avgt   10      208.884 ±       1.933  us/op
+CollectionAddBenchmark.LinkedHashSet           avgt   10       90.671 ±      12.009  us/op
+CollectionAddBenchmark.LinkedList              avgt   10      767.094 ±     469.789  us/op
+CollectionAddBenchmark.LinkedTransferQueue     avgt   10     1143.180 ±    2129.491  us/op
+CollectionAddBenchmark.PriorityBlockingQueue   avgt   10      340.561 ±      15.788  us/op
+CollectionAddBenchmark.PriorityQueue           avgt   10      883.679 ±    1061.436  us/op
+CollectionAddBenchmark.Stack                   avgt   10      138.687 ±      23.657  us/op
+CollectionAddBenchmark.TreeSet                 avgt   10      431.548 ±       6.499  us/op
+CollectionAddBenchmark.Vector                  avgt   10      149.162 ±      17.517  us/op
+CollectionAddBenchmark.VectorNoResize          avgt   10      148.302 ±      17.500  us/op
 ```
 
 ## Collection Iterate
@@ -141,30 +141,30 @@ Iterating over all 10,000 elements of pre-populated collections and maps.
 One iteration over all elements per op.
 
 ```
-Benchmark                                                                  Mode  Cnt        Score         Error  Units
-CollectionIterateBenchmark.ArrayBlockingQueue                              avgt   10      156.459 ±       7.685  us/op
-CollectionIterateBenchmark.ArrayDeque                                      avgt   10       54.291 ±       0.447  us/op
-CollectionIterateBenchmark.ArrayList                                       avgt   10       60.138 ±       0.541  us/op
-CollectionIterateBenchmark.ArrayListNoResize                               avgt   10       58.104 ±       0.666  us/op
-CollectionIterateBenchmark.ConcurrentHashMap                               avgt   10      141.337 ±       6.609  us/op
-CollectionIterateBenchmark.ConcurrentLinkedDeque                           avgt   10       69.541 ±       2.508  us/op
-CollectionIterateBenchmark.ConcurrentSkipListSet                           avgt   10       74.831 ±       3.983  us/op
-CollectionIterateBenchmark.CopyOnWriteArrayList                            avgt   10       51.989 ±       6.389  us/op
-CollectionIterateBenchmark.CopyOnWriteArraySet                             avgt   10       50.873 ±       0.554  us/op
-CollectionIterateBenchmark.HashMap                                         avgt   10       57.741 ±       0.723  us/op
-CollectionIterateBenchmark.HashSet                                         avgt   10       77.470 ±       2.497  us/op
-CollectionIterateBenchmark.LinkedBlockingDeque                             avgt   10      148.750 ±       9.582  us/op
-CollectionIterateBenchmark.LinkedBlockingQueue                             avgt   10      270.227 ±       4.182  us/op
-CollectionIterateBenchmark.LinkedHashMap                                   avgt   10       48.381 ±       0.248  us/op
-CollectionIterateBenchmark.LinkedHashSet                                   avgt   10       61.155 ±       0.434  us/op
-CollectionIterateBenchmark.LinkedList                                      avgt   10       61.727 ±       2.141  us/op
-CollectionIterateBenchmark.LinkedTransferQueue                             avgt   10       62.214 ±       2.468  us/op
-CollectionIterateBenchmark.PriorityBlockingQueue                           avgt   10       47.266 ±       0.465  us/op
-CollectionIterateBenchmark.PriorityQueue                                   avgt   10       54.441 ±       0.918  us/op
-CollectionIterateBenchmark.Stack                                           avgt   10       65.207 ±       0.974  us/op
-CollectionIterateBenchmark.TreeSet                                         avgt   10       71.716 ±       1.913  us/op
-CollectionIterateBenchmark.Vector                                          avgt   10       64.666 ±       0.162  us/op
-CollectionIterateBenchmark.VectorNoResize                                  avgt   10       64.693 ±       0.247  us/op
+Benchmark                                           Mode  Cnt        Score         Error  Units
+CollectionIterateBenchmark.ArrayBlockingQueue       avgt   10      156.459 ±       7.685  us/op
+CollectionIterateBenchmark.ArrayDeque               avgt   10       54.291 ±       0.447  us/op
+CollectionIterateBenchmark.ArrayList                avgt   10       60.138 ±       0.541  us/op
+CollectionIterateBenchmark.ArrayListNoResize        avgt   10       58.104 ±       0.666  us/op
+CollectionIterateBenchmark.ConcurrentHashMap        avgt   10      141.337 ±       6.609  us/op
+CollectionIterateBenchmark.ConcurrentLinkedDeque    avgt   10       69.541 ±       2.508  us/op
+CollectionIterateBenchmark.ConcurrentSkipListSet    avgt   10       74.831 ±       3.983  us/op
+CollectionIterateBenchmark.CopyOnWriteArrayList     avgt   10       51.989 ±       6.389  us/op
+CollectionIterateBenchmark.CopyOnWriteArraySet      avgt   10       50.873 ±       0.554  us/op
+CollectionIterateBenchmark.HashMap                  avgt   10       57.741 ±       0.723  us/op
+CollectionIterateBenchmark.HashSet                  avgt   10       77.470 ±       2.497  us/op
+CollectionIterateBenchmark.LinkedBlockingDeque      avgt   10      148.750 ±       9.582  us/op
+CollectionIterateBenchmark.LinkedBlockingQueue      avgt   10      270.227 ±       4.182  us/op
+CollectionIterateBenchmark.LinkedHashMap            avgt   10       48.381 ±       0.248  us/op
+CollectionIterateBenchmark.LinkedHashSet            avgt   10       61.155 ±       0.434  us/op
+CollectionIterateBenchmark.LinkedList               avgt   10       61.727 ±       2.141  us/op
+CollectionIterateBenchmark.LinkedTransferQueue      avgt   10       62.214 ±       2.468  us/op
+CollectionIterateBenchmark.PriorityBlockingQueue    avgt   10       47.266 ±       0.465  us/op
+CollectionIterateBenchmark.PriorityQueue            avgt   10       54.441 ±       0.918  us/op
+CollectionIterateBenchmark.Stack                    avgt   10       65.207 ±       0.974  us/op
+CollectionIterateBenchmark.TreeSet                  avgt   10       71.716 ±       1.913  us/op
+CollectionIterateBenchmark.Vector                   avgt   10       64.666 ±       0.162  us/op
+CollectionIterateBenchmark.VectorNoResize           avgt   10       64.693 ±       0.247  us/op
 
 ```
 
