@@ -1,5 +1,6 @@
-package com.github.chrisgleissner.benchmarks.collection;
+package com.github.chrisgleissner.benchmarks;
 
+import com.github.chrisgleissner.benchmarks.AbstractBenchmark;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.*;
@@ -12,12 +13,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
-@BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 10, time = 1)
-@Fork(1)
-public class ConcCollectionBenchmark {
+public class ConcCollectionBenchmark extends AbstractBenchmark {
 
     private static int MAX_BOUNDED_SIZE = 10_000_000;
 

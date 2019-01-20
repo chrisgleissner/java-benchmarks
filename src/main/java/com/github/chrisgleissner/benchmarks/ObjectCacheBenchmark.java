@@ -7,13 +7,7 @@ import org.openjdk.jmh.annotations.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-@BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 10, time = 1)
-@Fork(1)
-@Threads(4)
-public class ObjectCacheBenchmark {
+public class ObjectCacheBenchmark extends AbstractBenchmark {
 
     @Value
     private static class Id {

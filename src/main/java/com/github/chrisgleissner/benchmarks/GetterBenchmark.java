@@ -16,12 +16,8 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static java.lang.invoke.MethodHandles.privateLookupIn;
 import static java.lang.invoke.MethodType.methodType;
 
-@BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 10, time = 1)
-@Fork(1)
-public class GetterBenchmark {
+public class GetterBenchmark extends AbstractBenchmark {
 
     @Data
     @AllArgsConstructor

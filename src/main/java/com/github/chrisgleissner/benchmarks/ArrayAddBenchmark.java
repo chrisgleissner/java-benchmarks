@@ -1,5 +1,6 @@
-package com.github.chrisgleissner.benchmarks.collection;
+package com.github.chrisgleissner.benchmarks;
 
+import com.github.chrisgleissner.benchmarks.AbstractBenchmark;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.Arrays;
@@ -7,12 +8,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-@BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 10, time = 1)
-@Fork(1)
-public class ArrayAddBenchmark {
+public class ArrayAddBenchmark extends AbstractBenchmark {
 
     private static int MAX_SIZE = 10_000;
 

@@ -9,13 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-@BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 3, time = 1)
-@Measurement(iterations = 5, time = 1)
-@Threads(4)
-@Fork(1)
-public class CounterBenchmark {
+public class CounterBenchmark extends AbstractBenchmark {
 
     private static final int ITERATIONS = 10_000;
 
