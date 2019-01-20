@@ -1,4 +1,3 @@
-
 package com.github.chrisgleissner.benchmarks;
 
 import lombok.Value;

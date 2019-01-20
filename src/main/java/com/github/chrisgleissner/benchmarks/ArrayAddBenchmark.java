@@ -19,7 +19,7 @@ public class ArrayAddBenchmark extends AbstractBenchmark {
         long[] longs;
 
         @Setup
-        public void doSetup()  {
+        public void doSetup() {
             intWrappers = IntStream.range(0, LOOPS_PER_INVOCATION).boxed().toArray(Integer[]::new);
             ints = IntStream.range(0, LOOPS_PER_INVOCATION).toArray();
 

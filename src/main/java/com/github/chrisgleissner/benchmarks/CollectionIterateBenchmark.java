@@ -1,6 +1,8 @@
 package com.github.chrisgleissner.benchmarks;
 
-import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.Collection;
@@ -9,7 +11,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.github.chrisgleissner.benchmarks.AbstractBenchmark.LOOPS_PER_INVOCATION;
 import static java.util.function.Function.identity;
 
 public class CollectionIterateBenchmark extends AbstractBenchmark {

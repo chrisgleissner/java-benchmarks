@@ -10,12 +10,6 @@ public class CollectionAddBenchmark extends AbstractBenchmark {
     public static class MyState extends AbstractCollectionBenchmarkState {
     }
 
-    // Testing this requires consuming each element after it's added, thus affecting the comparability with other collections
-    //    @Benchmark
-    //    public Collection<Integer> ArrayBlockingQueue(MyState s) {
-    //        return benchmarkAdd(s.ints, s.abq);
-    //    }
-
     @Benchmark
     public Collection<Integer> ArrayDeque(MyState s) {
         return benchmarkAdd(s.ints, s.ad);

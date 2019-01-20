@@ -1,9 +1,12 @@
-# JMH Java Benchmarks
+# Java 11 JMH Benchmarks
 
-[JMH](https://openjdk.java.net/projects/code-tools/jmh/) Java Benchmarks for field access, counters, collections, etc. 
+[![Build Status](https://travis-ci.org/chrisgleissner/jutil.svg?branch=master)](https://travis-ci.org/chrisgleissner/benchmarks)
+
+Java 11 [JMH](https://openjdk.java.net/projects/code-tools/jmh/) benchmarks for field access, counters, collections, etc. 
 
 View the [Latest Results](https://jmh.morethan.io/?source=https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/src/main/resources/jmh-result.json)
 or download them as [JSON](https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/src/main/resources/jmh-result.json).
+
 
 ### Setup
 
