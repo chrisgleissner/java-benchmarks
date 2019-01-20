@@ -9,10 +9,10 @@ import java.util.stream.IntStream;
 @State(Scope.Benchmark)
 public abstract class AbstractCollectionBenchmarkState {
 
-    public static int ADDS_PER_ITERATION = 10_000;
-    public static int MAX_SIZE = 10_000_000;
+    public static int ADDS_PER_INVOCATION = 10_000;
+    public static int MAX_NUMBER_OF_INVOCATIONS_EXPECTED_PER_ITERATION = 50_000_000;
 
-    Integer[] ints = IntStream.range(0, ADDS_PER_ITERATION).boxed().toArray(Integer[]::new);
+    Integer[] ints = IntStream.range(0, ADDS_PER_INVOCATION).boxed().toArray(Integer[]::new);
 
     ArrayBlockingQueue<Integer> abq;
     ArrayDeque<Integer> ad;
@@ -40,10 +40,10 @@ public abstract class AbstractCollectionBenchmarkState {
 
     @Setup(Level.Iteration)
     public void doSetup() {
-        abq = new ArrayBlockingQueue<>(MAX_SIZE);
+        abq = new ArrayBlockingQueue<>(MAX_NUMBER_OF_INVOCATIONS_EXPECTED_PER_ITERATION);
         ad = new ArrayDeque<>();
         al = new ArrayList<>();
-        alnr = new ArrayList<>(MAX_SIZE);
+        alnr = new ArrayList<>(MAX_NUMBER_OF_INVOCATIONS_EXPECTED_PER_ITERATION);
         chm = new ConcurrentHashMap<>();
         cld = new ConcurrentLinkedDeque<>();
         csls = new ConcurrentSkipListSet<>();
@@ -62,7 +62,7 @@ public abstract class AbstractCollectionBenchmarkState {
         s = new Stack<>();
         ts = new TreeSet<>();
         v = new Vector<>();
-        vnr = new Vector<>(MAX_SIZE);
+        vnr = new Vector<>(MAX_NUMBER_OF_INVOCATIONS_EXPECTED_PER_ITERATION);
     }
 
     @TearDown(Level.Iteration)

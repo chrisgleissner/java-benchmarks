@@ -15,8 +15,8 @@ public class CollectionIterateBenchmark extends AbstractBenchmark {
 
     public static class MyState extends AbstractCollectionBenchmarkState {
 
-        private static Collection<Integer> integers = IntStream.range(0, ADDS_PER_ITERATION).boxed().collect(Collectors.toList());
-        private static Map<Integer, Integer> intMap = IntStream.range(0, ADDS_PER_ITERATION).boxed().collect(Collectors.toMap(identity(), identity()));
+        private static Collection<Integer> integers = IntStream.range(0, ADDS_PER_INVOCATION).boxed().collect(Collectors.toList());
+        private static Map<Integer, Integer> intMap = IntStream.range(0, ADDS_PER_INVOCATION).boxed().collect(Collectors.toMap(identity(), identity()));
 
         @Setup
         public void doSetup() {
