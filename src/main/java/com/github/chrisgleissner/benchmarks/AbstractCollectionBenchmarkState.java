@@ -28,7 +28,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import static com.github.chrisgleissner.benchmarks.AbstractBenchmark.MAX_LOOPS_PER_ITERATION;
+import static com.github.chrisgleissner.benchmarks.Constants.MAX_LOOPS_PER_ITERATION;
 
 @State(Scope.Benchmark)
 public abstract class AbstractCollectionBenchmarkState {

@@ -16,7 +16,7 @@ public class BenchmarkTest {
         @Test
         public void objectCacheBenchmark() throws Exception {
             Options opt = new OptionsBuilder()
-                    .include("ObjectCacheBenchmark")
+                    .include(ObjectCacheBenchmark.class.getSimpleName())
                     .warmupTime(milliseconds(100))
                     .warmupIterations(1)
                     .measurementTime(milliseconds(100))
@@ -27,8 +27,6 @@ public class BenchmarkTest {
 
             Collection<RunResult> results = new Runner(opt).run();
             assertThat(results).isNotEmpty();
-            results.forEach(r -> {
-                assertThat(r.getPrimaryResult().getScore()).isGreaterThan(0.0);
-            });
+            results.forEach(r -> assertThat(r.getPrimaryResult().getScore()).isGreaterThan(0.0));
         }
 }

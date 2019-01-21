@@ -2,9 +2,13 @@ package com.github.chrisgleissner.benchmarks;
 
 import lombok.Value;
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.OperationsPerInvocation;
 
 import java.util.stream.IntStream;
 
+import static com.github.chrisgleissner.benchmarks.Constants.LOOPS_PER_INVOCATION;
+
+@OperationsPerInvocation(LOOPS_PER_INVOCATION)
 public class ObjectCacheBenchmark extends AbstractBenchmark {
 
     @Value

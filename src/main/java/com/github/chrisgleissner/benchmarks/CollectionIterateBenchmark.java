@@ -11,9 +11,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.github.chrisgleissner.benchmarks.Constants.LOOPS_PER_INVOCATION;
 import static java.util.function.Function.identity;
 
-public class CollectionIterateBenchmark extends AbstractBenchmark {
+public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
 
     public static class MyState extends AbstractCollectionBenchmarkState {
 

@@ -5,9 +5,11 @@ import org.openjdk.jmh.annotations.Benchmark;
 import java.util.Collection;
 import java.util.Map;
 
+import static com.github.chrisgleissner.benchmarks.Constants.LOOPS_PER_INVOCATION;
+import static com.github.chrisgleissner.benchmarks.Constants.MAX_LOOPS_PER_ITERATION;
 import static java.util.stream.IntStream.range;
 
-public class CollectionAddBenchmark extends AbstractBenchmark {
+public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
 
     static Integer[] integers = range(0, MAX_LOOPS_PER_ITERATION).boxed().toArray(Integer[]::new);
 

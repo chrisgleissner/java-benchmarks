@@ -9,7 +9,9 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-public class ArrayAddBenchmark extends AbstractBenchmark {
+import static com.github.chrisgleissner.benchmarks.Constants.LOOPS_PER_INVOCATION;
+
+public class ArrayAddBenchmark extends AbstractCollectionBenchmark {
 
     @State(Scope.Thread)
     public static class MyState {
