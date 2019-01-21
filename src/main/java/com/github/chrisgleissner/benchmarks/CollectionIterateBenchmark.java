@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.github.chrisgleissner.benchmarks.Constants.LOOPS_PER_INVOCATION;
+import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
 import static java.util.function.Function.identity;
 
 public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
@@ -24,8 +24,8 @@ public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
         @Setup
         public void doSetup() {
             super.doSetup();
-            integers = IntStream.range(0, LOOPS_PER_INVOCATION).boxed().collect(Collectors.toList());
-            intMap = IntStream.range(0, LOOPS_PER_INVOCATION).boxed().collect(Collectors.toMap(identity(), identity()));
+            integers = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).boxed().collect(Collectors.toList());
+            intMap = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).boxed().collect(Collectors.toMap(identity(), identity()));
             initialize(abq);
             initialize(ad);
             initialize(al);

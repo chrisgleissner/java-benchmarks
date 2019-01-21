@@ -5,19 +5,19 @@ import org.openjdk.jmh.annotations.Benchmark;
 import java.util.Collection;
 import java.util.Map;
 
-import static com.github.chrisgleissner.benchmarks.Constants.LOOPS_PER_INVOCATION;
-import static com.github.chrisgleissner.benchmarks.Constants.MAX_LOOPS_PER_ITERATION;
+import static com.github.chrisgleissner.benchmarks.Constants.MAX_OPERATIONS_PER_ITERATION;
+import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
 import static java.util.stream.IntStream.range;
 
 public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
 
-    static Integer[] integers = range(0, MAX_LOOPS_PER_ITERATION).boxed().toArray(Integer[]::new);
+    static Integer[] integers = range(0, MAX_OPERATIONS_PER_ITERATION).boxed().toArray(Integer[]::new);
 
     public static class MyState extends AbstractCollectionBenchmarkState {
         int i = 0;
 
         public Integer nextValue() {
-            return integers[i = (i + 1) % MAX_LOOPS_PER_ITERATION];
+            return integers[i = (i + 1) % MAX_OPERATIONS_PER_ITERATION];
         }
     }
 
@@ -132,7 +132,7 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
     }
 
     private Collection<Integer> benchmarkAdd(MyState s, Collection<Integer> target) {
-        for (int i = 0; i < LOOPS_PER_INVOCATION; i++) {
+        for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++) {
             Integer value = s.nextValue();
             target.add(value);
         }
@@ -140,7 +140,7 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
     }
 
     private Map<Integer, Integer> benchmarkAdd(MyState s, Map<Integer, Integer> target) {
-        for (int i = 0; i < LOOPS_PER_INVOCATION; i++) {
+        for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++) {
             Integer value = s.nextValue();
             target.put(value, value);
         }

@@ -28,7 +28,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import static com.github.chrisgleissner.benchmarks.Constants.MAX_LOOPS_PER_ITERATION;
+import static com.github.chrisgleissner.benchmarks.Constants.MAX_OPERATIONS_PER_ITERATION;
 
 @State(Scope.Benchmark)
 public abstract class AbstractCollectionBenchmarkState {
@@ -58,10 +58,10 @@ public abstract class AbstractCollectionBenchmarkState {
 
     @Setup(Level.Iteration)
     public void doSetup() {
-        abq = new ArrayBlockingQueue<>(MAX_LOOPS_PER_ITERATION);
+        abq = new ArrayBlockingQueue<>(MAX_OPERATIONS_PER_ITERATION);
         ad = new ArrayDeque<>();
         al = new ArrayList<>();
-        alnr = new ArrayList<>(MAX_LOOPS_PER_ITERATION);
+        alnr = new ArrayList<>(MAX_OPERATIONS_PER_ITERATION);
         chm = new ConcurrentHashMap<>();
         cld = new ConcurrentLinkedDeque<>();
         csls = new ConcurrentSkipListSet<>();
@@ -80,7 +80,7 @@ public abstract class AbstractCollectionBenchmarkState {
         s = new Stack<>();
         ts = new TreeSet<>();
         v = new Vector<>();
-        vnr = new Vector<>(MAX_LOOPS_PER_ITERATION);
+        vnr = new Vector<>(MAX_OPERATIONS_PER_ITERATION);
     }
 
     @TearDown(Level.Iteration)
