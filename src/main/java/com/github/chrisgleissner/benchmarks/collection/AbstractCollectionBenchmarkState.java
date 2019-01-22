@@ -1,4 +1,4 @@
-package com.github.chrisgleissner.benchmarks;
+package com.github.chrisgleissner.benchmarks.collection;
 
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Scope;

@@ -1,7 +1,10 @@
-package com.github.chrisgleissner.benchmarks;
+package com.github.chrisgleissner.benchmarks.fieldaccess;
 
+import com.github.chrisgleissner.benchmarks.AbstractBenchmark;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
@@ -15,30 +18,29 @@ import java.lang.invoke.VarHandle;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.lang.invoke.MethodHandles.privateLookupIn;
 import static java.lang.invoke.MethodType.methodType;
 
-public class SetterBenchmark extends AbstractBenchmark {
+public class GetterBenchmark extends AbstractBenchmark {
 
     @Data
-    public static class Foo {
-        private Long l;
+    @AllArgsConstructor
+    static class Foo {
+        Long l;
     }
 
     @State(Scope.Thread)
     private static class AbstractState {
 
-        @Setup
+        @Setup(Level.Iteration)
         public void setupIteration() {
-            foo = new Foo();
-            l = System.nanoTime();
+            foo = new Foo(System.nanoTime());
         }
 
         Foo foo;
-        Long l;
     }
 
     // ======================
@@ -49,8 +51,7 @@ public class SetterBenchmark extends AbstractBenchmark {
 
     @Benchmark
     public void direct(Blackhole blackhole, DirectState s) {
-        s.foo.setL(s.l);
-        blackhole.consume(s.foo.l);
+        blackhole.consume(s.foo.getL());
     }
 
     // ======================
@@ -60,55 +61,51 @@ public class SetterBenchmark extends AbstractBenchmark {
 
         @Setup
         public void doSetup() throws NoSuchMethodException {
-            setter = Foo.class.getDeclaredMethod("setL", Long.class);
-            setter.setAccessible(true);
+            getter = Foo.class.getDeclaredMethod("getL");
+            getter.setAccessible(true);
         }
 
-        Method setter;
+        Method getter;
     }
 
     @Benchmark
     public void reflection(Blackhole blackhole, ReflectionState s) throws InvocationTargetException, IllegalAccessException {
-        s.setter.invoke(s.foo, s.l);
-        blackhole.consume(s.foo.l);
-
+        blackhole.consume(s.getter.invoke(s.foo));
     }
 
     // ======================
 
     @State(Scope.Thread)
-    public static class LambdaMetaFactoryForSetterState extends AbstractState {
+    public static class LambdaMetaFactoryForGetterState extends AbstractState {
 
         @Setup
         public void doSetup() throws Throwable {
             MethodHandles.Lookup lookup = lookup();
-            MethodHandle longSetterHandle = lookup.findVirtual(Foo.class, "setL", methodType(void.class, Long.class));
             CallSite site = LambdaMetafactory.metafactory(lookup,
-                    "accept",
-                    methodType(BiConsumer.class),
-                    methodType(void.class, Object.class, Object.class),
-                    longSetterHandle,
-                    longSetterHandle.type());
-            biConsumerFunction = (BiConsumer) site.getTarget().invokeExact();
+                    "apply",
+                    methodType(Function.class),
+                    methodType(Object.class, Object.class),
+                    lookup.findVirtual(Foo.class, "getL", methodType(Long.class)),
+                    methodType(Long.class, Foo.class));
+            getterFunction = (Function) site.getTarget().invokeExact();
         }
 
-        BiConsumer<Foo, Long> biConsumerFunction;
+        Function<Foo, Long> getterFunction;
     }
 
     @Benchmark
-    public void lambdaMetaFactoryForSetter(Blackhole blackhole, LambdaMetaFactoryForSetterState s) {
-        s.biConsumerFunction.accept(s.foo, s.l);
-        blackhole.consume(s.foo.l);
+    public void lambdaMetaFactoryForGetter(Blackhole blackhole, LambdaMetaFactoryForGetterState s) {
+        blackhole.consume(s.getterFunction.apply(s.foo));
     }
 
     // ======================
 
     @State(Scope.Thread)
-    public static class MethodHandleForSetterState extends AbstractState {
+    public static class MethodHandleForGetterState extends AbstractState {
 
         @Setup
         public void doSetup() throws Throwable {
-            Method method = Foo.class.getMethod("setL", Long.class);
+            Method method = Foo.class.getMethod("getL");
             methodHandle = lookup().unreflect(method);
         }
 
@@ -116,20 +113,20 @@ public class SetterBenchmark extends AbstractBenchmark {
     }
 
     @Benchmark
-    public void methodHandleForSetter(Blackhole blackhole, MethodHandleForSetterState s) throws Throwable {
-        s.methodHandle.invoke(s.foo, s.l);
-        blackhole.consume(s.foo.l);
+    public void methodHandleForGetter(Blackhole blackhole, MethodHandleForGetterState s) throws Throwable {
+        blackhole.consume(s.methodHandle.invoke(s.foo));
     }
 
     // ======================
 
     @State(Scope.Thread)
     public static class MethodHandleForFieldState extends AbstractState {
+
         @Setup
         public void doSetup() throws Throwable {
             Field field = Foo.class.getDeclaredField("l");
             field.setAccessible(true);
-            methodHandle = lookup().unreflectSetter(field);
+            methodHandle = lookup().unreflectGetter(field);
         }
 
         MethodHandle methodHandle;
@@ -137,8 +134,7 @@ public class SetterBenchmark extends AbstractBenchmark {
 
     @Benchmark
     public void methodHandleForField(Blackhole blackhole, MethodHandleForFieldState s) throws Throwable {
-        s.methodHandle.invoke(s.foo, s.l);
-        blackhole.consume(s.foo.l);
+        blackhole.consume(s.methodHandle.invoke(s.foo));
     }
 
     // ======================
@@ -148,16 +144,15 @@ public class SetterBenchmark extends AbstractBenchmark {
 
         @Setup
         public void doSetup() throws Throwable {
-            varHandle = privateLookupIn(Foo.class, lookup()).findVarHandle(Foo.class, "l", Long.class);
-
+            varHandle = privateLookupIn(SetterBenchmark.Foo.class, lookup()).findVarHandle(GetterBenchmark.Foo.class, "l", Long.class);
         }
 
         VarHandle varHandle;
     }
 
     @Benchmark
-    public void varHandle(Blackhole blackhole, VarHandleState s) {
-        s.varHandle.set(s.foo, s.l);
-        blackhole.consume(s.foo.l);
+    public void varHandle(Blackhole blackhole, GetterBenchmark.VarHandleState s) {
+        blackhole.consume(s.varHandle.get(s.foo));
     }
+
 }
