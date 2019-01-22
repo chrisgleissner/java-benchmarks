@@ -55,17 +55,17 @@ Compares adding elements to int/Integer/long/Long arrays as well as empty collec
 
 #### Collection Iterate
 
-Iterating over all elements of pre-populated collections and maps, one iteration over all elements per op.
+Iterating over all elements of pre-populated collections and maps. 
 
 #### Concurrent Collection
 
 Concurrent get (10 threads), add (2 threads) and remove (1 thread) of Integer elements for a number of thread-safe collection classes. The non thread-safe ArrayList class is included in this benchmark and gets protected by wrapping it via `Collections.synchronizedList()`.
 
-Each data structure is pre-populated with 100,000 elements prior to benchmarking. Access occurs for the head of the data structure (where the concept of head is supported), otherwise (such as in the instance of maps) by key.
+Each data structure gets populated before he benchmark. Access occurs for the head of the data structure (where the concept of head is supported), otherwise (such as in the instance of maps) by key.
 
 #### Stream
 
-Compares streaming over primitive and wrapper classes compared with using a for loop. The stream performs a filter.
+Compares streaming over primitive and wrapper classes compared with using a for loop. The stream collects filtered elements into a target data structure. This benchmarks also compares single threaded with parallel streaming over data structures of varying length. 
 
 ## Time
 
