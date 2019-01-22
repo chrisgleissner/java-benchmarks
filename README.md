@@ -39,8 +39,8 @@ Comparing various ways of getting and setting object fields.
 Ordered by performance from top to bottom, the ranking is:
 1. Direct call
 1. [LambdaMetaFactory](https://docs.oracle.com/javase/8/docs/api/java/lang/invoke/LambdaMetafactory.html) - as fast as direct, but requires at least a private accessor method 
-1. Reflection - 60% of the direct performance
-1. MethodHandle and VarHandle - 20% of the direct performance
+1. Reflection - ca. 40% of the direct performance
+1. MethodHandle and VarHandle - ca. 20% of the direct performance
 
 
 ### Object Cache
