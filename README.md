@@ -10,6 +10,7 @@ or download them as [JSON](https://raw.githubusercontent.com/chrisgleissner/benc
 The benchmarks were obtained using JMH on OpenJDK 11.0.1 64Bit 
 and Ubuntu 18.04 running inside VirtualBox 5.2 on an Intel I7-6700K clocked at 4.6GHz. All 4 physical cores were allocated to the VirtualBox VM.
 
+All measurements are given as throughput (operations per microsecond).
 
 ## Run Benchmarks
 
@@ -56,9 +57,9 @@ Comparing various ways of getting and setting object fields.
 
 Ordered by performance from top to bottom, the ranking is:
 1. Direct call
-1. [LambdaMetaFactory](https://docs.oracle.com/javase/8/docs/api/java/lang/invoke/LambdaMetafactory.html) - as fast as direct, but requires at least a private accessor method 
-1. Reflection - 60% of the direct performance
-1. MethodHandle and VarHandle - 20% of the direct performance
+1. [LambdaMetaFactory](https://docs.oracle.com/javase/8/docs/api/java/lang/invoke/LambdaMetafactory.html) - almost as fast as direct, but requires at least a private accessor method 
+1. Reflection - ca. 30% of the direct performance
+1. MethodHandle and VarHandle - ca. 20% of the direct performance
 
 
 ### Collection
@@ -69,17 +70,17 @@ Compares adding elements to int/Integer/long/Long arrays as well as empty collec
 
 #### CollectionIterate
 
-Iterating over all elements of pre-populated collections and maps, one iteration over all elements per op.
+Iterating over all elements of pre-populated collections and maps. 
 
 #### ConCollection
 
 Concurrent get (10 threads), add (2 threads) and remove (1 thread) of Integer elements for a number of thread-safe collection classes. The non thread-safe ArrayList class is included in this benchmark and gets protected by wrapping it via `Collections.synchronizedList()`.
 
-Each data structure is pre-populated with 100,000 elements prior to benchmarking. Access occurs for the head of the data structure (where the concept of head is supported), otherwise (such as in the instance of maps) by key.
+Each data structure gets populated before he benchmark. Access occurs for the head of the data structure (where the concept of head is supported), otherwise (such as in the instance of maps) by key.
 
 #### Stream
 
-Compares streaming over primitive and wrapper classes compared with using a for loop. The stream performs a filter.
+Compares streaming over primitive and wrapper classes compared with using a for loop. The stream collects filtered elements into a target data structure. This benchmarks also compares single threaded with parallel streaming over data structures of varying length. 
 
 > In contrast to the other benchmarks, the measurements here are for processing the entire stream. The benchmark is run repeatedly
 for increasing stream lengths, from 1 to 10 million in "one order of magnitude" increments. Thus, as the stream length increases, the measured
