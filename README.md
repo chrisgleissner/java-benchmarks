@@ -7,7 +7,7 @@ Java 11 [JMH](https://openjdk.java.net/projects/code-tools/jmh/) benchmarks for 
 View [All Benchmark Results](https://jmh.morethan.io/?source=https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/jmh-result-all.json)
 or download them as [JSON](https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/jmh-result-all.json).
 
-The benchmarks were obtained using JMH on OpenJDK 11.0.1 64Bit 
+The benchmarks were obtained using JMH 1.21 on OpenJDK 11.0.2 64Bit 
 and Ubuntu 18.04 running inside VirtualBox 5.2 on an Intel I7-6700K clocked at 4.6GHz. All 4 physical cores were allocated to the VirtualBox VM.
 
 All measurements are given as throughput (operations per microsecond).
