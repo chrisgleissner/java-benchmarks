@@ -39,22 +39,15 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
     private static final int INITIAL_SIZE = 100_000;
     private static final int MAX_BOUNDED_SIZE = 10_000_000;
 
-    @State(Scope.Benchmark)
-    public static class ArrayBlockingQueueState extends AbstractState {
-        ArrayBlockingQueue<Integer> target;
-
-        public void doSetup() {
-            super.doSetup();
-            target = new ArrayBlockingQueue(MAX_BOUNDED_SIZE);
-            target.addAll(initialData);
-        }
-    }
-
     @Benchmark
     @GroupThreads(GET_THREADS)
     @Group("ArrayBlockingQueue")
     public Integer ArrayBlockingQueueGet(ArrayBlockingQueueState s) {
         return benchmarkGet(s.target);
+    }
+
+    private Integer benchmarkGet(Queue<Integer> target) {
+        return target.peek();
     }
 
     @Benchmark
@@ -64,6 +57,13 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         return benchmarkAdd(s.source, s.target);
     }
 
+    private Collection<Integer> benchmarkAdd(Integer i, Collection<Integer> target) {
+        target.add(i);
+        return target;
+    }
+
+    // ============================================
+
     @Benchmark
     @GroupThreads(REMOVE_THREADS)
     @Group("ArrayBlockingQueue")
@@ -71,17 +71,8 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         return benchmarkRemove(s.target);
     }
 
-    // ============================================
-
-    public static class ArrayListState extends AbstractState {
-        List<Integer> target;
-
-        @Setup
-        public void doSetup() {
-            super.doSetup();
-            target = synchronizedList(new ArrayList(MAX_BOUNDED_SIZE));
-            target.addAll(initialData);
-        }
+    private Integer benchmarkRemove(Queue<Integer> target) {
+        return target.poll();
     }
 
     @Benchmark
@@ -90,6 +81,12 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
     public Integer ArrayListGet(ArrayListState s) {
         return benchmarkGet(s.target);
     }
+
+    private Integer benchmarkGet(List<Integer> target) {
+        return target.get(0);
+    }
+
+    // ============================================
 
     @Benchmark
     @GroupThreads(ADD_THREADS)
@@ -105,17 +102,8 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         return benchmarkRemove(s.target);
     }
 
-    // ============================================
-
-    public static class ConcurrentHashMapState extends AbstractState {
-        ConcurrentHashMap<Integer, Integer> target;
-
-        @Setup
-        public void doSetup() {
-            super.doSetup();
-            target = new ConcurrentHashMap();
-            target.putAll(initialData.stream().collect(toMap(identity(), identity())));
-        }
+    private Integer benchmarkRemove(List<Integer> target) {
+        return target.remove(0);
     }
 
     @Benchmark
@@ -125,11 +113,22 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         return benchmarkGet(s.source, s.target);
     }
 
+    // ============================================
+
+    private Integer benchmarkGet(Integer key, Map<Integer, Integer> target) {
+        return target.get(key);
+    }
+
     @Benchmark
     @GroupThreads(ADD_THREADS)
     @Group("ConcurrentHashMap")
     public Map<Integer, Integer> ConcurrentHashMapAdd(ConcurrentHashMapState s) {
         return benchmarkAdd(s.source, s.target);
+    }
+
+    private Map<Integer, Integer> benchmarkAdd(Integer i, Map<Integer, Integer> target) {
+        target.put(i, i);
+        return target;
     }
 
     @Benchmark
@@ -141,15 +140,9 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
 
     // ============================================
 
-    public static class ConcurrentLinkedDequeState extends AbstractState {
-        ConcurrentLinkedDeque<Integer> target;
-
-        @Setup
-        public void doSetup() {
-            super.doSetup();
-            target = new ConcurrentLinkedDeque();
-            target.addAll(initialData);
-        }
+    private Map<Integer, Integer> benchmarkRemove(Integer i, Map<Integer, Integer> target) {
+        target.remove(i);
+        return target;
     }
 
     @Benchmark
@@ -175,22 +168,15 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
 
     // ============================================
 
-    public static class ConcurrentSkipListSetState extends AbstractState {
-        ConcurrentSkipListSet<Integer> target;
-
-        @Setup
-        public void doSetup() {
-            super.doSetup();
-            target = new ConcurrentSkipListSet();
-            target.addAll(initialData);
-        }
-    }
-
     @Benchmark
     @GroupThreads(GET_THREADS)
     @Group("ConcurrentSkipListSet")
     public Integer ConcurrentSkipListSetGet(ConcurrentSkipListSetState s) {
         return benchmarkGet(s.target);
+    }
+
+    private Integer benchmarkGet(NavigableSet<Integer> target) {
+        return target.first();
     }
 
     @Benchmark
@@ -209,15 +195,8 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
 
     // ============================================
 
-    public static class CopyOnWriteArrayListState extends AbstractState {
-        CopyOnWriteArrayList<Integer> target;
-
-        @Setup
-        public void doSetup() {
-            super.doSetup();
-            target = new CopyOnWriteArrayList();
-            target.addAll(initialData);
-        }
+    private boolean benchmarkRemove(Integer i, Set<Integer> target) {
+        return target.remove(i);
     }
 
     @Benchmark
@@ -243,22 +222,15 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
 
     // ============================================
 
-    public static class CopyOnWriteArraySetState extends AbstractState {
-        CopyOnWriteArraySet<Integer> target;
-
-        @Setup
-        public void doSetup() {
-            super.doSetup();
-            target = new CopyOnWriteArraySet();
-            target.addAll(initialData);
-        }
-    }
-
     @Benchmark
     @GroupThreads(GET_THREADS)
     @Group("CopyOnWriteArraySet")
     public Integer CopyOnWriteArraySetGet(CopyOnWriteArraySetState s) {
         return benchmarkGet(s.target);
+    }
+
+    private Integer benchmarkGet(Set<Integer> target) {
+        return target.iterator().next();
     }
 
     @Benchmark
@@ -275,7 +247,82 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         return benchmarkRemove(s.source, s.target);
     }
 
-    // ============================================
+    @State(Scope.Benchmark)
+    public static class ArrayBlockingQueueState extends AbstractState {
+        ArrayBlockingQueue<Integer> target;
+
+        public void doSetup() {
+            super.doSetup();
+            target = new ArrayBlockingQueue(MAX_BOUNDED_SIZE);
+            target.addAll(initialData);
+        }
+    }
+
+    public static class ArrayListState extends AbstractState {
+        List<Integer> target;
+
+        @Setup
+        public void doSetup() {
+            super.doSetup();
+            target = synchronizedList(new ArrayList(MAX_BOUNDED_SIZE));
+            target.addAll(initialData);
+        }
+    }
+
+    public static class ConcurrentHashMapState extends AbstractState {
+        ConcurrentHashMap<Integer, Integer> target;
+
+        @Setup
+        public void doSetup() {
+            super.doSetup();
+            target = new ConcurrentHashMap();
+            target.putAll(initialData.stream().collect(toMap(identity(), identity())));
+        }
+    }
+
+    public static class ConcurrentLinkedDequeState extends AbstractState {
+        ConcurrentLinkedDeque<Integer> target;
+
+        @Setup
+        public void doSetup() {
+            super.doSetup();
+            target = new ConcurrentLinkedDeque();
+            target.addAll(initialData);
+        }
+    }
+
+    public static class ConcurrentSkipListSetState extends AbstractState {
+        ConcurrentSkipListSet<Integer> target;
+
+        @Setup
+        public void doSetup() {
+            super.doSetup();
+            target = new ConcurrentSkipListSet();
+            target.addAll(initialData);
+        }
+    }
+
+    public static class CopyOnWriteArrayListState extends AbstractState {
+        CopyOnWriteArrayList<Integer> target;
+
+        @Setup
+        public void doSetup() {
+            super.doSetup();
+            target = new CopyOnWriteArrayList();
+            target.addAll(initialData);
+        }
+    }
+
+    public static class CopyOnWriteArraySetState extends AbstractState {
+        CopyOnWriteArraySet<Integer> target;
+
+        @Setup
+        public void doSetup() {
+            super.doSetup();
+            target = new CopyOnWriteArraySet();
+            target.addAll(initialData);
+        }
+    }
 
     @State(Scope.Group)
     public static abstract class AbstractState {
@@ -289,52 +336,5 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
             source = random.nextInt();
             initialData = IntStream.range(MAX_BOUNDED_SIZE / 2, MAX_BOUNDED_SIZE / 2 + INITIAL_SIZE).boxed().collect(toList());
         }
-    }
-
-    private Integer benchmarkGet(Queue<Integer> target) {
-        return target.peek();
-    }
-
-    private Integer benchmarkGet(NavigableSet<Integer> target) {
-        return target.first();
-    }
-
-    private Integer benchmarkGet(List<Integer> target) {
-        return target.get(0);
-    }
-
-    private Integer benchmarkGet(Set<Integer> target) {
-        return target.iterator().next();
-    }
-
-    private Integer benchmarkGet(Integer key, Map<Integer, Integer> target) {
-        return target.get(key);
-    }
-
-    private Map<Integer, Integer> benchmarkAdd(Integer i, Map<Integer, Integer> target) {
-        target.put(i, i);
-        return target;
-    }
-
-    private Collection<Integer> benchmarkAdd(Integer i, Collection<Integer> target) {
-        target.add(i);
-        return target;
-    }
-
-    private Integer benchmarkRemove(List<Integer> target) {
-        return target.remove(0);
-    }
-
-    private Integer benchmarkRemove(Queue<Integer> target) {
-        return target.poll();
-    }
-
-    private Map<Integer, Integer> benchmarkRemove(Integer i, Map<Integer, Integer> target) {
-        target.remove(i);
-        return target;
-    }
-
-    private boolean benchmarkRemove(Integer i, Set<Integer> target) {
-        return target.remove(i);
     }
 }

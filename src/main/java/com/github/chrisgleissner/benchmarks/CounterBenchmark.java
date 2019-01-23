@@ -17,32 +17,6 @@ import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_
 @OperationsPerInvocation(OPERATIONS_PER_PER_INVOCATION)
 public class CounterBenchmark extends AbstractBenchmark {
 
-    @State(Scope.Thread)
-    public static class MyState {
-
-        @Setup
-        public void setUp() {
-            i = 0;
-            l = 0;
-
-            atomicInt = new AtomicInteger();
-            atomicLong = new AtomicLong();
-
-            mutableInt = new MutableInt();
-            mutableLong = new MutableLong();
-        }
-
-        public int i;
-        public long l;
-
-        public AtomicInteger atomicInt;
-        public AtomicLong atomicLong;
-
-        public MutableInt mutableInt;
-        public MutableLong mutableLong;
-    }
-
-
     @Benchmark
     public void primitiveInt(Blackhole blackhole, MyState state) {
         for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++)
@@ -77,5 +51,28 @@ public class CounterBenchmark extends AbstractBenchmark {
     public void mutableLong(Blackhole blackhole, MyState state) {
         for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++)
             blackhole.consume(state.mutableLong.getAndIncrement());
+    }
+
+    @State(Scope.Thread)
+    public static class MyState {
+
+        public int i;
+        public long l;
+        public AtomicInteger atomicInt;
+        public AtomicLong atomicLong;
+        public MutableInt mutableInt;
+        public MutableLong mutableLong;
+
+        @Setup
+        public void setUp() {
+            i = 0;
+            l = 0;
+
+            atomicInt = new AtomicInteger();
+            atomicLong = new AtomicLong();
+
+            mutableInt = new MutableInt();
+            mutableLong = new MutableLong();
+        }
     }
 }

@@ -13,30 +13,11 @@ import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_
 
 public class ArrayAddBenchmark extends AbstractCollectionBenchmark {
 
-    @State(Scope.Thread)
-    public static class MyState {
-        Integer[] intWrappers;
-        int[] ints;
-        Long[] longWrappers;
-        long[] longs;
-
-        @Setup
-        public void doSetup() {
-            intWrappers = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).boxed().toArray(Integer[]::new);
-            ints = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).toArray();
-
-            longWrappers = LongStream.range(0, OPERATIONS_PER_PER_INVOCATION).boxed().toArray(Long[]::new);
-            longs = LongStream.range(0, OPERATIONS_PER_PER_INVOCATION).toArray();
-        }
-    }
-
-
-    // int / Integer Array
-
     @Benchmark
     public int[] intArrayClone(MyState s) {
         return s.ints.clone();
     }
+
 
     @Benchmark
     public int[] intArrayCopyOf(MyState s) {
@@ -69,13 +50,11 @@ public class ArrayAddBenchmark extends AbstractCollectionBenchmark {
         return ints;
     }
 
-
-    // long / Long Array
-
     @Benchmark
     public long[] longArrayClone(MyState s) {
         return s.longs.clone();
     }
+
 
     @Benchmark
     public long[] longArrayCopyOf(MyState s) {
@@ -106,5 +85,22 @@ public class ArrayAddBenchmark extends AbstractCollectionBenchmark {
         for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++)
             longs[i] = s.longWrappers[i];
         return longs;
+    }
+
+    @State(Scope.Thread)
+    public static class MyState {
+        Integer[] intWrappers;
+        int[] ints;
+        Long[] longWrappers;
+        long[] longs;
+
+        @Setup
+        public void doSetup() {
+            intWrappers = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).boxed().toArray(Integer[]::new);
+            ints = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).toArray();
+
+            longWrappers = LongStream.range(0, OPERATIONS_PER_PER_INVOCATION).boxed().toArray(Long[]::new);
+            longs = LongStream.range(0, OPERATIONS_PER_PER_INVOCATION).toArray();
+        }
     }
 }

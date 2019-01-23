@@ -13,17 +13,17 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
 
     static Integer[] integers = range(0, MAX_OPERATIONS_PER_ITERATION).boxed().toArray(Integer[]::new);
 
-    public static class MyState extends AbstractCollectionBenchmarkState {
-        int i = 0;
-
-        public Integer nextValue() {
-            return integers[i = (i + 1) % MAX_OPERATIONS_PER_ITERATION];
-        }
-    }
-
     @Benchmark
     public Collection<Integer> ArrayDeque(MyState s) {
         return benchmarkAdd(s, s.ad);
+    }
+
+    private Collection<Integer> benchmarkAdd(MyState s, Collection<Integer> target) {
+        for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++) {
+            Integer value = s.nextValue();
+            target.add(value);
+        }
+        return target;
     }
 
     @Benchmark
@@ -39,6 +39,14 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
     @Benchmark
     public Map<Integer, Integer> ConcurrentHashMap(MyState s) {
         return benchmarkAdd(s, s.chm);
+    }
+
+    private Map<Integer, Integer> benchmarkAdd(MyState s, Map<Integer, Integer> target) {
+        for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++) {
+            Integer value = s.nextValue();
+            target.put(value, value);
+        }
+        return target;
     }
 
     @Benchmark
@@ -131,20 +139,12 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
         return benchmarkAdd(s, s.vnr);
     }
 
-    private Collection<Integer> benchmarkAdd(MyState s, Collection<Integer> target) {
-        for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++) {
-            Integer value = s.nextValue();
-            target.add(value);
-        }
-        return target;
-    }
+    public static class MyState extends AbstractCollectionBenchmarkState {
+        int i = 0;
 
-    private Map<Integer, Integer> benchmarkAdd(MyState s, Map<Integer, Integer> target) {
-        for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++) {
-            Integer value = s.nextValue();
-            target.put(value, value);
+        public Integer nextValue() {
+            return integers[i = (i + 1) % MAX_OPERATIONS_PER_ITERATION];
         }
-        return target;
     }
 
 }

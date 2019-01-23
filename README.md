@@ -2,30 +2,48 @@
 
 [![Build Status](https://travis-ci.org/chrisgleissner/jutil.svg?branch=master)](https://travis-ci.org/chrisgleissner/benchmarks)
 
-Java 11 [JMH](https://openjdk.java.net/projects/code-tools/jmh/) benchmarks for field access, counters, collections, etc. 
+Java 11 [JMH](https://openjdk.java.net/projects/code-tools/jmh/) benchmarks for field access, counters, collections, sequential and parallel streams, etc. 
 
-View the [Latest Results](https://jmh.morethan.io/?source=https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/jmh-result.json)
-or download them as [JSON](https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/jmh-result.json).
-
-
-## Setup
+View [All Benchmark Results](https://jmh.morethan.io/?source=https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/jmh-result-all.json)
+or download them as [JSON](https://raw.githubusercontent.com/chrisgleissner/benchmarks/master/jmh-result-all.json).
 
 The benchmarks were obtained using JMH on OpenJDK 11.0.1 64Bit 
 and Ubuntu 18.04 running inside VirtualBox 5.2 on an Intel I7-6700K clocked at 4.6GHz. All 4 physical cores were allocated to the VirtualBox VM.
 
-To run the benchmarks on your own system, clone this repository, install Open JDK 11 (or above) and Maven 3.5 (or above), then run
 
+## Run Benchmarks
+
+To run the benchmarks on your own system, first:
+* Clone this repository
+* Install Open JDK 11 (or above)
+* Install Maven 3.5 (or above)
+
+### All Benchmarks
+
+Execute: 
 ```
 mvn clean install
 java -jar target/benchmarks.jar -gc true -rf json -jvmArgs "-Xms4g -Xms4g -Xcomp"
 ```
 
+If you have Bash on your system, you can also just run the `benchmark` script which does the same.
+
+### Specific Benchmarks
+
+To run a single or a set of benchmarks, execute `benchmark <regexp>...` where `<regexp>...` is one or more comma-separated regular
+expressions referring to benchmark names. 
+
+For example, `benchmark Getter.*,Counter.*` will run the Getter and the Counter benchmarks. 
+
+### Options
+
 To view all available JMH command line options, run `java -jar target/benchmarks.jar -h`
 
-Alternatively, use the `benchmark` Bash script. To only run a single benchmark, specify its name such as `benchmark TimeBenchmark`. 
 
+## Benchmark Overview
 
-## Benchmarks
+> Unless stated otherwise, benchmark throughput measurements are for a single operation, e.g. a single addition to a collection
+> or a single iterator advancement.
 
 ### Counter
 
@@ -43,21 +61,17 @@ Ordered by performance from top to bottom, the ranking is:
 1. MethodHandle and VarHandle - 20% of the direct performance
 
 
-### Object Cache
-
-Compares the use of ints, custom int wrappers instantiation, and a custom int wrapper cache.
-
 ### Collection
 
-#### Array Add / Collection Add
+#### ArrayAdd / CollectionAdd
 
 Compares adding elements to int/Integer/long/Long arrays as well as empty collections and maps.
 
-#### Collection Iterate
+#### CollectionIterate
 
 Iterating over all elements of pre-populated collections and maps, one iteration over all elements per op.
 
-#### Concurrent Collection
+#### ConCollection
 
 Concurrent get (10 threads), add (2 threads) and remove (1 thread) of Integer elements for a number of thread-safe collection classes. The non thread-safe ArrayList class is included in this benchmark and gets protected by wrapping it via `Collections.synchronizedList()`.
 
@@ -67,6 +81,14 @@ Each data structure is pre-populated with 100,000 elements prior to benchmarking
 
 Compares streaming over primitive and wrapper classes compared with using a for loop. The stream performs a filter.
 
-## Time
+> In contrast to the other benchmarks, the measurements here are for processing the entire stream. The benchmark is run repeatedly
+for increasing stream lengths, from 1 to 10 million in "one order of magnitude" increments. Thus, as the stream length increases, the measured
+throughput decreases.
+
+### ObjectCache
+
+Compares the use of ints, custom int wrappers instantiation, and a custom int wrapper cache.
+
+### Time
 
 Compares `System.currentTimeMillis`, `System.nanoTime`, and various `java.time` classes.

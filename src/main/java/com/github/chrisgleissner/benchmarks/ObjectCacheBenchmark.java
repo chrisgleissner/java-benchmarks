@@ -11,17 +11,7 @@ import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_
 @OperationsPerInvocation(OPERATIONS_PER_PER_INVOCATION)
 public class ObjectCacheBenchmark extends AbstractBenchmark {
 
-    @Value
-    private static class Id {
-        int id;
-    }
-
     private static Id[] idPool = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).mapToObj(Id::new).toArray(Id[]::new);
-
-    private static Id id(int id) {
-        return idPool[id];
-    }
-
 
     @Benchmark
     public Id[] cache() {
@@ -29,6 +19,10 @@ public class ObjectCacheBenchmark extends AbstractBenchmark {
         for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++)
             ids[i] = id(i);
         return ids;
+    }
+
+    private static Id id(int id) {
+        return idPool[id];
     }
 
     @Benchmark
@@ -45,5 +39,10 @@ public class ObjectCacheBenchmark extends AbstractBenchmark {
         for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++)
             ids[i] = i;
         return ids;
+    }
+
+    @Value
+    private static class Id {
+        int id;
     }
 }

@@ -16,60 +16,15 @@ import static java.util.function.Function.identity;
 
 public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
 
-    public static class MyState extends AbstractCollectionBenchmarkState {
-
-        private Collection<Integer> integers;
-        private Map<Integer, Integer> intMap;
-
-        @Setup
-        public void doSetup() {
-            super.doSetup();
-            integers = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).boxed().collect(Collectors.toList());
-            intMap = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).boxed().collect(Collectors.toMap(identity(), identity()));
-            initialize(abq);
-            initialize(ad);
-            initialize(al);
-            initialize(alnr);
-            initialize(chm);
-            initialize(cld);
-            initialize(csls);
-            initialize(cowal);
-            initialize(cowas);
-            initialize(hm);
-            initialize(hs);
-            initialize(lbd);
-            initialize(lbq);
-            initialize(lhs);
-            initialize(lhm);
-            initialize(ll);
-            initialize(ltq);
-            initialize(pbq);
-            initialize(pq);
-            initialize(s);
-            initialize(ts);
-            initialize(v);
-            initialize(vnr);
-        }
-
-        @TearDown
-        public void doTearDown() {
-            super.doTearDown();
-            integers = null;
-            intMap = null;
-        }
-
-        private void initialize(Collection<Integer> c) {
-            c.addAll(integers);
-        }
-
-        private void initialize(Map<Integer, Integer> c) {
-            c.putAll(intMap);
-        }
-    }
-
     @Benchmark
     public void ArrayBlockingQueue(MyState s, Blackhole bh) {
         iterate(bh, s.abq);
+    }
+
+    private void iterate(Blackhole bh, Collection<Integer> target) {
+        Iterator<Integer> iterator = target.iterator();
+        while (iterator.hasNext())
+            bh.consume(iterator.next());
     }
 
     @Benchmark
@@ -90,6 +45,12 @@ public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
     @Benchmark
     public void ConcurrentHashMap(MyState s, Blackhole bh) {
         iterate(bh, s.chm);
+    }
+
+    private void iterate(Blackhole bh, Map<Integer, Integer> target) {
+        Iterator<Map.Entry<Integer, Integer>> iterator = target.entrySet().iterator();
+        while (iterator.hasNext())
+            bh.consume(iterator.next());
     }
 
     @Benchmark
@@ -182,15 +143,54 @@ public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
         iterate(bh, s.vnr);
     }
 
-    private void iterate(Blackhole bh, Collection<Integer> target) {
-        Iterator<Integer> iterator = target.iterator();
-        while (iterator.hasNext())
-            bh.consume(iterator.next());
-    }
+    public static class MyState extends AbstractCollectionBenchmarkState {
 
-    private void iterate(Blackhole bh, Map<Integer, Integer> target) {
-        Iterator<Map.Entry<Integer, Integer>> iterator = target.entrySet().iterator();
-        while (iterator.hasNext())
-            bh.consume(iterator.next());
+        private Collection<Integer> integers;
+        private Map<Integer, Integer> intMap;
+
+        @Setup
+        public void doSetup() {
+            super.doSetup();
+            integers = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).boxed().collect(Collectors.toList());
+            intMap = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).boxed().collect(Collectors.toMap(identity(), identity()));
+            initialize(abq);
+            initialize(ad);
+            initialize(al);
+            initialize(alnr);
+            initialize(chm);
+            initialize(cld);
+            initialize(csls);
+            initialize(cowal);
+            initialize(cowas);
+            initialize(hm);
+            initialize(hs);
+            initialize(lbd);
+            initialize(lbq);
+            initialize(lhs);
+            initialize(lhm);
+            initialize(ll);
+            initialize(ltq);
+            initialize(pbq);
+            initialize(pq);
+            initialize(s);
+            initialize(ts);
+            initialize(v);
+            initialize(vnr);
+        }
+
+        @TearDown
+        public void doTearDown() {
+            super.doTearDown();
+            integers = null;
+            intMap = null;
+        }
+
+        private void initialize(Collection<Integer> c) {
+            c.addAll(integers);
+        }
+
+        private void initialize(Map<Integer, Integer> c) {
+            c.putAll(intMap);
+        }
     }
 }
