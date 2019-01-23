@@ -81,7 +81,6 @@ public class SetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     private static class AbstractState {
-
         static Random random = new Random();
         int i;
         Foo[] foos;
@@ -110,7 +109,6 @@ public class SetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     public static class ReflectionState extends AbstractState {
-
         Method setter;
 
         @Setup
@@ -122,7 +120,6 @@ public class SetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     public static class LambdaMetaFactoryForSetterState extends AbstractState {
-
         BiConsumer<Foo, Long> biConsumerFunction;
 
         @Setup
@@ -141,7 +138,6 @@ public class SetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     public static class MethodHandleForSetterState extends AbstractState {
-
         MethodHandle methodHandle;
 
         @Setup
@@ -165,7 +161,6 @@ public class SetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     public static class VarHandleState extends AbstractState {
-
         VarHandle varHandle;
 
         @Setup

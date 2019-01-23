@@ -68,7 +68,6 @@ public class GetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     private static class AbstractState {
-
         Foo[] foos;
         int i;
 
@@ -94,7 +93,6 @@ public class GetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     public static class ReflectionState extends AbstractState {
-
         Method getter;
 
         @Setup
@@ -106,7 +104,6 @@ public class GetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     public static class LambdaMetaFactoryForGetterState extends AbstractState {
-
         Function<Foo, Long> getterFunction;
 
         @Setup
@@ -124,7 +121,6 @@ public class GetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     public static class MethodHandleForGetterState extends AbstractState {
-
         MethodHandle methodHandle;
 
         @Setup
@@ -136,7 +132,6 @@ public class GetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     public static class MethodHandleForFieldState extends AbstractState {
-
         MethodHandle methodHandle;
 
         @Setup
@@ -149,13 +144,11 @@ public class GetterBenchmark extends AbstractBenchmark {
 
     @State(Scope.Thread)
     public static class VarHandleState extends AbstractState {
-
         VarHandle varHandle;
 
         @Setup
         public void doSetup() throws Throwable {
-            varHandle = privateLookupIn(SetterBenchmark.Foo.class, lookup()).findVarHandle(GetterBenchmark.Foo.class, "l", Long.class);
+            varHandle = privateLookupIn(Foo.class, lookup()).findVarHandle(Foo.class, "l", Long.class);
         }
     }
-
 }
