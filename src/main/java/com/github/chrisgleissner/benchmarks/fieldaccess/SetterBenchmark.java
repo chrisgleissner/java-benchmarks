@@ -39,9 +39,16 @@ public class SetterBenchmark extends AbstractBenchmark {
     }
 
     @Benchmark
-    public Foo reflection(ReflectionState s) throws InvocationTargetException, IllegalAccessException {
+    public Foo reflectionSetter(ReflectionSetterState s) throws InvocationTargetException, IllegalAccessException {
         Foo foo = s.foo();
         s.setter.invoke(foo, s.l);
+        return foo;
+    }
+
+    @Benchmark
+    public Foo reflectionField(ReflectionFieldState s) throws IllegalAccessException {
+        Foo foo = s.foo();
+        s.field.set(foo, s.l);
         return foo;
     }
 
@@ -85,6 +92,7 @@ public class SetterBenchmark extends AbstractBenchmark {
         int i;
         Foo[] foos;
         Long l;
+        long primitiveL;
 
         @Setup(Level.Iteration)
         public void setupIteration() {
@@ -108,13 +116,24 @@ public class SetterBenchmark extends AbstractBenchmark {
     }
 
     @State(Scope.Thread)
-    public static class ReflectionState extends AbstractState {
+    public static class ReflectionSetterState extends AbstractState {
         Method setter;
 
         @Setup
         public void doSetup() throws NoSuchMethodException {
             setter = Foo.class.getDeclaredMethod("setL", Long.class);
             setter.setAccessible(true);
+        }
+    }
+
+    @State(Scope.Thread)
+    public static class ReflectionFieldState extends AbstractState {
+        Field field;
+
+        @Setup
+        public void doSetup() throws NoSuchFieldException {
+            field = Foo.class.getDeclaredField("l");
+            field.setAccessible(true);
         }
     }
 

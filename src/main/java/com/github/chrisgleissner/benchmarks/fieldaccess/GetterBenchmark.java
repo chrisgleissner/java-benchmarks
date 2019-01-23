@@ -36,8 +36,13 @@ public class GetterBenchmark extends AbstractBenchmark {
     }
 
     @Benchmark
-    public Object reflection(ReflectionState s) throws InvocationTargetException, IllegalAccessException {
+    public Object reflectionGetter(ReflectionGetterState s) throws InvocationTargetException, IllegalAccessException {
         return s.getter.invoke(s.foo());
+    }
+
+    @Benchmark
+    public Object reflectionField(ReflectionFieldState s) throws IllegalAccessException {
+        return s.field.get(s.foo());
     }
 
     @Benchmark
@@ -92,13 +97,24 @@ public class GetterBenchmark extends AbstractBenchmark {
     }
 
     @State(Scope.Thread)
-    public static class ReflectionState extends AbstractState {
+    public static class ReflectionGetterState extends AbstractState {
         Method getter;
 
         @Setup
         public void doSetup() throws NoSuchMethodException {
             getter = Foo.class.getDeclaredMethod("getL");
             getter.setAccessible(true);
+        }
+    }
+
+    @State(Scope.Thread)
+    public static class ReflectionFieldState extends AbstractState {
+        Field field;
+
+        @Setup
+        public void doSetup() throws NoSuchFieldException {
+            field = Foo.class.getDeclaredField("l");
+            field.setAccessible(true);
         }
     }
 
