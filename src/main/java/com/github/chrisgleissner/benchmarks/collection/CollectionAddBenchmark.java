@@ -55,6 +55,11 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
     }
 
     @Benchmark
+    public Collection<Integer> ConcurrentLinkedQueue(MyState s) {
+        return benchmarkAdd(s, s.clq);
+    }
+
+    @Benchmark
     public Collection<Integer> ConcurrentSkipListSet(MyState s) {
         return benchmarkAdd(s, s.csls);
     }

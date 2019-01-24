@@ -59,6 +59,11 @@ public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
     }
 
     @Benchmark
+    public void ConcurrentLinkedQueue(MyState s, Blackhole bh) {
+        iterate(bh, s.clq);
+    }
+
+    @Benchmark
     public void ConcurrentSkipListSet(MyState s, Blackhole bh) {
         iterate(bh, s.csls);
     }
@@ -159,6 +164,7 @@ public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
             initialize(alnr);
             initialize(chm);
             initialize(cld);
+            initialize(clq);
             initialize(csls);
             initialize(cowal);
             initialize(cowas);

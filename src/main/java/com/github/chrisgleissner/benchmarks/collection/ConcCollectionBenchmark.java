@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -62,8 +63,6 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         return target;
     }
 
-    // ============================================
-
     @Benchmark
     @GroupThreads(REMOVE_THREADS)
     @Group("ArrayBlockingQueue")
@@ -85,8 +84,6 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
     private Integer benchmarkGet(List<Integer> target) {
         return target.get(0);
     }
-
-    // ============================================
 
     @Benchmark
     @GroupThreads(ADD_THREADS)
@@ -113,8 +110,6 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         return benchmarkGet(s.source, s.target);
     }
 
-    // ============================================
-
     private Integer benchmarkGet(Integer key, Map<Integer, Integer> target) {
         return target.get(key);
     }
@@ -137,8 +132,6 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
     public Map<Integer, Integer> ConcurrentHashMapRemove(ConcurrentHashMapState s) {
         return benchmarkRemove(s.source, s.target);
     }
-
-    // ============================================
 
     private Map<Integer, Integer> benchmarkRemove(Integer i, Map<Integer, Integer> target) {
         target.remove(i);
@@ -166,7 +159,26 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         return benchmarkRemove(s.target);
     }
 
-    // ============================================
+    @Benchmark
+    @GroupThreads(GET_THREADS)
+    @Group("ConcurrentLinkedQueue")
+    public Integer ConcurrentLinkedQueueGet(ConcurrentLinkedQueueState s) {
+        return benchmarkGet(s.target);
+    }
+
+    @Benchmark
+    @GroupThreads(ADD_THREADS)
+    @Group("ConcurrentLinkedQueue")
+    public Collection<Integer> ConcurrentLinkedQueueAdd(ConcurrentLinkedQueueState s) {
+        return benchmarkAdd(s.source, s.target);
+    }
+
+    @Benchmark
+    @GroupThreads(REMOVE_THREADS)
+    @Group("ConcurrentLinkedQueue")
+    public Integer ConcurrentLinkedQueueRemove(ConcurrentLinkedQueueState s) {
+        return benchmarkRemove(s.target);
+    }
 
     @Benchmark
     @GroupThreads(GET_THREADS)
@@ -193,8 +205,6 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         return benchmarkRemove(s.source, s.target);
     }
 
-    // ============================================
-
     private boolean benchmarkRemove(Integer i, Set<Integer> target) {
         return target.remove(i);
     }
@@ -219,8 +229,6 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
     public Integer CopyOnWriteArrayRemove(CopyOnWriteArrayListState s) {
         return benchmarkRemove(s.target);
     }
-
-    // ============================================
 
     @Benchmark
     @GroupThreads(GET_THREADS)
@@ -287,6 +295,17 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         public void doSetup() {
             super.doSetup();
             target = new ConcurrentLinkedDeque();
+            target.addAll(initialData);
+        }
+    }
+
+    public static class ConcurrentLinkedQueueState extends AbstractState {
+        ConcurrentLinkedQueue<Integer> target;
+
+        @Setup
+        public void doSetup() {
+            super.doSetup();
+            target = new ConcurrentLinkedQueue();
             target.addAll(initialData);
         }
     }

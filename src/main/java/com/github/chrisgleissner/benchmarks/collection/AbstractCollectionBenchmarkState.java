@@ -20,6 +20,7 @@ import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -38,6 +39,7 @@ public abstract class AbstractCollectionBenchmarkState {
     ArrayList<Integer> alnr;
     ConcurrentHashMap<Integer, Integer> chm;
     ConcurrentLinkedDeque<Integer> cld;
+    ConcurrentLinkedQueue<Integer> clq;
     ConcurrentSkipListSet<Integer> csls;
     CopyOnWriteArrayList<Integer> cowal;
     CopyOnWriteArraySet<Integer> cowas;
@@ -64,6 +66,7 @@ public abstract class AbstractCollectionBenchmarkState {
         alnr = new ArrayList<>(MAX_OPERATIONS_PER_ITERATION);
         chm = new ConcurrentHashMap<>();
         cld = new ConcurrentLinkedDeque<>();
+        clq = new ConcurrentLinkedQueue<>();
         csls = new ConcurrentSkipListSet<>();
         cowal = new CopyOnWriteArrayList<>();
         cowas = new CopyOnWriteArraySet<>();
@@ -102,6 +105,9 @@ public abstract class AbstractCollectionBenchmarkState {
 
         cld.clear();
         cld = null;
+
+        clq.clear();
+        clq = null;
 
         csls.clear();
         csls = null;
