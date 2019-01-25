@@ -124,6 +124,11 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
     }
 
     @Benchmark
+    public Object TreeMap(MyState s) {
+        return benchmarkPut(s, s.tm);
+    }
+
+    @Benchmark
     public Object TreeSet(MyState s) {
         return benchmarkAdd(s, s.ts);
     }

@@ -15,6 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Stack;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -60,6 +61,7 @@ public abstract class AbstractCollectionBenchmarkState {
     PriorityQueue<Integer> pq;
     Stack<Integer> s;
     TreeSet<Integer> ts;
+    TreeMap<Integer, Integer> tm;
     Vector<Integer> v;
     Vector<Integer> vnr;
 
@@ -87,6 +89,7 @@ public abstract class AbstractCollectionBenchmarkState {
         pbq = new PriorityBlockingQueue<>();
         pq = new PriorityQueue<>();
         s = new Stack<>();
+        tm = new TreeMap<>();
         ts = new TreeSet<>();
         v = new Vector<>();
         vnr = new Vector<>(MAX_OPERATIONS_PER_ITERATION);
@@ -116,6 +119,7 @@ public abstract class AbstractCollectionBenchmarkState {
         pbq = null;
         pq = null;
         s = null;
+        tm = null;
         ts = null;
         v = null;
         vnr = null;

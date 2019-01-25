@@ -139,6 +139,11 @@ public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
     }
 
     @Benchmark
+    public void TreeMap(MyState s, Blackhole bh) {
+        iterate(bh, s.tm);
+    }
+
+    @Benchmark
     public void TreeSet(MyState s, Blackhole bh) {
         iterate(bh, s.ts);
     }
@@ -185,6 +190,7 @@ public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
             initialize(pbq);
             initialize(pq);
             initialize(s);
+            initialize(tm);
             initialize(ts);
             initialize(v);
             initialize(vnr);
