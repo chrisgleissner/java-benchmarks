@@ -17,10 +17,12 @@ import java.util.NavigableSet;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
+import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -36,71 +38,49 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
 
     private static final int GET_THREADS = 10;
     private static final int ADD_THREADS = 2;
-    private static final int REMOVE_THREADS = 1;
     private static final int INITIAL_SIZE = 100_000;
     private static final int MAX_BOUNDED_SIZE = 10_000_000;
 
     @Benchmark
     @GroupThreads(GET_THREADS)
     @Group("ArrayBlockingQueue")
-    public Integer ArrayBlockingQueueGet(ArrayBlockingQueueState s) {
+    public Object ArrayBlockingQueueGet(ArrayBlockingQueueState s) {
         return benchmarkGet(s.target);
-    }
-
-    private Integer benchmarkGet(Queue<Integer> target) {
-        return target.peek();
     }
 
     @Benchmark
     @GroupThreads(ADD_THREADS)
     @Group("ArrayBlockingQueue")
-    public Collection<Integer> ArrayBlockingQueueAdd(ArrayBlockingQueueState s) {
+    public Object ArrayBlockingQueueAdd(ArrayBlockingQueueState s) {
         return benchmarkAdd(s.source, s.target);
     }
 
-    private Collection<Integer> benchmarkAdd(Integer i, Collection<Integer> target) {
-        target.add(i);
-        return target;
-    }
-
     @Benchmark
-    @GroupThreads(REMOVE_THREADS)
+    @GroupThreads
     @Group("ArrayBlockingQueue")
-    public Integer ArrayBlockingQueueRemove(ArrayBlockingQueueState s) {
+    public Object ArrayBlockingQueueRemove(ArrayBlockingQueueState s) {
         return benchmarkRemove(s.target);
-    }
-
-    private Integer benchmarkRemove(Queue<Integer> target) {
-        return target.poll();
     }
 
     @Benchmark
     @GroupThreads(GET_THREADS)
     @Group("ArrayList")
-    public Integer ArrayListGet(ArrayListState s) {
+    public Object ArrayListGet(ArrayListState s) {
         return benchmarkGet(s.target);
-    }
-
-    private Integer benchmarkGet(List<Integer> target) {
-        return target.get(0);
     }
 
     @Benchmark
     @GroupThreads(ADD_THREADS)
     @Group("ArrayList")
-    public Collection<Integer> ArrayListAdd(ArrayListState s) {
+    public Object ArrayListAdd(ArrayListState s) {
         return benchmarkAdd(s.source, s.target);
     }
 
     @Benchmark
-    @GroupThreads(REMOVE_THREADS)
+    @GroupThreads
     @Group("ArrayList")
     public Integer ArrayListRemove(ArrayListState s) {
         return benchmarkRemove(s.target);
-    }
-
-    private Integer benchmarkRemove(List<Integer> target) {
-        return target.remove(0);
     }
 
     @Benchmark
@@ -110,52 +90,39 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         return benchmarkGet(s.source, s.target);
     }
 
-    private Integer benchmarkGet(Integer key, Map<Integer, Integer> target) {
-        return target.get(key);
-    }
 
     @Benchmark
     @GroupThreads(ADD_THREADS)
     @Group("ConcurrentHashMap")
-    public Map<Integer, Integer> ConcurrentHashMapAdd(ConcurrentHashMapState s) {
+    public Object ConcurrentHashMapAdd(ConcurrentHashMapState s) {
         return benchmarkAdd(s.source, s.target);
     }
 
-    private Map<Integer, Integer> benchmarkAdd(Integer i, Map<Integer, Integer> target) {
-        target.put(i, i);
-        return target;
-    }
-
     @Benchmark
-    @GroupThreads(REMOVE_THREADS)
+    @GroupThreads
     @Group("ConcurrentHashMap")
-    public Map<Integer, Integer> ConcurrentHashMapRemove(ConcurrentHashMapState s) {
+    public Object ConcurrentHashMapRemove(ConcurrentHashMapState s) {
         return benchmarkRemove(s.source, s.target);
-    }
-
-    private Map<Integer, Integer> benchmarkRemove(Integer i, Map<Integer, Integer> target) {
-        target.remove(i);
-        return target;
     }
 
     @Benchmark
     @GroupThreads(GET_THREADS)
     @Group("ConcurrentLinkedDeque")
-    public Integer ConcurrentLinkedDequeGet(ConcurrentLinkedDequeState s) {
+    public Object ConcurrentLinkedDequeGet(ConcurrentLinkedDequeState s) {
         return benchmarkGet(s.target);
     }
 
     @Benchmark
     @GroupThreads(ADD_THREADS)
     @Group("ConcurrentLinkedDeque")
-    public Collection<Integer> ConcurrentLinkedDequeAdd(ConcurrentLinkedDequeState s) {
+    public Object ConcurrentLinkedDequeAdd(ConcurrentLinkedDequeState s) {
         return benchmarkAdd(s.source, s.target);
     }
 
     @Benchmark
-    @GroupThreads(REMOVE_THREADS)
+    @GroupThreads
     @Group("ConcurrentLinkedDeque")
-    public Integer ConcurrentLinkedDequeRemove(ConcurrentLinkedDequeState s) {
+    public Object ConcurrentLinkedDequeRemove(ConcurrentLinkedDequeState s) {
         return benchmarkRemove(s.target);
     }
 
@@ -169,90 +136,167 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
     @Benchmark
     @GroupThreads(ADD_THREADS)
     @Group("ConcurrentLinkedQueue")
-    public Collection<Integer> ConcurrentLinkedQueueAdd(ConcurrentLinkedQueueState s) {
+    public Object ConcurrentLinkedQueueAdd(ConcurrentLinkedQueueState s) {
         return benchmarkAdd(s.source, s.target);
     }
 
     @Benchmark
-    @GroupThreads(REMOVE_THREADS)
+    @GroupThreads
     @Group("ConcurrentLinkedQueue")
-    public Integer ConcurrentLinkedQueueRemove(ConcurrentLinkedQueueState s) {
+    public Object ConcurrentLinkedQueueRemove(ConcurrentLinkedQueueState s) {
         return benchmarkRemove(s.target);
     }
 
     @Benchmark
     @GroupThreads(GET_THREADS)
-    @Group("ConcurrentSkipListSet")
-    public Integer ConcurrentSkipListSetGet(ConcurrentSkipListSetState s) {
-        return benchmarkGet(s.target);
+    @Group("ConcurrentSkipListMap")
+    public Object ConcurrentSkipMapSetGet(ConcurrentSkipListMapState s) {
+        return benchmarkGet(s.source, s.target);
     }
 
-    private Integer benchmarkGet(NavigableSet<Integer> target) {
-        return target.first();
+    @Benchmark
+    @GroupThreads(ADD_THREADS)
+    @Group("ConcurrentSkipListMap")
+    public Object ConcurrentSkipListMapAdd(ConcurrentSkipListMapState s) {
+        return benchmarkAdd(s.source, s.target);
+    }
+
+    @Benchmark
+    @GroupThreads
+    @Group("ConcurrentSkipListMap")
+    public Object ConcurrentSkipListMapRemove(ConcurrentSkipListMapState s) {
+        return benchmarkRemove(s.source, s.target);
+    }
+
+    @Benchmark
+    @GroupThreads(GET_THREADS)
+    @Group("ConcurrentSkipListSet")
+    public Object ConcurrentSkipListSetGet(ConcurrentSkipListSetState s) {
+        return benchmarkGet(s.target);
     }
 
     @Benchmark
     @GroupThreads(ADD_THREADS)
     @Group("ConcurrentSkipListSet")
-    public Collection<Integer> ConcurrentSkipListSetAdd(ConcurrentSkipListSetState s) {
+    public Object ConcurrentSkipListSetAdd(ConcurrentSkipListSetState s) {
         return benchmarkAdd(s.source, s.target);
     }
 
     @Benchmark
-    @GroupThreads(REMOVE_THREADS)
+    @GroupThreads
     @Group("ConcurrentSkipListSet")
-    public boolean ConcurrentSkipListSetRemove(ConcurrentSkipListSetState s) {
+    public Object ConcurrentSkipListSetRemove(ConcurrentSkipListSetState s) {
         return benchmarkRemove(s.source, s.target);
-    }
-
-    private boolean benchmarkRemove(Integer i, Set<Integer> target) {
-        return target.remove(i);
     }
 
     @Benchmark
     @GroupThreads(GET_THREADS)
     @Group("CopyOnWriteArrayList")
-    public Integer CopyOnWriteArrayListGet(CopyOnWriteArrayListState s) {
+    public Object CopyOnWriteArrayListGet(CopyOnWriteArrayListState s) {
         return benchmarkGet(s.target);
     }
 
     @Benchmark
     @GroupThreads(ADD_THREADS)
     @Group("CopyOnWriteArrayList")
-    public Collection<Integer> CopyOnWriteArrayAdd(CopyOnWriteArrayListState s) {
+    public Object CopyOnWriteArrayAdd(CopyOnWriteArrayListState s) {
         return benchmarkAdd(s.source, s.target);
     }
 
     @Benchmark
     @GroupThreads(ADD_THREADS)
     @Group("CopyOnWriteArrayList")
-    public Integer CopyOnWriteArrayRemove(CopyOnWriteArrayListState s) {
+    public Object CopyOnWriteArrayRemove(CopyOnWriteArrayListState s) {
         return benchmarkRemove(s.target);
     }
 
     @Benchmark
     @GroupThreads(GET_THREADS)
     @Group("CopyOnWriteArraySet")
-    public Integer CopyOnWriteArraySetGet(CopyOnWriteArraySetState s) {
+    public Object CopyOnWriteArraySetGet(CopyOnWriteArraySetState s) {
         return benchmarkGet(s.target);
+    }
+
+    @Benchmark
+    @GroupThreads(ADD_THREADS)
+    @Group("CopyOnWriteArraySet")
+    public Object CopyOnWriteArraySetAdd(CopyOnWriteArraySetState s) {
+        return benchmarkAdd(s.source, s.target);
+    }
+
+    @Benchmark
+    @GroupThreads(ADD_THREADS)
+    @Group("Vector")
+    public Object VectorRemove(VectorState s) {
+        return benchmarkRemove(s.target);
+    }
+
+    @Benchmark
+    @GroupThreads(GET_THREADS)
+    @Group("Vector")
+    public Object VectorGet(VectorState s) {
+        return benchmarkGet(s.target);
+    }
+
+    @Benchmark
+    @GroupThreads(ADD_THREADS)
+    @Group("Vector")
+    public Object VectorAdd(VectorState s) {
+        return benchmarkAdd(s.source, s.target);
+    }
+
+    @Benchmark
+    @GroupThreads(ADD_THREADS)
+    @Group("CopyOnWriteArraySet")
+    public Object CopyOnWriteArraySetRemove(CopyOnWriteArraySetState s) {
+        return benchmarkRemove(s.source, s.target);
+    }
+
+    private Integer benchmarkGet(List<Integer> target) {
+        return target.get(0);
+    }
+
+    private Integer benchmarkRemove(List<Integer> target) {
+        return target.remove(0);
+    }
+
+    private Integer benchmarkGet(Integer key, Map<Integer, Integer> target) {
+        return target.get(key);
     }
 
     private Integer benchmarkGet(Set<Integer> target) {
         return target.iterator().next();
     }
 
-    @Benchmark
-    @GroupThreads(ADD_THREADS)
-    @Group("CopyOnWriteArraySet")
-    public Collection<Integer> CopyOnWriteArraySetAdd(CopyOnWriteArraySetState s) {
-        return benchmarkAdd(s.source, s.target);
+    private Integer benchmarkGet(Queue<Integer> target) {
+        return target.peek();
     }
 
-    @Benchmark
-    @GroupThreads(ADD_THREADS)
-    @Group("CopyOnWriteArraySet")
-    public boolean CopyOnWriteArraySetRemove(CopyOnWriteArraySetState s) {
-        return benchmarkRemove(s.source, s.target);
+    private Integer benchmarkRemove(Queue<Integer> target) {
+        return target.poll();
+    }
+
+    private Map<Integer, Integer> benchmarkRemove(Integer i, Map<Integer, Integer> target) {
+        target.remove(i);
+        return target;
+    }
+
+    private Integer benchmarkGet(NavigableSet<Integer> target) {
+        return target.first();
+    }
+
+    private Collection<Integer> benchmarkAdd(Integer i, Collection<Integer> target) {
+        target.add(i);
+        return target;
+    }
+
+    private boolean benchmarkRemove(Integer i, Set<Integer> target) {
+        return target.remove(i);
+    }
+
+    private Map<Integer, Integer> benchmarkAdd(Integer i, Map<Integer, Integer> target) {
+        target.put(i, i);
+        return target;
     }
 
     @State(Scope.Benchmark)
@@ -310,6 +354,17 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         }
     }
 
+    public static class ConcurrentSkipListMapState extends AbstractState {
+        ConcurrentSkipListMap<Integer, Integer> target;
+
+        @Setup
+        public void doSetup() {
+            super.doSetup();
+            target = new ConcurrentSkipListMap();
+            target.putAll(initialData.stream().collect(toMap(identity(), identity())));
+        }
+    }
+
     public static class ConcurrentSkipListSetState extends AbstractState {
         ConcurrentSkipListSet<Integer> target;
 
@@ -339,6 +394,17 @@ public class ConcCollectionBenchmark extends AbstractCollectionBenchmark {
         public void doSetup() {
             super.doSetup();
             target = new CopyOnWriteArraySet();
+            target.addAll(initialData);
+        }
+    }
+
+    public static class VectorState extends AbstractState {
+        Vector<Integer> target;
+
+        @Setup
+        public void doSetup() {
+            super.doSetup();
+            target = new Vector();
             target.addAll(initialData);
         }
     }

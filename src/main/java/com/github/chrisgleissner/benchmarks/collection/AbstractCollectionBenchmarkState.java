@@ -21,6 +21,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -33,6 +34,9 @@ import static com.github.chrisgleissner.benchmarks.Constants.MAX_OPERATIONS_PER_
 
 @State(Scope.Benchmark)
 public abstract class AbstractCollectionBenchmarkState {
+    // Not examined:
+    // DelayQueue: Requires mix-in interface 'Delayed'
+    // SynchronousQueue: Requires removal after add
     ArrayBlockingQueue<Integer> abq;
     ArrayDeque<Integer> ad;
     ArrayList<Integer> al;
@@ -40,6 +44,7 @@ public abstract class AbstractCollectionBenchmarkState {
     ConcurrentHashMap<Integer, Integer> chm;
     ConcurrentLinkedDeque<Integer> cld;
     ConcurrentLinkedQueue<Integer> clq;
+    ConcurrentSkipListMap<Integer, Integer> cslm;
     ConcurrentSkipListSet<Integer> csls;
     CopyOnWriteArrayList<Integer> cowal;
     CopyOnWriteArraySet<Integer> cowas;
@@ -67,6 +72,7 @@ public abstract class AbstractCollectionBenchmarkState {
         chm = new ConcurrentHashMap<>();
         cld = new ConcurrentLinkedDeque<>();
         clq = new ConcurrentLinkedQueue<>();
+        cslm = new ConcurrentSkipListMap<>();
         csls = new ConcurrentSkipListSet<>();
         cowal = new CopyOnWriteArrayList<>();
         cowas = new CopyOnWriteArraySet<>();
@@ -108,6 +114,9 @@ public abstract class AbstractCollectionBenchmarkState {
 
         clq.clear();
         clq = null;
+
+        cslm.clear();
+        cslm = null;
 
         csls.clear();
         csls = null;

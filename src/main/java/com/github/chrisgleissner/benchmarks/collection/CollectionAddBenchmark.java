@@ -14,8 +14,128 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
     static Integer[] integers = range(0, MAX_OPERATIONS_PER_ITERATION).boxed().toArray(Integer[]::new);
 
     @Benchmark
-    public Collection<Integer> ArrayDeque(MyState s) {
+    public Object ArrayBlockingQueue(MyState s) {
+        return benchmarkAdd(s, s.abq);
+    }
+
+    @Benchmark
+    public Object ArrayDeque(MyState s) {
         return benchmarkAdd(s, s.ad);
+    }
+
+    @Benchmark
+    public Object ArrayList(MyState s) {
+        return benchmarkAdd(s, s.al);
+    }
+
+    @Benchmark
+    public Object ArrayListNoResize(MyState s) {
+        return benchmarkAdd(s, s.alnr);
+    }
+
+    @Benchmark
+    public Object ConcurrentHashMap(MyState s) {
+        return benchmarkPut(s, s.chm);
+    }
+
+    @Benchmark
+    public Object ConcurrentLinkedDeque(MyState s) {
+        return benchmarkAdd(s, s.cld);
+    }
+
+    @Benchmark
+    public Object ConcurrentLinkedQueue(MyState s) {
+        return benchmarkAdd(s, s.clq);
+    }
+
+    @Benchmark
+    public Object ConcurrentSkipListMap(MyState s) {
+        return benchmarkPut(s, s.cslm);
+    }
+
+    @Benchmark
+    public Object ConcurrentSkipListSet(MyState s) {
+        return benchmarkAdd(s, s.csls);
+    }
+
+    @Benchmark
+    public Object CopyOnWriteArrayList(MyState s) {
+        return benchmarkAdd(s, s.cowal);
+    }
+
+    @Benchmark
+    public Object CopyOnWriteArraySet(MyState s) {
+        return benchmarkAdd(s, s.cowas);
+    }
+
+    @Benchmark
+    public Object HashMap(MyState s) {
+        return benchmarkPut(s, s.hm);
+    }
+
+    @Benchmark
+    public Object HashSet(MyState s) {
+        return benchmarkAdd(s, s.hs);
+    }
+
+    @Benchmark
+    public Object LinkedBlockingDeque(MyState s) {
+        return benchmarkAdd(s, s.lbd);
+    }
+
+    @Benchmark
+    public Object LinkedBlockingQueue(MyState s) {
+        return benchmarkAdd(s, s.lbq);
+    }
+
+    @Benchmark
+    public Object LinkedHashSet(MyState s) {
+        return benchmarkAdd(s, s.lhs);
+    }
+
+    @Benchmark
+    public Object LinkedHashMap(MyState s) {
+        return benchmarkPut(s, s.lhm);
+    }
+
+    @Benchmark
+    public Object LinkedList(MyState s) {
+        return benchmarkAdd(s, s.ll);
+    }
+
+    @Benchmark
+    public Object LinkedTransferQueue(MyState s) {
+        return benchmarkAdd(s, s.ltq);
+    }
+
+    @Benchmark
+    public Object PriorityBlockingQueue(MyState s) {
+        return benchmarkAdd(s, s.pbq);
+    }
+
+    @Benchmark
+    public Object PriorityQueue(MyState s) {
+        return benchmarkAdd(s, s.pq);
+    }
+
+    @Benchmark
+    public Object Stack(MyState s) {
+        return benchmarkAdd(s, s.s);
+    }
+
+    @Benchmark
+    public Object TreeSet(MyState s) {
+        return benchmarkAdd(s, s.ts);
+    }
+
+    @Benchmark
+    public Object Vector(MyState s) {
+        return benchmarkAdd(s, s.v);
+    }
+
+    @Benchmark
+    public Object VectorNoResize(MyState s) {
+        return benchmarkAdd(s, s.vnr);
     }
 
     private Collection<Integer> benchmarkAdd(MyState s, Collection<Integer> target) {
@@ -26,122 +146,12 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
         return target;
     }
 
-    @Benchmark
-    public Collection<Integer> ArrayList(MyState s) {
-        return benchmarkAdd(s, s.al);
-    }
-
-    @Benchmark
-    public Collection<Integer> ArrayListNoResize(MyState s) {
-        return benchmarkAdd(s, s.alnr);
-    }
-
-    @Benchmark
-    public Map<Integer, Integer> ConcurrentHashMap(MyState s) {
-        return benchmarkAdd(s, s.chm);
-    }
-
-    private Map<Integer, Integer> benchmarkAdd(MyState s, Map<Integer, Integer> target) {
+    private Map<Integer, Integer> benchmarkPut(MyState s, Map<Integer, Integer> target) {
         for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++) {
             Integer value = s.nextValue();
             target.put(value, value);
         }
         return target;
-    }
-
-    @Benchmark
-    public Collection<Integer> ConcurrentLinkedDeque(MyState s) {
-        return benchmarkAdd(s, s.cld);
-    }
-
-    @Benchmark
-    public Collection<Integer> ConcurrentLinkedQueue(MyState s) {
-        return benchmarkAdd(s, s.clq);
-    }
-
-    @Benchmark
-    public Collection<Integer> ConcurrentSkipListSet(MyState s) {
-        return benchmarkAdd(s, s.csls);
-    }
-
-    @Benchmark
-    public Collection<Integer> CopyOnWriteArrayList(MyState s) {
-        return benchmarkAdd(s, s.cowal);
-    }
-
-    @Benchmark
-    public Collection<Integer> CopyOnWriteArraySet(MyState s) {
-        return benchmarkAdd(s, s.cowas);
-    }
-
-    @Benchmark
-    public Map<Integer, Integer> HashMap(MyState s) {
-        return benchmarkAdd(s, s.hm);
-    }
-
-    @Benchmark
-    public Collection<Integer> HashSet(MyState s) {
-        return benchmarkAdd(s, s.hs);
-    }
-
-    @Benchmark
-    public Collection<Integer> LinkedBlockingDeque(MyState s) {
-        return benchmarkAdd(s, s.lbd);
-    }
-
-    @Benchmark
-    public Collection<Integer> LinkedBlockingQueue(MyState s) {
-        return benchmarkAdd(s, s.lbq);
-    }
-
-    @Benchmark
-    public Collection<Integer> LinkedHashSet(MyState s) {
-        return benchmarkAdd(s, s.lhs);
-    }
-
-    @Benchmark
-    public Map<Integer, Integer> LinkedHashMap(MyState s) {
-        return benchmarkAdd(s, s.lhm);
-    }
-
-    @Benchmark
-    public Collection<Integer> LinkedList(MyState s) {
-        return benchmarkAdd(s, s.ll);
-    }
-
-    @Benchmark
-    public Collection<Integer> LinkedTransferQueue(MyState s) {
-        return benchmarkAdd(s, s.ltq);
-    }
-
-    @Benchmark
-    public Collection<Integer> PriorityBlockingQueue(MyState s) {
-        return benchmarkAdd(s, s.pbq);
-    }
-
-    @Benchmark
-    public Collection<Integer> PriorityQueue(MyState s) {
-        return benchmarkAdd(s, s.pq);
-    }
-
-    @Benchmark
-    public Collection<Integer> Stack(MyState s) {
-        return benchmarkAdd(s, s.s);
-    }
-
-    @Benchmark
-    public Collection<Integer> TreeSet(MyState s) {
-        return benchmarkAdd(s, s.ts);
-    }
-
-    @Benchmark
-    public Collection<Integer> Vector(MyState s) {
-        return benchmarkAdd(s, s.v);
-    }
-
-    @Benchmark
-    public Collection<Integer> VectorNoResize(MyState s) {
-        return benchmarkAdd(s, s.vnr);
     }
 
     public static class MyState extends AbstractCollectionBenchmarkState {
@@ -151,5 +161,6 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
             return integers[i = (i + 1) % MAX_OPERATIONS_PER_ITERATION];
         }
     }
+
 
 }
