@@ -94,79 +94,30 @@ public abstract class AbstractCollectionBenchmarkState {
 
     @TearDown(Level.Iteration)
     public void doTearDown() {
-        abq.clear();
         abq = null;
-
-        ad.clear();
         ad = null;
-
-        al.clear();
         al = null;
-
-        alnr.clear();
         alnr = null;
-
-        chm.clear();
         chm = null;
-
-        cld.clear();
         cld = null;
-
-        clq.clear();
         clq = null;
-
-        cslm.clear();
         cslm = null;
-
-        csls.clear();
         csls = null;
-
-        cowal.clear();
         cowal = null;
-
-        cowas.clear();
         cowas = null;
-
-        hm.clear();
         hm = null;
-
-        hs.clear();
         hs = null;
-
-        lbd.clear();
         lbd = null;
-
-        lbq.clear();
         lbq = null;
-
-        lhs.clear();
         lhs = null;
-
-        lhm.clear();
         lhm = null;
-
-        ll.clear();
         ll = null;
-
-        ltq.clear();
         ltq = null;
-
-        pbq.clear();
         pbq = null;
-
-        pq.clear();
         pq = null;
-
-        s.clear();
         s = null;
-
-        ts.clear();
         ts = null;
-
-        v.clear();
         v = null;
-
-        vnr.clear();
         vnr = null;
     }
 }
