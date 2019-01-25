@@ -64,6 +64,11 @@ public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
     }
 
     @Benchmark
+    public void ConcurrentSkipListMap(MyState s, Blackhole bh) {
+        iterate(bh, s.cslm);
+    }
+
+    @Benchmark
     public void ConcurrentSkipListSet(MyState s, Blackhole bh) {
         iterate(bh, s.csls);
     }
