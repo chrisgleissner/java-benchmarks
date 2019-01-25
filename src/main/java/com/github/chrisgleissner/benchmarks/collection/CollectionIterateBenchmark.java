@@ -170,6 +170,7 @@ public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
             initialize(chm);
             initialize(cld);
             initialize(clq);
+            initialize(cslm);
             initialize(csls);
             initialize(cowal);
             initialize(cowas);
