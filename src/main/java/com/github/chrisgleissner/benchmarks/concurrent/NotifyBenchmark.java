@@ -14,17 +14,16 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
-@OperationsPerInvocation(10)
+@OperationsPerInvocation(100)
 public class NotifyBenchmark extends AbstractBenchmark {
 
-    public static final int OPERATIONS_PER_PER_INVOCATION = 10;
+    public static final int OPERATIONS_PER_PER_INVOCATION = 100;
 
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
@@ -96,31 +95,20 @@ public class NotifyBenchmark extends AbstractBenchmark {
 
             notification = new RoundTripNotification(
                     t -> {
-                        try {
-                            t.readyToReceive();
-                            request.await();
-                        } catch (BrokenBarrierException e) {
-                        }
+                        t.readyToReceive();
+                        request.await();
                     },
                     t -> {
-                        try {
-                            t.readyToReceive();
-                            request.await();
-                            t.received();
+                        t.readyToReceive();
+                        request.await();
+                        t.received();
 
-                            t.readyToRespond();
-                            response.await();
-                        } catch (BrokenBarrierException e) {
-                        }
+                        t.readyToRespond();
+                        response.await();
                     },
                     t -> {
-                        try {
-                            t.readyToRespond();
-                            response.await();
-                        } finally {
-                            request.reset();
-                            response.reset();
-                        }
+                        t.readyToRespond();
+                        response.await();
                     });
         }
     }
