@@ -11,8 +11,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(MILLISECONDS)
-@Warmup(iterations = 5, time = 300, timeUnit = MILLISECONDS)
-@Measurement(iterations = 5, time = 300, timeUnit = MILLISECONDS)
+@Warmup(iterations = 5, time = 1000, timeUnit = MILLISECONDS)
+@Measurement(iterations = 10, time = 1000, timeUnit = MILLISECONDS)
 @Fork(1)
 public abstract class AbstractBenchmark {
 

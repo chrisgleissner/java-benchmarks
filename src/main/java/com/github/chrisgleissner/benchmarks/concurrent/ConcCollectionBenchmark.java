@@ -1,5 +1,6 @@
-package com.github.chrisgleissner.benchmarks.collection;
+package com.github.chrisgleissner.benchmarks.concurrent;
 
+import com.github.chrisgleissner.benchmarks.collection.AbstractCollectionBenchmark;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Group;
 import org.openjdk.jmh.annotations.GroupThreads;
