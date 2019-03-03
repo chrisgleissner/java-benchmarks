@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
-public class RoundTripNotification implements Closeable {
+class RoundTripNotification implements Closeable {
     private final Thread receiver;
     private final Action receiveResponse;
     private final Action send;

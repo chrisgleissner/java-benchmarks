@@ -9,10 +9,6 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
-import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
@@ -24,15 +20,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class NotifyBenchmark extends AbstractBenchmark {
 
     public static final int OPERATIONS_PER_PER_INVOCATION = 100;
-
-    public static void main(String[] args) throws RunnerException {
-        Options opt = new OptionsBuilder()
-                .include(NotifyBenchmark.class.getSimpleName())
-                .forks(1)
-                .build();
-
-        new Runner(opt).run();
-    }
 
     @Benchmark
     public Object waitNotify(WaitNotifyState state) {
@@ -59,27 +46,27 @@ public class NotifyBenchmark extends AbstractBenchmark {
 
         @Setup(Level.Iteration)
         public void doSetup() {
-            Phaser request = new Phaser();
+            final Phaser request = new Phaser();
             request.bulkRegister(2);
 
-            Phaser response = new Phaser();
+            final Phaser response = new Phaser();
             response.bulkRegister(2);
 
             notification = new RoundTripNotification(
-                    t -> {
-                        t.readyToReceive();
+                    n -> {
+                        n.readyToReceive();
                         request.arriveAndAwaitAdvance();
                     },
-                    t -> {
-                        t.readyToReceive();
+                    n -> {
+                        n.readyToReceive();
                         request.arriveAndAwaitAdvance();
-                        t.received();
+                        n.received();
 
-                        t.readyToRespond();
+                        n.readyToRespond();
                         response.arriveAndAwaitAdvance();
                     },
-                    t -> {
-                        t.readyToRespond();
+                    n -> {
+                        n.readyToRespond();
                         response.arriveAndAwaitAdvance();
                     });
         }
@@ -90,24 +77,24 @@ public class NotifyBenchmark extends AbstractBenchmark {
 
         @Setup(Level.Iteration)
         public void doSetup() {
-            CyclicBarrier request = new CyclicBarrier(2);
-            CyclicBarrier response = new CyclicBarrier(2);
+            final CyclicBarrier request = new CyclicBarrier(2);
+            final CyclicBarrier response = new CyclicBarrier(2);
 
             notification = new RoundTripNotification(
-                    t -> {
-                        t.readyToReceive();
+                    n -> {
+                        n.readyToReceive();
                         request.await();
                     },
-                    t -> {
-                        t.readyToReceive();
+                    n -> {
+                        n.readyToReceive();
                         request.await();
-                        t.received();
+                        n.received();
 
-                        t.readyToRespond();
+                        n.readyToRespond();
                         response.await();
                     },
-                    t -> {
-                        t.readyToRespond();
+                    n -> {
+                        n.readyToRespond();
                         response.await();
                     });
         }
@@ -118,29 +105,29 @@ public class NotifyBenchmark extends AbstractBenchmark {
 
         @Setup(Level.Iteration)
         public void doSetup() {
-            Object request = new Object();
-            Object response = new Object();
+            final Object request = new Object();
+            final Object response = new Object();
             notification = new RoundTripNotification(
-                    t -> {
-                        t.readyToReceive();
+                    n -> {
+                        n.readyToReceive();
                         synchronized (request) {
                             request.notify();
                         }
                     },
-                    t -> {
+                    n -> {
                         synchronized (request) {
-                            t.readyToReceive();
+                            n.readyToReceive();
                             request.wait();
-                            t.received();
+                            n.received();
                         }
-                        t.readyToRespond();
+                        n.readyToRespond();
                         synchronized (response) {
                             response.notify();
                         }
                     },
-                    t -> {
+                    n -> {
                         synchronized (response) {
-                            t.readyToRespond();
+                            n.readyToRespond();
                             response.wait();
                         }
                     });
@@ -159,23 +146,29 @@ public class NotifyBenchmark extends AbstractBenchmark {
             response.set(new CountDownLatch(1));
 
             notification = new RoundTripNotification(
-                    t -> {
-                        t.readyToReceive();
+                    n -> {
+                        n.readyToReceive();
                         request.get().countDown();
                     },
-                    t -> {
-                        t.readyToReceive();
+                    n -> {
+                        n.readyToReceive();
+                        // TODO Investigate how a thread suspension can be enforced to make benchmark more realistic
+                        // CountDownLatch is much faster than Wait/Notify because it never awaits. Instead, the
+                        // latch is counted down before the await.
                         request.get().await();
-                        t.received();
+                        n.received();
 
-                        t.readyToRespond();
+                        n.readyToRespond();
                         response.get().countDown();
                     },
-                    t -> {
-                        t.readyToRespond();
-                        response.get().await();
-                        request.set(new CountDownLatch(1));
-                        response.set(new CountDownLatch(1));
+                    n -> {
+                        try {
+                            n.readyToRespond();
+                            response.get().await();
+                        } finally {
+                            request.set(new CountDownLatch(1));
+                            response.set(new CountDownLatch(1));
+                        }
                     });
         }
     }
