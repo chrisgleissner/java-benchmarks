@@ -75,7 +75,7 @@ class RoundTripNotification implements Closeable {
         terminating = true;
         receiver.interrupt();
         try {
-            receiver.join();
+            receiver.join(3000);
         } catch (InterruptedException e) {
             throw new RuntimeException("Thread didn't stop", e);
         }
