@@ -1,0 +1,17 @@
+Benchmark;variation in run 1 (%);variation in run 2 (%);run to run variation (%)
+collection.CollectionAddBenchmark.ConcurrentLinkedQueue;39.998;51.732;9.58
+collection.CollectionAddBenchmark.HashMap;15.619;16.734;1.54
+collection.CollectionAddBenchmark.HashSet;40.322;38.234;3.06
+collection.CollectionAddBenchmark.LinkedHashMap;16.818;15.714;1.39
+collection.CollectionAddBenchmark.LinkedHashSet;66.645;54.461;5.82
+collection.CollectionAddBenchmark.LinkedList;96.142;53.016;23.88
+collection.CollectionAddBenchmark.LinkedTransferQueue;50.284;60.076;14.99
+concurrent.ConcCollectionBenchmark.ConcurrentLinkedDequeAdd;35.25;33.276;5.66
+concurrent.ConcCollectionBenchmark.ConcurrentLinkedDequeGet;20.054;29.181;1.33
+concurrent.ConcCollectionBenchmark.ConcurrentLinkedQueueAdd;11.595;20.28;7.54
+concurrent.ConcCollectionBenchmark.ConcurrentLinkedQueueGet;12.407;33.209;3.83
+concurrent.ConcCollectionBenchmark.CopyOnWriteArraySetAdd;8.412;13.392;2.13
+concurrent.NotifyBenchmark.countdownLatch;25.479;38.899;0.86
+
+
+
