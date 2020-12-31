@@ -2,19 +2,18 @@ package com.github.chrisgleissner.benchmarks;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.mutable.MutableLong;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.OperationsPerInvocation;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
+import static java.util.concurrent.TimeUnit.*;
 
 @OperationsPerInvocation(OPERATIONS_PER_PER_INVOCATION)
+@Warmup(iterations = 20, time = 1, timeUnit = SECONDS)
+@Measurement(iterations = 10, time = 1, timeUnit = SECONDS)
 public class CounterBenchmark extends AbstractBenchmark {
 
     @Benchmark

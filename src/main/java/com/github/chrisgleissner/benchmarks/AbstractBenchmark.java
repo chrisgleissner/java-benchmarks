@@ -7,12 +7,12 @@ import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Warmup;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 @BenchmarkMode(Mode.Throughput)
-@OutputTimeUnit(MILLISECONDS)
-@Warmup(iterations = 5, time = 1000, timeUnit = MILLISECONDS)
-@Measurement(iterations = 10, time = 1000, timeUnit = MILLISECONDS)
+@OutputTimeUnit(SECONDS)
+@Warmup(iterations = 50, time = 1, timeUnit = SECONDS)
+@Measurement(iterations = 10, time = 1, timeUnit = SECONDS)
 @Fork(1)
 public abstract class AbstractBenchmark {
 

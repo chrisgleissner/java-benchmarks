@@ -1,7 +1,7 @@
 package com.github.chrisgleissner.benchmarks.collection;
 
 import com.github.chrisgleissner.benchmarks.AbstractBenchmark;
-import org.openjdk.jmh.annotations.OperationsPerInvocation;
+import org.openjdk.jmh.annotations.*;
 
 import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
 

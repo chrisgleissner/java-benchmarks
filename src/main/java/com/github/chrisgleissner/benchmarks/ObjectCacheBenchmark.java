@@ -1,14 +1,15 @@
 package com.github.chrisgleissner.benchmarks;
 
 import lombok.Value;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.OperationsPerInvocation;
-
+import org.openjdk.jmh.annotations.*;
+import static java.util.concurrent.TimeUnit.*;
 import java.util.stream.IntStream;
 
 import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
 
 @OperationsPerInvocation(OPERATIONS_PER_PER_INVOCATION)
+@Warmup(iterations = 20, time = 1, timeUnit = SECONDS)
+@Measurement(iterations = 10, time = 1, timeUnit = SECONDS)
 public class ObjectCacheBenchmark extends AbstractBenchmark {
 
     private static Id[] idPool = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).mapToObj(Id::new).toArray(Id[]::new);

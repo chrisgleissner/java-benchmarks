@@ -2,20 +2,17 @@ package com.github.chrisgleissner.benchmarks.concurrent;
 
 import com.github.chrisgleissner.benchmarks.AbstractBenchmark;
 import lombok.extern.slf4j.Slf4j;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Level;
-import org.openjdk.jmh.annotations.OperationsPerInvocation;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.TearDown;
+import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicReference;
+import static java.util.concurrent.TimeUnit.*;
 
 @Slf4j
+@Warmup(iterations = 50, time = 1000, timeUnit = MILLISECONDS)
+@Measurement(iterations = 10, time = 1000, timeUnit = MILLISECONDS)
 @OperationsPerInvocation(100)
 public class NotifyBenchmark extends AbstractBenchmark {
 
