@@ -1,14 +1,18 @@
 package com.github.chrisgleissner.benchmarks.collection;
 
-import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.*;
 
 import java.util.Collection;
 import java.util.Map;
-
+import static java.util.concurrent.TimeUnit.*;
 import static com.github.chrisgleissner.benchmarks.Constants.MAX_OPERATIONS_PER_ITERATION;
 import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
 import static java.util.stream.IntStream.range;
 
+@BenchmarkMode(Mode.Throughput)
+@Warmup(iterations = 50, time = 1000, timeUnit = MILLISECONDS)
+@Measurement(iterations = 10, time = 1000, timeUnit = MILLISECONDS)
+@Fork(value = 1, jvmArgsPrepend = { "-Xmx32g"})
 public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
 
     static Integer[] integers = range(0, MAX_OPERATIONS_PER_ITERATION).boxed().toArray(Integer[]::new);
@@ -34,6 +38,7 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
     }
 
     @Benchmark
+    @Measurement(iterations = 50, time = 1000, timeUnit = MILLISECONDS)
     public Object ConcurrentHashMap(MyState s) {
         return benchmarkPut(s, s.chm);
     }
@@ -49,6 +54,7 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
     }
 
     @Benchmark
+    @Measurement(iterations = 100, time = 1000, timeUnit = MILLISECONDS)
     public Object ConcurrentSkipListMap(MyState s) {
         return benchmarkPut(s, s.cslm);
     }
@@ -69,6 +75,7 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
     }
 
     @Benchmark
+    @Measurement(iterations = 50, time = 1000, timeUnit = MILLISECONDS)
     public Object HashMap(MyState s) {
         return benchmarkPut(s, s.hm);
     }
@@ -94,6 +101,7 @@ public class CollectionAddBenchmark extends AbstractCollectionBenchmark {
     }
 
     @Benchmark
+    @Measurement(iterations = 50, time = 1000, timeUnit = MILLISECONDS)
     public Object LinkedHashMap(MyState s) {
         return benchmarkPut(s, s.lhm);
     }

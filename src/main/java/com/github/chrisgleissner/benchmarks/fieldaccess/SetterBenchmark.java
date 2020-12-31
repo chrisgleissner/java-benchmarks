@@ -3,11 +3,7 @@ package com.github.chrisgleissner.benchmarks.fieldaccess;
 import com.github.chrisgleissner.benchmarks.AbstractBenchmark;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Level;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.*;
 
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
@@ -28,7 +24,10 @@ import static java.lang.invoke.MethodHandles.privateLookupIn;
 import static java.lang.invoke.MethodType.methodType;
 import static java.util.Collections.shuffle;
 import static java.util.stream.Collectors.toList;
+import static java.util.concurrent.TimeUnit.*;
 
+@Warmup(iterations = 50, time = 1, timeUnit = SECONDS)
+@Measurement(iterations = 10, time = 1, timeUnit = SECONDS)
 public class SetterBenchmark extends AbstractBenchmark {
 
     @Benchmark

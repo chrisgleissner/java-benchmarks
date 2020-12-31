@@ -1,8 +1,6 @@
 package com.github.chrisgleissner.benchmarks.collection;
 
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.TearDown;
+import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.Collection;
@@ -13,7 +11,12 @@ import java.util.stream.IntStream;
 
 import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
 import static java.util.function.Function.identity;
+import static java.util.concurrent.TimeUnit.*;
 
+@BenchmarkMode(Mode.Throughput)
+@Warmup(iterations = 50, time = 1000, timeUnit = MILLISECONDS)
+@Measurement(iterations = 10, time = 1000, timeUnit = MILLISECONDS)
+@Fork(value = 1, jvmArgsPrepend = { "-Xmx32g"})
 public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
 
     @Benchmark
@@ -23,8 +26,10 @@ public class CollectionIterateBenchmark extends AbstractCollectionBenchmark {
 
     private void iterate(Blackhole bh, Collection<Integer> target) {
         Iterator<Integer> iterator = target.iterator();
+        int sum = 0;
         while (iterator.hasNext())
-            bh.consume(iterator.next());
+            sum += iterator.next();
+        bh.consume(sum);
     }
 
     @Benchmark

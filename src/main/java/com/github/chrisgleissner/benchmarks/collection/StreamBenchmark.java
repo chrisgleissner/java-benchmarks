@@ -23,10 +23,14 @@ import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
+import static java.util.concurrent.TimeUnit.*;
 
 @State(Scope.Thread)
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
+@Warmup(iterations = 50, time = 1000, timeUnit = MILLISECONDS)
+@Measurement(iterations = 50, time = 1000, timeUnit = MILLISECONDS)
+@Fork(value = 1, jvmArgsPrepend = { "-Xmx32g"})
 @OperationsPerInvocation(1)
 public class StreamBenchmark extends AbstractCollectionBenchmark {
 

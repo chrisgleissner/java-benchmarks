@@ -1,16 +1,15 @@
 package com.github.chrisgleissner.benchmarks.collection;
 
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.*;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
+import static java.util.concurrent.TimeUnit.*;
 
 import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
-
+@Warmup(iterations = 50, time = 1000, timeUnit = MILLISECONDS)
+@Measurement(iterations = 10, time = 1000, timeUnit = MILLISECONDS)
 public class ArrayAddBenchmark extends AbstractCollectionBenchmark {
 
     @Benchmark

@@ -67,10 +67,10 @@ public abstract class AbstractCollectionBenchmarkState {
 
     @Setup(Level.Iteration)
     public void doSetup() {
-        abq = new ArrayBlockingQueue<>(MAX_OPERATIONS_PER_ITERATION);
+        abq = new ArrayBlockingQueue<>(MAX_OPERATIONS_PER_ITERATION * 2);
         ad = new ArrayDeque<>();
         al = new ArrayList<>();
-        alnr = new ArrayList<>(MAX_OPERATIONS_PER_ITERATION);
+        alnr = new ArrayList<>(MAX_OPERATIONS_PER_ITERATION * 2);
         chm = new ConcurrentHashMap<>();
         cld = new ConcurrentLinkedDeque<>();
         clq = new ConcurrentLinkedQueue<>();
@@ -92,7 +92,7 @@ public abstract class AbstractCollectionBenchmarkState {
         tm = new TreeMap<>();
         ts = new TreeSet<>();
         v = new Vector<>();
-        vnr = new Vector<>(MAX_OPERATIONS_PER_ITERATION);
+        vnr = new Vector<>(MAX_OPERATIONS_PER_ITERATION * 2);
     }
 
     @TearDown(Level.Iteration)
