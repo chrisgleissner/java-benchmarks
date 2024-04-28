@@ -1,6 +1,5 @@
 package com.github.chrisgleissner.benchmarks.concurrent;
 
-import com.github.chrisgleissner.benchmarks.AbstractBenchmark;
 import lombok.extern.slf4j.Slf4j;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
@@ -17,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 @OperationsPerInvocation(100)
-public class NotifyBenchmark extends AbstractBenchmark {
+public class NotifyBenchmark {
 
     public static final int OPERATIONS_PER_PER_INVOCATION = 100;
 

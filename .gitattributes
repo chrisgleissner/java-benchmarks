@@ -1,0 +1,2 @@
+core.safecrlf=true
+core.autocrlf=input

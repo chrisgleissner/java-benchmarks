@@ -1,0 +1,10 @@
+name: benchmark
+on:
+  schedule:
+    - cron: "0 2 3 * *" # 3rd of each month at 2am
+  workflow_dispatch:
+
+jobs:
+  call-reusable-build:
+    uses: ./.github/workflows/reusable-build.yaml
+    secrets: inherit

@@ -1,0 +1,60 @@
+name: build
+on:
+  workflow_call:
+    inputs:
+      includes:
+        required: false
+        type: string
+        default: ".*"
+        description: Regex of benchmark to run
+      warmup-iterations:
+        required: false
+        type: number
+        default: 1
+        description: Number of warmup iterations
+      iterations:
+        required: false
+        type: number
+        default: 10
+        description: Number of iterations
+      fork:
+        required: false
+        type: number
+        default: 1
+        description: Number of benchmark forks
+      operations-per-invocation:
+        required: false
+        type: number
+        default: 10
+        description: Number of iterations per invocation
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java-version: [ 21, 22 ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Java ${{ matrix.java-version }}
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: corretto
+          cache: 'gradle'
+
+      - name: Test
+        run: ./gradlew test
+
+      - name: Benchmark
+        run: ./benchmark.sh -wi ${{ inputs.warmup-iterations }} -it ${{ inputs.iterations }} -f ${{ inputs.fork }} -o ${{ inputs.operations-per-invocation }}
+
+      - name: Store results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Results for Java ${{ matrix.java-version }}
+          path: build/results/jmh/results.json

@@ -12,7 +12,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Warmup(iterations = 5, time = 300, timeUnit = MILLISECONDS)
 @Measurement(iterations = 5, time = 300, timeUnit = MILLISECONDS)
-public class TimeBenchmark extends AbstractBenchmark {
+public class TimeBenchmark {
 
     @Benchmark
     public long currentTimeMillis() {

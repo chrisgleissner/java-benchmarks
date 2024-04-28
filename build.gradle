@@ -1,0 +1,55 @@
+plugins {
+    id 'io.freefair.lombok' version '8.6'
+    id 'java-library'
+    id "me.champeau.jmh" version "0.7.2"
+}
+
+java {
+    sourceCompatibility = '21'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    testImplementation 'ch.qos.logback:logback-classic:1.5.6'
+    testImplementation 'org.assertj:assertj-core:3.25.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+def jmhIncludesValue = project.hasProperty('jmhIncludes') ? project.getProperty('jmhIncludes') : ".*"
+def operationsPerInvocationValue = project.hasProperty('operationsPerInvocation') ? project.getProperty('operationsPerInvocation') : 10
+def timeOnIterationValue = project.hasProperty('timeOnIteration') ? project.getProperty('timeOnIteration') : '1s'
+def jmhTimeoutValue = project.hasProperty('jmhTimeout') ? project.getProperty('jmhTimeout') : '1s'
+def warmupValue = project.hasProperty('warmup') ? project.getProperty('warmup') : '1s'
+def warmupBatchSizeValue = project.hasProperty('warmupBatchSize') ? project.getProperty('warmupBatchSize') : 10
+def warmupIterationsValue = project.hasProperty('warmupIterations') ? project.getProperty('warmupIterations') : 1
+def iterationsValue = project.hasProperty('iterations') ? project.getProperty('iterations') : 10
+def batchSizeValue = project.hasProperty('batchSize') ? project.getProperty('batchSize') : 1
+def forkValue = project.hasProperty('fork') ? project.getProperty('fork') : 2
+def failOnErrorValue = project.hasProperty('failOnError') ? project.getProperty('failOnError') : false
+def forceGCValue = project.hasProperty('forceGC') ? project.getProperty('forceGC') : false
+
+jmh {
+    warmupIterations = warmupIterationsValue as int
+    iterations = iterationsValue as int
+    fork = forkValue as int
+    resultFormat = "json"
+    includes = [jmhIncludesValue]
+    jvmArgsAppend = ['-Xms1g', '-Xmx1g', '-Xlog:gc=info:stdout']
+    operationsPerInvocation = operationsPerInvocationValue as int
+    timeOnIteration = timeOnIterationValue
+    jmhTimeout = jmhTimeoutValue
+    warmup = warmupValue
+    warmupBatchSize = warmupBatchSizeValue as int
+    batchSize = batchSizeValue as int
+    failOnError = failOnErrorValue as boolean
+    forceGC = forceGCValue as boolean
+}

@@ -1,6 +1,5 @@
 package com.github.chrisgleissner.benchmarks;
 
-import lombok.Value;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.OperationsPerInvocation;
 
@@ -9,9 +8,9 @@ import java.util.stream.IntStream;
 import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
 
 @OperationsPerInvocation(OPERATIONS_PER_PER_INVOCATION)
-public class ObjectCacheBenchmark extends AbstractBenchmark {
+public class ObjectCacheBenchmark {
 
-    private static Id[] idPool = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).mapToObj(Id::new).toArray(Id[]::new);
+    private static final Id[] idPool = IntStream.range(0, OPERATIONS_PER_PER_INVOCATION).mapToObj(Id::new).toArray(Id[]::new);
 
     @Benchmark
     public Id[] cache() {
@@ -41,8 +40,6 @@ public class ObjectCacheBenchmark extends AbstractBenchmark {
         return ids;
     }
 
-    @Value
-    private static class Id {
-        int id;
+    record Id(int id) {
     }
 }

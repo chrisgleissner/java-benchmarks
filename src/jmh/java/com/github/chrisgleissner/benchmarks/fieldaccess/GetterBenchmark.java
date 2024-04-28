@@ -1,6 +1,5 @@
 package com.github.chrisgleissner.benchmarks.fieldaccess;
 
-import com.github.chrisgleissner.benchmarks.AbstractBenchmark;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -18,8 +17,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Random;
-import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
@@ -27,80 +26,61 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static java.lang.invoke.MethodHandles.privateLookupIn;
 import static java.lang.invoke.MethodType.methodType;
 import static java.util.Collections.shuffle;
-import static java.util.stream.Collectors.toList;
 
-public class SetterBenchmark extends AbstractBenchmark {
+public class GetterBenchmark {
 
     @Benchmark
-    public Foo direct(DirectState s) {
-        Foo foo = s.foo();
-        foo.setL(s.l);
-        return foo;
+    public Object direct(DirectState s) {
+        return s.foo().getL();
     }
 
     @Benchmark
-    public Foo reflectionSetter(ReflectionSetterState s) throws InvocationTargetException, IllegalAccessException {
-        Foo foo = s.foo();
-        s.setter.invoke(foo, s.l);
-        return foo;
+    public Object reflectionGetter(ReflectionGetterState s) throws InvocationTargetException, IllegalAccessException {
+        return s.getter.invoke(s.foo());
     }
 
     @Benchmark
-    public Foo reflectionField(ReflectionFieldState s) throws IllegalAccessException {
-        Foo foo = s.foo();
-        s.field.set(foo, s.l);
-        return foo;
+    public Object reflectionField(ReflectionFieldState s) throws IllegalAccessException {
+        return s.field.get(s.foo());
     }
 
     @Benchmark
-    public Foo lambdaMetaFactoryForSetter(LambdaMetaFactoryForSetterState s) {
-        Foo foo = s.foo();
-        s.biConsumerFunction.accept(foo, s.l);
-        return foo;
+    public Object lambdaMetaFactoryForGetter(LambdaMetaFactoryForGetterState s) {
+        return s.getterFunction.apply(s.foo());
     }
 
     @Benchmark
-    public Foo methodHandleForSetter(MethodHandleForSetterState s) throws Throwable {
-        Foo foo = s.foo();
-        s.methodHandle.invoke(foo, s.l);
-        return foo;
+    public Object methodHandleForGetter(MethodHandleForGetterState s) throws Throwable {
+        return s.methodHandle.invoke(s.foo());
     }
 
     @Benchmark
-    public Foo methodHandleForField(MethodHandleForFieldState s) throws Throwable {
-        Foo foo = s.foo();
-        s.methodHandle.invoke(foo, s.l);
-        return foo;
+    public Object methodHandleForField(MethodHandleForFieldState s) throws Throwable {
+        return s.methodHandle.invoke(s.foo());
     }
 
     @Benchmark
-    public Foo varHandle(VarHandleState s) {
-        Foo foo = s.foo();
-        s.varHandle.set(foo, s.l);
-        return foo;
+    public Object varHandle(GetterBenchmark.VarHandleState s) {
+        return s.varHandle.get(s.foo());
     }
 
     @Data
     @AllArgsConstructor
-    public static class Foo {
-        private Long l;
+    static class Foo {
+        Long l;
     }
 
     @State(Scope.Thread)
     private static class AbstractState {
-        static Random random = new Random();
-        int i;
         Foo[] foos;
-        Long l;
-        long primitiveL;
+        int i;
 
         @Setup(Level.Iteration)
         public void setupIteration() {
-            List<Foo> foosList = LongStream.range(0, OPERATIONS_PER_PER_INVOCATION).mapToObj(Foo::new).collect(toList());
+            List<Foo> foosList = LongStream.range(0, OPERATIONS_PER_PER_INVOCATION).mapToObj(Foo::new).collect(Collectors.toList());
             shuffle(foosList);
             foos = foosList.toArray(Foo[]::new);
             i = 0;
-            l = random.nextLong();
         }
 
         Foo foo() {
@@ -116,13 +96,13 @@ public class SetterBenchmark extends AbstractBenchmark {
     }
 
     @State(Scope.Thread)
-    public static class ReflectionSetterState extends AbstractState {
-        Method setter;
+    public static class ReflectionGetterState extends AbstractState {
+        Method getter;
 
         @Setup
         public void doSetup() throws NoSuchMethodException {
-            setter = Foo.class.getDeclaredMethod("setL", Long.class);
-            setter.setAccessible(true);
+            getter = Foo.class.getDeclaredMethod("getL");
+            getter.setAccessible(true);
         }
     }
 
@@ -138,30 +118,29 @@ public class SetterBenchmark extends AbstractBenchmark {
     }
 
     @State(Scope.Thread)
-    public static class LambdaMetaFactoryForSetterState extends AbstractState {
-        BiConsumer<Foo, Long> biConsumerFunction;
+    public static class LambdaMetaFactoryForGetterState extends AbstractState {
+        Function<Foo, Long> getterFunction;
 
         @Setup
         public void doSetup() throws Throwable {
             MethodHandles.Lookup lookup = lookup();
-            MethodHandle longSetterHandle = lookup.findVirtual(Foo.class, "setL", methodType(void.class, Long.class));
             CallSite site = LambdaMetafactory.metafactory(lookup,
-                    "accept",
-                    methodType(BiConsumer.class),
-                    methodType(void.class, Object.class, Object.class),
-                    longSetterHandle,
-                    longSetterHandle.type());
-            biConsumerFunction = (BiConsumer) site.getTarget().invokeExact();
+                    "apply",
+                    methodType(Function.class),
+                    methodType(Object.class, Object.class),
+                    lookup.findVirtual(Foo.class, "getL", methodType(Long.class)),
+                    methodType(Long.class, Foo.class));
+            getterFunction = (Function) site.getTarget().invokeExact();
         }
     }
 
     @State(Scope.Thread)
-    public static class MethodHandleForSetterState extends AbstractState {
+    public static class MethodHandleForGetterState extends AbstractState {
         MethodHandle methodHandle;
 
         @Setup
         public void doSetup() throws Throwable {
-            Method method = Foo.class.getMethod("setL", Long.class);
+            Method method = Foo.class.getMethod("getL");
             methodHandle = lookup().unreflect(method);
         }
     }
@@ -174,7 +153,7 @@ public class SetterBenchmark extends AbstractBenchmark {
         public void doSetup() throws Throwable {
             Field field = Foo.class.getDeclaredField("l");
             field.setAccessible(true);
-            methodHandle = lookup().unreflectSetter(field);
+            methodHandle = lookup().unreflectGetter(field);
         }
     }
 

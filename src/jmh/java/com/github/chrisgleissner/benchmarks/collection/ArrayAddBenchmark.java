@@ -27,8 +27,7 @@ public class ArrayAddBenchmark extends AbstractCollectionBenchmark {
     @Benchmark
     public int[] intArrayAdd(MyState s) {
         int[] ints = new int[OPERATIONS_PER_PER_INVOCATION];
-        for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++)
-            ints[i] = s.ints[i];
+        System.arraycopy(s.ints, 0, ints, 0, OPERATIONS_PER_PER_INVOCATION);
         return ints;
     }
 
@@ -45,8 +44,7 @@ public class ArrayAddBenchmark extends AbstractCollectionBenchmark {
     @Benchmark
     public Integer[] intWrapperArrayAdd(MyState s) {
         Integer[] ints = new Integer[OPERATIONS_PER_PER_INVOCATION];
-        for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++)
-            ints[i] = s.intWrappers[i];
+        System.arraycopy(s.intWrappers, 0, ints, 0, OPERATIONS_PER_PER_INVOCATION);
         return ints;
     }
 
@@ -64,8 +62,7 @@ public class ArrayAddBenchmark extends AbstractCollectionBenchmark {
     @Benchmark
     public long[] longArrayAdd(MyState s) {
         long[] longs = new long[OPERATIONS_PER_PER_INVOCATION];
-        for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++)
-            longs[i] = s.longs[i];
+        System.arraycopy(s.longs, 0, longs, 0, OPERATIONS_PER_PER_INVOCATION);
         return longs;
     }
 
@@ -82,8 +79,7 @@ public class ArrayAddBenchmark extends AbstractCollectionBenchmark {
     @Benchmark
     public Long[] longWrapperArrayAdd(MyState s) {
         Long[] longs = new Long[OPERATIONS_PER_PER_INVOCATION];
-        for (int i = 0; i < OPERATIONS_PER_PER_INVOCATION; i++)
-            longs[i] = s.longWrappers[i];
+        System.arraycopy(s.longWrappers, 0, longs, 0, OPERATIONS_PER_PER_INVOCATION);
         return longs;
     }
 

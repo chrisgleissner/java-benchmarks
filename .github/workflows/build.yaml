@@ -1,0 +1,11 @@
+name: build
+on: [ push ]
+
+jobs:
+  call-reusable-build:
+    uses: ./.github/workflows/reusable-build.yaml
+    secrets: inherit
+    with:
+      includes: "nano"
+      warmup-iterations: 1
+      iterations: 1

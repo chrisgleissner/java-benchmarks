@@ -1,2 +1,0 @@
-#!/bin/bash
-mvn clean install; java -jar target/benchmarks.jar -prof gc -gc true -rf json -jvmArgs "-Xms4g -Xms4g -Xcomp" $1 | tee benchmarks.log

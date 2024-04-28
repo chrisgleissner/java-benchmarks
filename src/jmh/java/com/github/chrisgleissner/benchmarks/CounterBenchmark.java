@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import static com.github.chrisgleissner.benchmarks.Constants.OPERATIONS_PER_PER_INVOCATION;
 
 @OperationsPerInvocation(OPERATIONS_PER_PER_INVOCATION)
-public class CounterBenchmark extends AbstractBenchmark {
+public class CounterBenchmark {
 
     @Benchmark
     public void primitiveInt(Blackhole blackhole, MyState state) {
