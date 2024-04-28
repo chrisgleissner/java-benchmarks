@@ -38,6 +38,7 @@ def failOnErrorValue = project.hasProperty('failOnError') ? project.getProperty(
 def forceGCValue = project.hasProperty('forceGC') ? project.getProperty('forceGC') : false
 
 jmh {
+    benchmarkMode = ['thrpt']
     warmupIterations = warmupIterationsValue as int
     iterations = iterationsValue as int
     fork = forkValue as int
