@@ -10,12 +10,12 @@ on:
       warmup-iterations:
         required: false
         type: number
-        default: 1
+        default: 5
         description: Number of warmup iterations
       iterations:
         required: false
         type: number
-        default: 10
+        default: 15
         description: Number of iterations
       fork:
         required: false
