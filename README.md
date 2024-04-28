@@ -7,27 +7,27 @@ Java 21 [JMH](https://github.com/openjdk/jmh) benchmarks for field access, count
 
 ## Results
 
-View [All Benchmark Results](https://jmh.morethan.io/?source=https://github.com/chrisgleissner/java-benchmarks/raw/master/jmh-result-all.json) as charts.
+Open [Result Charts](https://jmh.morethan.io/?source=https://raw.githubusercontent.com/chrisgleissner/java-benchmarks/master/jmh-result-all.json) at [jmh.morethan.io](https://jmh.morethan.io).
 
-Alternatively, download the results as [JSON](./jmh-result-all.json), then open [https://jmh.morethan.io](https://jmh.morethan.io) and upload them there.
+Alternatively, download [Result JSON](./jmh-result-all.json).
 
-## Environment
+### Test Environment
 
-Details of test environment used to obtain results.
+The following test environment was used to create the results above.
 
-### Software
-
-- Java: Amazon Corretto 21.0.3.9.1
-- OS: Ubuntu 22.04.4 LTS
-- Kernel: 5.15.86-051586-generic
-- JVM args: `-Xms4g -Xmx4g -Xlog:gc=info:stdout`
-
-### Hardware
+#### Hardware
 
 - CPU: Intel Core i7-6700K at 4.00GHz with 4 cores (8 threads)
 - Motherboard: Asus Z170-A
 - RAM: 32 GiB DDR4 (2 x Corsair 16 GiB, 2133 MT/s)
 - Virtualization: None; bare metal desktop
+
+#### Software
+
+- Java: Amazon Corretto 21.0.3.9.1
+- OS: Ubuntu 22.04.4 LTS
+- Kernel: 5.15.86-051586-generic
+- JVM args: `-Xms4g -Xmx4g -Xlog:gc=info:stdout`
 
 ## Run
 
@@ -95,6 +95,7 @@ Each data structure gets populated before he benchmark. Access occurs for the he
 
 Compares streaming over primitive and wrapper classes compared with using a for loop. The stream collects filtered elements into a target data structure. This benchmarks also compares single threaded with parallel streaming over data structures of varying length.
 
+> [!NOTE]
 > In contrast to the other benchmarks, the measurements here are for processing the entire stream. The benchmark is run repeatedly
 > for increasing stream lengths, from 1 to 10 million in "one order of magnitude" increments. Thus, as the stream length increases, the measured
 > throughput decreases.
