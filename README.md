@@ -9,7 +9,7 @@ Java 21 [JMH](https://github.com/openjdk/jmh) benchmarks for field access, count
 
 Open [Result Charts](https://jmh.morethan.io/?source=https://raw.githubusercontent.com/chrisgleissner/java-benchmarks/master/jmh-result-all.json) in [JMH Visualizer](https://jmh.morethan.io).
 
-Alternatively, download [Result JSON](./jmh-result-all.json).
+Alternatively, download [Result JSON](https://raw.githubusercontent.com/chrisgleissner/java-benchmarks/master/jmh-result-all.json).
 
 ### Test Environment
 
