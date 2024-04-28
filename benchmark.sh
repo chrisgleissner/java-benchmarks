@@ -12,7 +12,7 @@ default_iterations=10
 default_batch_size=1
 default_fork=1
 default_fail_on_error=false
-default_force_gc=true
+default_force_gc=false
 
 # Function to display usage information
 show_usage() {
