@@ -43,7 +43,7 @@ jmh {
     fork = forkValue as int
     resultFormat = "json"
     includes = [jmhIncludesValue]
-    jvmArgsAppend = ['-Xms1g', '-Xmx1g', '-Xlog:gc=info:stdout']
+    jvmArgsAppend = ['-Xms4g', '-Xmx4g', '-Xlog:gc=info:stdout']
     operationsPerInvocation = operationsPerInvocationValue as int
     timeOnIteration = timeOnIterationValue
     jmhTimeout = jmhTimeoutValue
