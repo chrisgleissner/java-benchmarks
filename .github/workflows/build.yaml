@@ -6,6 +6,6 @@ jobs:
     uses: ./.github/workflows/reusable-build.yaml
     secrets: inherit
     with:
-      includes: "Time.*"
+      includes: "nano"
       warmup-iterations: 1
       iterations: 1
