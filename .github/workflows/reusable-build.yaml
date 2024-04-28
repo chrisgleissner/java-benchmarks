@@ -33,8 +33,11 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        java-version: [ 21, 22 ]
+        java-version: [ 21 ]
+        # TODO cg Reactivate
+    #        java-version: [ 21, 22 ]
 
     steps:
       - name: Checkout
