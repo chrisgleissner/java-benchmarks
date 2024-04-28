@@ -53,7 +53,7 @@ jobs:
         run: ./gradlew test
 
       - name: Benchmark
-        run: ./benchmark.sh -i ${{ inputs.includes }} -wi ${{ inputs.warmup-iterations }} -it ${{ inputs.iterations }} -f ${{ inputs.fork }} -o ${{ inputs.operations-per-invocation }}
+        run: ./benchmark.sh -i "${{ inputs.includes }}" -wi ${{ inputs.warmup-iterations }} -it ${{ inputs.iterations }} -f ${{ inputs.fork }} -o ${{ inputs.operations-per-invocation }}
 
       - name: Store results
         uses: actions/upload-artifact@v4
