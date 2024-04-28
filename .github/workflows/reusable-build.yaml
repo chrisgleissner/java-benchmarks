@@ -35,9 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java-version: [ 21 ]
-        # TODO cg Reactivate
-    #        java-version: [ 21, 22 ]
+        java-version: [ 21, 22 ]
 
     steps:
       - name: Checkout
@@ -50,11 +48,11 @@ jobs:
           distribution: corretto
           cache: 'gradle'
 
-      #      - name: Test
-      #        run: ./gradlew test
-      #
+      - name: Test
+        run: ./gradlew test
+
       - name: Benchmark
-        run: ./benchmark.sh -wi ${{ inputs.warmup-iterations }} -it ${{ inputs.iterations }} -f ${{ inputs.fork }} -o ${{ inputs.operations-per-invocation }}
+        run: ./benchmark.sh -i ${{ inputs.includes }} -wi ${{ inputs.warmup-iterations }} -it ${{ inputs.iterations }} -f ${{ inputs.fork }} -o ${{ inputs.operations-per-invocation }}
 
       - name: Store results
         uses: actions/upload-artifact@v4
