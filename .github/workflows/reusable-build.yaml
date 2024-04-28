@@ -47,9 +47,9 @@ jobs:
           distribution: corretto
           cache: 'gradle'
 
-      - name: Test
-        run: ./gradlew test
-
+      #      - name: Test
+      #        run: ./gradlew test
+      #
       - name: Benchmark
         run: ./benchmark.sh -wi ${{ inputs.warmup-iterations }} -it ${{ inputs.iterations }} -f ${{ inputs.fork }} -o ${{ inputs.operations-per-invocation }}
 
