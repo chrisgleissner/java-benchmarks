@@ -51,7 +51,7 @@ Examples:
 ./benchmark.sh -i nano
 ```
 
-After completion, please find the results at `./jmh-result-all.json`.
+After completion, you find the results in `./jmh-result-all.json`.
 
 ## Details
 
