@@ -12,7 +12,7 @@ default_iterations=10
 default_batch_size=1
 default_fork=1
 default_fail_on_error=false
-default_force_gc=false
+default_force_gc=true
 
 # Function to display usage information
 show_usage() {
@@ -70,9 +70,12 @@ force_gc="${force_gc:-$default_force_gc}"
 
 # Run Gradle with JMH task and pass includes parameter
 
+rm -Rf build/results/jmh
+
 ./gradlew jmh -PjmhIncludes="$includes" -PoperationsPerInvocation="$operations_per_invocation" \
     -PtimeOnIteration="$time_on_iteration" -PjmhTimeout="$jmh_timeout" -Pwarmup="$warmup" \
     -PwarmupBatchSize="$warmup_batch_size" -PwarmupIterations="$warmup_iterations" \
     -Piterations="$iterations" -PbatchSize="$batch_size" \
     -Pfork="$fork" -PfailOnError="$fail_on_error" -PforceGC="$force_gc" \
-    && cp build/results/jmh/results.json jmh-result-all.json
+
+cp build/results/jmh/results.json jmh-result-all.json

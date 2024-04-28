@@ -19,6 +19,7 @@ Details of test environment used to obtain results.
 - Java: Amazon Corretto 21.0.3.9.1
 - OS: Ubuntu 22.04.4 LTS
 - Kernel: 5.15.86-051586-generic
+- JVM args: `-Xms4g -Xmx4g -Xlog:gc=info:stdout`
 
 ### Hardware
 
