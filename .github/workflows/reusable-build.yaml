@@ -33,7 +33,6 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
       matrix:
         java-version: [ 21 ]
         # TODO cg Reactivate once Gradle supports Java 22
