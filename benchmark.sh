@@ -54,7 +54,7 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
-# Set includes parameter to default value if not provided
+# Set default values if not provided
 includes="${includes:-$default_includes}"
 operations_per_invocation="${operations_per_invocation:-$default_operations_per_invocation}"
 time_on_iteration="${time_on_iteration:-$default_time_on_iteration}"
@@ -68,7 +68,7 @@ fork="${fork:-$default_fork}"
 fail_on_error="${fail_on_error:-$default_fail_on_error}"
 force_gc="${force_gc:-$default_force_gc}"
 
-# Run Gradle with JMH task and pass includes parameter
+# Run Gradle with JMH task
 
 rm -Rf build/results/jmh
 
