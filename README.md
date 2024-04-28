@@ -1,6 +1,7 @@
 # Java 21 JMH Benchmarks
 
-[![Build Status](https://travis-ci.org/chrisgleissner/jutil.svg?branch=master)](https://travis-ci.org/chrisgleissner/benchmarks)
+[![build](https://github.com/chrisgleissner/java-benchmarks/actions/workflows/build.yaml/badge.svg)](https://github.com/chrisgleissner/java-benchmarks/actions/workflows/build.yaml)
+[![benchmark](https://github.com/chrisgleissner/java-benchmarks/actions/workflows/benchmark.yaml/badge.svg)](https://github.com/chrisgleissner/java-benchmarks/actions/workflows/benchmark.yaml)
 
 Java 21 [JMH](https://github.com/openjdk/jmh) benchmarks for field access, counters, collections, sequential and parallel streams, etc.
 
