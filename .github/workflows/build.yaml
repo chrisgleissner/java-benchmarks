@@ -9,3 +9,4 @@ jobs:
       includes: "nano"
       warmup-iterations: 1
       iterations: 1
+      fork: 0
